@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace GF.barbarian.Gui
 {
-	public partial class CtrlFileMode : UserControl
+	public partial class CtrlModeLibrary : UserControl
 	{
-		public CtrlFileMode()
+		public CtrlModeLibrary()
 		{
 			InitializeComponent();
 		}

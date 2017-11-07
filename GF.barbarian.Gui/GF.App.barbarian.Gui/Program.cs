@@ -26,7 +26,7 @@ namespace GF.barbarian.Gui
 
 			if (!String.IsNullOrEmpty(arguments.LibraryPathFileName) && File.Exists(arguments.LibraryPathFileName))
 				frm.StartWithDataFile(arguments.LibraryPathFileName);
-			else
+			else if (!String.IsNullOrEmpty(arguments.LibraryPathFileName) && !File.Exists(arguments.LibraryPathFileName))
 				MessageBox.Show("Can't open file " + arguments.LibraryPathFileName);
 			Application.Run(frm);
 		}

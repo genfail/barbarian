@@ -32,12 +32,13 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.eXitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.fileModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.libraryModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.fileModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.libraryMaodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.panelMain = new System.Windows.Forms.Panel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -56,12 +57,13 @@
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.eXitToolStripMenuItem,
             this.fileModeToolStripMenuItem,
-            this.libraryMaodeToolStripMenuItem});
+            this.libraryModeToolStripMenuItem,
+            this.eXitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "&File";
+			this.fileToolStripMenuItem.DropDownOpening += new System.EventHandler(this.fileToolStripMenuItem_DropDownOpening);
 			// 
 			// eXitToolStripMenuItem
 			// 
@@ -70,12 +72,26 @@
 			this.eXitToolStripMenuItem.Text = "e&Xit";
 			this.eXitToolStripMenuItem.Click += new System.EventHandler(this.eXitToolStripMenuItem_Click);
 			// 
+			// fileModeToolStripMenuItem
+			// 
+			this.fileModeToolStripMenuItem.Name = "fileModeToolStripMenuItem";
+			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.fileModeToolStripMenuItem.Text = "&File Mode";
+			this.fileModeToolStripMenuItem.Click += new System.EventHandler(this.fileModeToolStripMenuItem_Click);
+			// 
+			// libraryModeToolStripMenuItem
+			// 
+			this.libraryModeToolStripMenuItem.Name = "libraryModeToolStripMenuItem";
+			this.libraryModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.libraryModeToolStripMenuItem.Text = "&Library Mode";
+			this.libraryModeToolStripMenuItem.Click += new System.EventHandler(this.libraryModeToolStripMenuItem_Click);
+			// 
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
 			// settingsToolStripMenuItem
@@ -84,20 +100,6 @@
 			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
-			// 
-			// fileModeToolStripMenuItem
-			// 
-			this.fileModeToolStripMenuItem.Name = "fileModeToolStripMenuItem";
-			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.fileModeToolStripMenuItem.Text = "&File Mode";
-			this.fileModeToolStripMenuItem.Click += new System.EventHandler(this.fileModeToolStripMenuItem_Click);
-			// 
-			// libraryMaodeToolStripMenuItem
-			// 
-			this.libraryMaodeToolStripMenuItem.Name = "libraryMaodeToolStripMenuItem";
-			this.libraryMaodeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.libraryMaodeToolStripMenuItem.Text = "&Library Maode";
-			this.libraryMaodeToolStripMenuItem.Click += new System.EventHandler(this.libraryMaodeToolStripMenuItem_Click);
 			// 
 			// statusStripBarbarian
 			// 
@@ -115,18 +117,26 @@
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(115, 17);
 			this.toolStripStatusLabel1.Text = "toolStripStatusMode";
 			// 
+			// panelMain
+			// 
+			this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panelMain.Location = new System.Drawing.Point(0, 24);
+			this.panelMain.Name = "panelMain";
+			this.panelMain.Size = new System.Drawing.Size(1107, 642);
+			this.panelMain.TabIndex = 3;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1107, 688);
+			this.Controls.Add(this.panelMain);
 			this.Controls.Add(this.statusStripBarbarian);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Form1";
 			this.Text = "Barbarian";
-			this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.statusStripBarbarian.ResumeLayout(false);
@@ -144,9 +154,10 @@
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fileModeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem libraryMaodeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem libraryModeToolStripMenuItem;
 		private System.Windows.Forms.StatusStrip statusStripBarbarian;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+		private System.Windows.Forms.Panel panelMain;
 	}
 }
 

@@ -26,7 +26,7 @@ namespace GF.barbarian.Gui
 			if (!String.IsNullOrEmpty(Program.Arguments.LibraryPathFileName))
 			{
 				SetMode(ProgramMode.File);
-				((CtrlFileMode)activeControl).AddPatchFile(Program.Arguments.LibraryPathFileName);
+				((CtrlModeFile)activeControl).AddPatchFile(Program.Arguments.LibraryPathFileName);
 			}
 		}
 
@@ -38,6 +38,7 @@ namespace GF.barbarian.Gui
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			FrmSettings frm = new FrmSettings();
+			frm.StartPosition = FormStartPosition.CenterParent;
 			frm.ShowDialog(this);
 		}
 
@@ -46,7 +47,7 @@ namespace GF.barbarian.Gui
 			SetMode(ProgramMode.File);
 		}
 
-		private void libraryMaodeToolStripMenuItem_Click(object sender, EventArgs e)
+		private void libraryModeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetMode(ProgramMode.Library);
 		}
@@ -61,9 +62,10 @@ namespace GF.barbarian.Gui
 					Trace.WriteLine("Not used!!");
 					break;
 				case ProgramMode.File:
-					ReplaceCtrl(new CtrlFileMode());
+					ReplaceCtrl(new CtrlModeFile());
 					break;
 				case ProgramMode.Library:
+					ReplaceCtrl(new CtrlModeLibrary());
 					break;
 				default:
 					break;
@@ -74,16 +76,24 @@ namespace GF.barbarian.Gui
 		private void ReplaceCtrl(Control _c)
 		{
 			// remove previous
-			if (this.Controls.Contains(activeControl))
-				this.Controls.Remove(activeControl);
+			if (panelMain.Controls.Contains(activeControl))
+				panelMain.Controls.Remove(activeControl);
 
 			// add the new one
 			activeControl = _c;
 			activeControl.Location = new System.Drawing.Point(177, 51);
-			activeControl.Name = "ctrlFileMode1";
+			activeControl.Name = "ctrlMode";
 			activeControl.Size = new System.Drawing.Size(624, 582);
 			activeControl.TabIndex = 1;
-			this.Controls.Add(activeControl);
+			activeControl.BackColor = Color.DarkGray;
+			activeControl.Dock = DockStyle.Fill;
+			panelMain.Controls.Add(activeControl);
+		}
+
+		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);
+			libraryModeToolStripMenuItem.Checked = (activeControl is CtrlModeLibrary);
 		}
 	}
 }

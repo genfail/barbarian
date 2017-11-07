@@ -49,11 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CtrlFileMode.cs">
+    <Compile Include="CtrlModeLibrary.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlFileMode.Designer.cs">
-      <DependentUpon>CtrlFileMode.cs</DependentUpon>
+    <Compile Include="CtrlModeLibrary.Designer.cs">
+      <DependentUpon>CtrlModeLibrary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CtrlModeFile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CtrlModeFile.Designer.cs">
+      <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </Compile>
     <Compile Include="CtrlPatchFile.cs">
       <SubType>UserControl</SubType>
@@ -76,8 +82,11 @@
     <Compile Include="Global.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CtrlFileMode.resx">
-      <DependentUpon>CtrlFileMode.cs</DependentUpon>
+    <EmbeddedResource Include="CtrlModeLibrary.resx">
+      <DependentUpon>CtrlModeLibrary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CtrlModeFile.resx">
+      <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CtrlPatchFile.resx">
       <DependentUpon>CtrlPatchFile.cs</DependentUpon>
