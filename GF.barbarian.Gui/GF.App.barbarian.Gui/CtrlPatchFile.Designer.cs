@@ -59,6 +59,7 @@
 			this.Controls.Add(this.lblFname);
 			this.Name = "CtrlPatchFile";
 			this.Size = new System.Drawing.Size(391, 81);
+			this.Load += new System.EventHandler(this.CtrlPatchFile_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
