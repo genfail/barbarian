@@ -11,37 +11,62 @@ using System.Windows.Forms;
 
 namespace GF.barbarian.Gui
 {
-	public partial class Form1 : Form
+	public partial class FrmMain : Form
 	{
-		ProgramMode mode = ProgramMode.NotSet;
+		private ProgramMode mode = ProgramMode.File;
+		private Dictionary<ProgramMode,ICtrlMode> modes = null;
+		private ICtrlMode activeControl { get{ return modes[mode];} }
 
-		public Form1()
+		public FrmMain()
 		{
 			InitializeComponent();
-			SetMode(Program.Arguments.Mode);
+			modes = new Dictionary<ProgramMode, ICtrlMode>();
+			modes.Add(ProgramMode.File, new CtrlModeFile());
+			modes.Add(ProgramMode.Library, new CtrlModeLibrary());
+			SetMode(Program.AppSettings.Mode);
 		}
 
-		public void StartWithDataFile(string _dataFileToOpen)
+		private void FrmMain_Load(object sender, EventArgs e)
+		{}
+
+		public void ApplySettings()
 		{
-			if (!String.IsNullOrEmpty(Program.Arguments.LibraryPathFileName))
+			activeControl.ApplySettings();
+		}
+
+		public void SetMode(ProgramMode _mode)
+		{
+			mode = _mode;
+
+			// remove previous
+			List<ICtrlMode> lst = panelMain.FindAllChildrenByType<ICtrlMode>().ToList();
+			foreach (Control c in lst)
 			{
-				SetMode(ProgramMode.File);
-				((CtrlModeFile)activeControl).AddPatchFile(Program.Arguments.LibraryPathFileName);
+				panelMain.Controls.Remove(c);
 			}
+
+			// add the new one
+			((Control)activeControl).Location = panelMain.Location;// new System.Drawing.Point(177, 51);
+			((Control)activeControl).Size = panelMain.Size; // new System.Drawing.Size(624, 582);
+			((Control)activeControl).Name = "ctrlMode" + activeControl.GetType().ToString();
+			((Control)activeControl).TabIndex = 1;
+			((Control)activeControl).BackColor = Color.DarkGray;
+			((Control)activeControl).Dock = DockStyle.Fill;
+			panelMain.Controls.Add((Control)activeControl);
 		}
 
-		private void eXitToolStripMenuItem_Click(object sender, EventArgs e)
+	#region Menu
+		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
-			this.Close();
+			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);
+			libraryModeToolStripMenuItem.Checked = (activeControl is CtrlModeLibrary);
 		}
-
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			FrmSettings frm = new FrmSettings();
 			frm.StartPosition = FormStartPosition.CenterParent;
 			frm.ShowDialog(this);
 		}
-
 		private void fileModeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SetMode(ProgramMode.File);
@@ -51,49 +76,20 @@ namespace GF.barbarian.Gui
 		{
 			SetMode(ProgramMode.Library);
 		}
-
-		public void SetMode(ProgramMode _mode)
+		private void eXitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			mode = _mode;
-			switch (mode)
+			this.Close();
+		}
+		#endregion
+
+		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Properties.Settings.Default.LastProgramMode = (int)mode;
+			foreach (ICtrlMode c in modes.Values)
 			{
-				case ProgramMode.NotSet:
-					activeControl = null;
-					Trace.WriteLine("Not used!!");
-					break;
-				case ProgramMode.File:
-					ReplaceCtrl(new CtrlModeFile());
-					break;
-				case ProgramMode.Library:
-					ReplaceCtrl(new CtrlModeLibrary());
-					break;
-				default:
-					break;
+				c.SaveSettings();
 			}
-		}
-
-		private Control activeControl = null;
-		private void ReplaceCtrl(Control _c)
-		{
-			// remove previous
-			if (panelMain.Controls.Contains(activeControl))
-				panelMain.Controls.Remove(activeControl);
-
-			// add the new one
-			activeControl = _c;
-			activeControl.Location = new System.Drawing.Point(177, 51);
-			activeControl.Name = "ctrlMode";
-			activeControl.Size = new System.Drawing.Size(624, 582);
-			activeControl.TabIndex = 1;
-			activeControl.BackColor = Color.DarkGray;
-			activeControl.Dock = DockStyle.Fill;
-			panelMain.Controls.Add(activeControl);
-		}
-
-		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
-		{
-			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);
-			libraryModeToolStripMenuItem.Checked = (activeControl is CtrlModeLibrary);
+			Properties.Settings.Default.Save();
 		}
 	}
 }

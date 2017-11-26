@@ -69,9 +69,9 @@
 			this.lblSelectedFolder.AutoSize = true;
 			this.lblSelectedFolder.Location = new System.Drawing.Point(48, 16);
 			this.lblSelectedFolder.Name = "lblSelectedFolder";
-			this.lblSelectedFolder.Size = new System.Drawing.Size(160, 13);
+			this.lblSelectedFolder.Size = new System.Drawing.Size(19, 13);
 			this.lblSelectedFolder.TabIndex = 1;
-			this.lblSelectedFolder.Text = "<<Select a folder or drop a file>>";
+			this.lblSelectedFolder.Text = "....";
 			// 
 			// CtrlModeFile
 			// 

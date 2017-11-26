@@ -22,5 +22,41 @@ namespace GF.barbarian.Gui.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSelectedFolder {
+            get {
+                return ((string)(this["LastSelectedFolder"]));
+            }
+            set {
+                this["LastSelectedFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSelectedFile {
+            get {
+                return ((string)(this["LastSelectedFile"]));
+            }
+            set {
+                this["LastSelectedFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int LastProgramMode {
+            get {
+                return ((int)(this["LastProgramMode"]));
+            }
+            set {
+                this["LastProgramMode"] = value;
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ using System.IO;
 
 namespace GF.barbarian.Gui
 {
-	public partial class CtrlModeFile : UserControl
+	public partial class CtrlModeFile : UserControl, ICtrlMode
 	{
 		public CtrlModeFile()
 		{
@@ -21,11 +21,21 @@ namespace GF.barbarian.Gui
 		}
 
 		private void CtrlModeFile_Load(object sender, EventArgs e)
-		{
-			// Check filetype
-			// act on doubleclick as well
+		{}
 
+		public ProgramMode Mode{ get{return ProgramMode.File; }}
+
+		public void ApplySettings()
+		{
+			lblSelectedFolder.Text = Program.AppSettings.FileModeDirectory;
 		}
+
+		public void SaveSettings()
+		{
+			Properties.Settings.Default.LastSelectedFolder = lblSelectedFolder.Text;
+			Properties.Settings.Default.LastSelectedFile = "";
+		}
+
 
 		private void LoadFolder(string _folder, string _selectedFile = null)
 		{

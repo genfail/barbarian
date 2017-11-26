@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace GF.barbarian.Gui
 {
-	public partial class CtrlModeLibrary : UserControl
+	public partial class CtrlModeLibrary : UserControl, ICtrlMode
 	{
 		public CtrlModeLibrary()
 		{
 			InitializeComponent();
+		}
+
+		public ProgramMode Mode{ get{return ProgramMode.Library; }}
+
+		public void ApplySettings()
+		{
+		}
+
+		public void SaveSettings()
+		{
 		}
 
 		public void AddPatchFiles(string[] _fnames)

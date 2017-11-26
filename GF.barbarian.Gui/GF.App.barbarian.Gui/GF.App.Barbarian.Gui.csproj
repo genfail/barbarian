@@ -7,7 +7,7 @@
     <ProjectGuid>{EF3692E0-ACF5-40C3-B9FD-9ECF783DA4E2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>GF.barbarian.Gui</RootNamespace>
-    <AssemblyName>GF.barbarian.Gui</AssemblyName>
+    <AssemblyName>Barbarian</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -49,10 +49,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentCommandLineParser, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentCommandLineParser.1.4.3\lib\net35\FluentCommandLineParser.dll</HintPath>
+    <Reference Include="FluentCommandLineParser, Version=1.5.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentCommandLineParser.1.5.0.7-commands\lib\net35\FluentCommandLineParser.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -98,6 +100,7 @@
     <Compile Include="Global.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleInstanceApp.cs" />
     <EmbeddedResource Include="CtrlModeLibrary.resx">
       <DependentUpon>CtrlModeLibrary.cs</DependentUpon>
     </EmbeddedResource>

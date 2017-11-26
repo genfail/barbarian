@@ -1,6 +1,6 @@
 ﻿namespace GF.barbarian.Gui
 {
-	partial class Form1
+	partial class FrmMain
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,12 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.eXitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fileModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.libraryModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.eXitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
@@ -65,39 +65,39 @@
 			this.fileToolStripMenuItem.Text = "&File";
 			this.fileToolStripMenuItem.DropDownOpening += new System.EventHandler(this.fileToolStripMenuItem_DropDownOpening);
 			// 
-			// eXitToolStripMenuItem
-			// 
-			this.eXitToolStripMenuItem.Name = "eXitToolStripMenuItem";
-			this.eXitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.eXitToolStripMenuItem.Text = "e&Xit";
-			this.eXitToolStripMenuItem.Click += new System.EventHandler(this.eXitToolStripMenuItem_Click);
-			// 
 			// fileModeToolStripMenuItem
 			// 
 			this.fileModeToolStripMenuItem.Name = "fileModeToolStripMenuItem";
-			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.fileModeToolStripMenuItem.Text = "&File Mode";
 			this.fileModeToolStripMenuItem.Click += new System.EventHandler(this.fileModeToolStripMenuItem_Click);
 			// 
 			// libraryModeToolStripMenuItem
 			// 
 			this.libraryModeToolStripMenuItem.Name = "libraryModeToolStripMenuItem";
-			this.libraryModeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.libraryModeToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
 			this.libraryModeToolStripMenuItem.Text = "&Library Mode";
 			this.libraryModeToolStripMenuItem.Click += new System.EventHandler(this.libraryModeToolStripMenuItem_Click);
+			// 
+			// eXitToolStripMenuItem
+			// 
+			this.eXitToolStripMenuItem.Name = "eXitToolStripMenuItem";
+			this.eXitToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.eXitToolStripMenuItem.Text = "e&Xit";
+			this.eXitToolStripMenuItem.Click += new System.EventHandler(this.eXitToolStripMenuItem_Click);
 			// 
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
@@ -125,7 +125,7 @@
 			this.panelMain.Size = new System.Drawing.Size(1107, 642);
 			this.panelMain.TabIndex = 3;
 			// 
-			// Form1
+			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -135,8 +135,10 @@
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
-			this.Name = "Form1";
+			this.Name = "FrmMain";
 			this.Text = "Barbarian";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
+			this.Load += new System.EventHandler(this.FrmMain_Load);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.statusStripBarbarian.ResumeLayout(false);
