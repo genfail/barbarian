@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EF3692E0-ACF5-40C3-B9FD-9ECF783DA4E2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>GF.barbarian.Gui</RootNamespace>
+    <RootNamespace>GF.Barbarian</RootNamespace>
     <AssemblyName>Barbarian</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
