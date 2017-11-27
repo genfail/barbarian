@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GF.barbarian.Gui")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("GF.Barbarian")]
+[assembly: AssemblyDescription("Yet another Barbarian")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GF.barbarian.Gui")]
+[assembly: AssemblyProduct("GF.Barbarian")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

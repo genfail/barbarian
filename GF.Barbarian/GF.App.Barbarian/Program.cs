@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace GF.barbarian.Gui
+namespace GF.Barbarian
 {
 	static class Program
 	{

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GF.barbarian.Gui
+namespace GF.Barbarian
 {
 	public partial class FrmMain : Form
 	{

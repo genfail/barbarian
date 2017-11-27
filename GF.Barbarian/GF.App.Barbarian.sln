@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.App.Barbarian.Gui", "GF.App.Barbarian.Gui\GF.App.Barbarian.Gui.csproj", "{EF3692E0-ACF5-40C3-B9FD-9ECF783DA4E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.App.Barbarian", "GF.App.Barbarian\GF.App.Barbarian.csproj", "{EF3692E0-ACF5-40C3-B9FD-9ECF783DA4E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.Lib.Global", "GF.Lib.Global\GF.Lib.Global.csproj", "{4860AD0F-227E-41A5-9550-7F982DA58A47}"
 EndProject

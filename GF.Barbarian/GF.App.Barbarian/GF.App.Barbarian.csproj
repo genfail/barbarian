@@ -67,53 +67,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CtrlModeLibrary.cs">
+    <Compile Include="Settings.cs" />
+    <Compile Include="UI\CtrlModeLibrary.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlModeLibrary.Designer.cs">
+    <Compile Include="UI\CtrlModeLibrary.Designer.cs">
       <DependentUpon>CtrlModeLibrary.cs</DependentUpon>
     </Compile>
-    <Compile Include="CtrlModeFile.cs">
+    <Compile Include="UI\CtrlModeFile.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlModeFile.Designer.cs">
+    <Compile Include="UI\CtrlModeFile.Designer.cs">
       <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="CtrlPatchFile.cs">
+    <Compile Include="UI\CtrlPatchFile.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlPatchFile.Designer.cs">
+    <Compile Include="UI\CtrlPatchFile.Designer.cs">
       <DependentUpon>CtrlPatchFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmMain.cs">
+    <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmMain.Designer.cs">
+    <Compile Include="UI\FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmSettings.cs">
+    <Compile Include="UI\FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmSettings.Designer.cs">
+    <Compile Include="UI\FrmSettings.Designer.cs">
       <DependentUpon>FrmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleInstanceApp.cs" />
-    <EmbeddedResource Include="CtrlModeLibrary.resx">
+    <EmbeddedResource Include="UI\CtrlModeLibrary.resx">
       <DependentUpon>CtrlModeLibrary.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CtrlModeFile.resx">
+    <EmbeddedResource Include="UI\CtrlModeFile.resx">
       <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CtrlPatchFile.resx">
+    <EmbeddedResource Include="UI\CtrlPatchFile.resx">
       <DependentUpon>CtrlPatchFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmMain.resx">
+    <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmSettings.resx">
+    <EmbeddedResource Include="UI\FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

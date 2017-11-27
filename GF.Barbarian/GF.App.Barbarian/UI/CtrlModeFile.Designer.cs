@@ -1,4 +1,4 @@
-﻿namespace GF.barbarian.Gui
+﻿namespace GF.Barbarian
 {
 	partial class CtrlModeFile
 	{
@@ -37,9 +37,9 @@
 			// flowLayoutPatches
 			// 
 			this.flowLayoutPatches.AllowDrop = true;
-			this.flowLayoutPatches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.flowLayoutPatches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.flowLayoutPatches.BackColor = System.Drawing.SystemColors.ActiveCaption;
 			this.flowLayoutPatches.Location = new System.Drawing.Point(14, 88);
 			this.flowLayoutPatches.Name = "flowLayoutPatches";

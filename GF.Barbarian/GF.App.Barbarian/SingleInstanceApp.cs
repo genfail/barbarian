@@ -6,7 +6,7 @@ using System.Configuration;
 using Fclp;
 using System.Diagnostics;
 
-namespace GF.barbarian.Gui
+namespace GF.Barbarian
 {
 	class SingleInstanceApp : WindowsFormsApplicationBase
 	{
@@ -72,7 +72,15 @@ namespace GF.barbarian.Gui
 			{
 				if (p.Object.Reset)
 				{
-					Properties.Settings.Default.Reset();
+					try
+					{
+						Properties.Settings.Default.Reset();
+
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("Cannot reset settings: " + ex.Message);
+					}
 				}
 
 				if (String.IsNullOrEmpty(p.Object.FileModeDirectory))

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace GF.barbarian.Gui
+namespace GF.Barbarian
 {
 	public partial class CtrlPatchFile : UserControl
 	{

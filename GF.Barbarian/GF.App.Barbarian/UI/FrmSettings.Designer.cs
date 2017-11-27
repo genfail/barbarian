@@ -1,4 +1,4 @@
-﻿namespace GF.barbarian.Gui
+﻿namespace GF.Barbarian
 {
 	partial class FrmSettings
 	{
