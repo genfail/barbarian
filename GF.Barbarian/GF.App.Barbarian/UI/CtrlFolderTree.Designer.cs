@@ -48,7 +48,7 @@
 			this.tvFolders.Location = new System.Drawing.Point(0, 0);
 			this.tvFolders.Name = "tvFolders";
 			this.tvFolders.SelectedImageIndex = 0;
-			this.tvFolders.Size = new System.Drawing.Size(185, 281);
+			this.tvFolders.Size = new System.Drawing.Size(239, 281);
 			this.tvFolders.TabIndex = 0;
 			this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
 			this.tvFolders.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterExpand);
@@ -73,7 +73,7 @@
 			this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lvFiles.Location = new System.Drawing.Point(0, 0);
 			this.lvFiles.Name = "lvFiles";
-			this.lvFiles.Size = new System.Drawing.Size(366, 281);
+			this.lvFiles.Size = new System.Drawing.Size(312, 281);
 			this.lvFiles.TabIndex = 5;
 			this.lvFiles.UseCompatibleStateImageBehavior = false;
 			this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -94,7 +94,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.lvFiles);
 			this.splitContainer1.Size = new System.Drawing.Size(555, 281);
-			this.splitContainer1.SplitterDistance = 185;
+			this.splitContainer1.SplitterDistance = 239;
 			this.splitContainer1.TabIndex = 6;
 			// 
 			// CtrlFolderTree

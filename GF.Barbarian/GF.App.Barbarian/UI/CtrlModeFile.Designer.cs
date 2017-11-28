@@ -67,10 +67,11 @@
 			// 
 			// ctrlFolderTree1
 			// 
+			this.ctrlFolderTree1.Cursor = System.Windows.Forms.Cursors.Default;
 			this.ctrlFolderTree1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ctrlFolderTree1.Location = new System.Drawing.Point(0, 0);
 			this.ctrlFolderTree1.Name = "ctrlFolderTree1";
-			this.ctrlFolderTree1.Size = new System.Drawing.Size(290, 611);
+			this.ctrlFolderTree1.Size = new System.Drawing.Size(411, 611);
 			this.ctrlFolderTree1.TabIndex = 2;
 			// 
 			// splitContainer1
@@ -85,7 +86,7 @@
 			// 
 			this.splitContainer1.Panel1.Controls.Add(this.ctrlFolderTree1);
 			this.splitContainer1.Size = new System.Drawing.Size(872, 611);
-			this.splitContainer1.SplitterDistance = 290;
+			this.splitContainer1.SplitterDistance = 411;
 			this.splitContainer1.TabIndex = 3;
 			// 
 			// CtrlModeFile

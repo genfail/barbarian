@@ -55,7 +55,7 @@ namespace GF.Barbarian.UI
 			//get current selected drive or folder
 			TreeNode nodeCurrent = e.Node;
 
-			//clear all sub-folders
+			//clear all sub-folders (remove dummy)
 			nodeCurrent.Nodes.Clear();
 
 			if (nodeCurrent.SelectedImageIndex == 0)
@@ -68,19 +68,22 @@ namespace GF.Barbarian.UI
 
 		private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
-			foreach (TreeNode tn in e.Node.Nodes)
-			{
-				//tn.Nodes.Clear();
-			}
+			TreeNode nodeCurrent = e.Node;
+			DeleteDummy(nodeCurrent);
+		}
+
+		private void DeleteDummy(TreeNode nodeCurrent)
+		{
+			//clear all sub-folders (remove dummy)
+			TreeNode node = nodeCurrent.Nodes.Cast<TreeNode>().FirstOrDefault(x => x.Name == "DUMMY");
+			if (node != null)
+				nodeCurrent.Nodes.Remove(node);
 		}
 
 		private void tvFolders_AfterExpand(object sender, TreeViewEventArgs e)
 		{
 			TreeNode nodeCurrent = e.Node;
-			if (nodeCurrent == tvFolders.Nodes[0])
-			{
-				return; // root
-			}
+			DeleteDummy(nodeCurrent);
 		}
 
 #region Populate
