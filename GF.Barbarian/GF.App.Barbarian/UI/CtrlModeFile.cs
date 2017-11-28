@@ -56,7 +56,7 @@ namespace GF.Barbarian
 		{
 			CtrlPatchFile p = new CtrlPatchFile();
 			p.FileName = _fname;
-			flowLayoutPatches.Controls.Add(p);
+//			flowLayoutPatches.Controls.Add(p);
 		}
 
 		#region Prepare drag&Drop

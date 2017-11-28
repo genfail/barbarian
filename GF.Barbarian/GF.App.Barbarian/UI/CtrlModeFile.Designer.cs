@@ -28,23 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.flowLayoutPatches = new System.Windows.Forms.FlowLayoutPanel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblSelectedFolder = new System.Windows.Forms.Label();
+			this.ctrlFolderTree1 = new GF.Barbarian.UI.CtrlFolderTree();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// flowLayoutPatches
-			// 
-			this.flowLayoutPatches.AllowDrop = true;
-			this.flowLayoutPatches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPatches.BackColor = System.Drawing.SystemColors.ActiveCaption;
-			this.flowLayoutPatches.Location = new System.Drawing.Point(14, 88);
-			this.flowLayoutPatches.Name = "flowLayoutPatches";
-			this.flowLayoutPatches.Size = new System.Drawing.Size(275, 188);
-			this.flowLayoutPatches.TabIndex = 0;
 			// 
 			// label1
 			// 
@@ -73,28 +65,54 @@
 			this.lblSelectedFolder.TabIndex = 1;
 			this.lblSelectedFolder.Text = "....";
 			// 
+			// ctrlFolderTree1
+			// 
+			this.ctrlFolderTree1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ctrlFolderTree1.Location = new System.Drawing.Point(0, 0);
+			this.ctrlFolderTree1.Name = "ctrlFolderTree1";
+			this.ctrlFolderTree1.Size = new System.Drawing.Size(290, 611);
+			this.ctrlFolderTree1.TabIndex = 2;
+			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.splitContainer1.Location = new System.Drawing.Point(3, 32);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.ctrlFolderTree1);
+			this.splitContainer1.Size = new System.Drawing.Size(872, 611);
+			this.splitContainer1.SplitterDistance = 290;
+			this.splitContainer1.TabIndex = 3;
+			// 
 			// CtrlModeFile
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.lblSelectedFolder);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.flowLayoutPatches);
 			this.Name = "CtrlModeFile";
-			this.Size = new System.Drawing.Size(301, 293);
+			this.Size = new System.Drawing.Size(878, 646);
 			this.Load += new System.EventHandler(this.CtrlModeFile_Load);
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+			this.splitContainer1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPatches;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label lblSelectedFolder;
+		private UI.CtrlFolderTree ctrlFolderTree1;
+		private System.Windows.Forms.SplitContainer splitContainer1;
 	}
 }
