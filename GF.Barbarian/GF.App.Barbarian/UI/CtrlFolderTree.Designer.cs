@@ -52,7 +52,6 @@
 			this.tvFolders.Size = new System.Drawing.Size(239, 296);
 			this.tvFolders.TabIndex = 0;
 			this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
-			this.tvFolders.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterExpand);
 			this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
 			// 
 			// ImageListTreeView
@@ -104,8 +103,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtSelectedFolder.Location = new System.Drawing.Point(3, 3);
 			this.txtSelectedFolder.Name = "txtSelectedFolder";
-			this.txtSelectedFolder.Size = new System.Drawing.Size(555, 20);
+			this.txtSelectedFolder.Size = new System.Drawing.Size(523, 20);
 			this.txtSelectedFolder.TabIndex = 7;
+			this.txtSelectedFolder.Leave += new System.EventHandler(this.txtSelectedFolder_Leave);
 			// 
 			// CtrlFolderTree
 			// 

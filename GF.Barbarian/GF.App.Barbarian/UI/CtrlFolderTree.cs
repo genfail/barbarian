@@ -16,6 +16,7 @@ namespace GF.Barbarian.UI
 {
 	public partial class CtrlFolderTree : UserControl
 	{
+		private RootTreeNode root = null;
 		public const int idxFolderOther = 2;
 		public const int idxFolderSelected = 3;
 		public const int idxFolderForbidden = 9;
@@ -24,6 +25,20 @@ namespace GF.Barbarian.UI
 		public CtrlFolderTree()
 		{
 			InitializeComponent();
+
+			BaseTreeNode r1 = new BaseTreeNode("r1");
+			BaseTreeNode r2 = new BaseTreeNode("r2");
+			BaseTreeNode r3 = new BaseTreeNode("r3");
+			tvFolders.Nodes.Add(r1);
+			r1.Nodes.Add(r2);
+			r2.Nodes.Add(r3);
+			string s1 = r3.FullPath;
+
+			r1.Name = "n1";
+			r2.Name = "n2";
+			string s2 = r3.FullPath;
+
+			Debug.WriteLine("----");
 		}
 
 		private void CtrlFolderTree_Load(object sender, EventArgs e)
@@ -34,6 +49,25 @@ namespace GF.Barbarian.UI
 			this.ImageListTreeView.Images.Add(Properties.Resources.Dummy);
 			this.ImageListTreeView.Images.SetKeyName(idxFolderDummy, "");
 			PopulateTreeDriveList();
+		}
+
+		public void SetFolder(string suggested)
+		{
+			TreeNodeCollection someNodes = root.Nodes;
+			string[] parts = suggested.Split(new char[] {'\\'});
+			for (int i = 0; i < parts.Length; i++)
+			{
+				parts[i] = parts[i].Replace(":", ":\\");
+
+				foreach (BaseTreeNode node in someNodes)
+				{
+					Debug.WriteLine("Folder  name: [" + node.Name + "] txt: [" + node.Text + "]");
+				}
+
+				TreeNode[] treeNodes = someNodes.Find(parts[i], false);
+
+			}
+
 		}
 
 		protected void InitListView()
@@ -70,10 +104,6 @@ namespace GF.Barbarian.UI
 			AddHiddenChidrenForExpandBox(e.Node);
 		}
 
-		private void tvFolders_AfterExpand(object sender, TreeViewEventArgs e)
-		{
-		}
-
 #region Populate
 		private void PopulateTreeDriveList()
 		{
@@ -90,7 +120,7 @@ namespace GF.Barbarian.UI
 			this.Cursor = Cursors.WaitCursor;
 			//clear TreeView
 			tvFolders.Nodes.Clear();
-			RootTreeNode root = new RootTreeNode("My Computer", 0, 0);
+			root = new RootTreeNode("My Computer", 0, 0);
 			tvFolders.Nodes.Add(root);
 
 			//set node collection
@@ -126,7 +156,7 @@ namespace GF.Barbarian.UI
 				nodeCollection.Add(nodeTreeNode);
 				RootAddHiddenChidrenForExpandBox(nodeTreeNode);
 			}
-
+			// preset, expand
 			root.Expand();
 			if (root.Nodes.Count > 0)
 			{
@@ -137,6 +167,7 @@ namespace GF.Barbarian.UI
 			this.Cursor = Cursors.Default;
 		}
 
+/*
 		protected void xxPopulateTreeDirectory(BaseTreeNode nodeCurrent)
 		{
 			BaseTreeNode nodeDir;
@@ -187,6 +218,7 @@ namespace GF.Barbarian.UI
 				}
 			}
 		}
+*/
 
 		private void RootAddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent)
 		{
@@ -200,11 +232,10 @@ namespace GF.Barbarian.UI
 					//loop throught all directories
 					foreach (string stringDir in dirs)
 					{
-						string stringFullPath = stringDir;
-						string stringPathName = GetLastFolder(stringFullPath);
+						string folder = GetLastFolder(stringDir);
 
 						//create node for directories
-						FolderTreeNode nodeDir = new FolderTreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
+						FolderTreeNode nodeDir = new FolderTreeNode(folder, idxFolderOther, idxFolderSelected);
 						nodeCurrent.Nodes.Add(nodeDir);
 					}
 				}
@@ -309,7 +340,12 @@ namespace GF.Barbarian.UI
 			ManagementObjectCollection queryCollection = query.Get();
 			return queryCollection;
 		}
-#endregion
+		#endregion
+
+		private void txtSelectedFolder_Leave(object sender, EventArgs e)
+		{
+			SetFolder(txtSelectedFolder.Text);
+		}
 	}
 
 	public class BaseTreeNode : TreeNode
@@ -319,30 +355,44 @@ namespace GF.Barbarian.UI
 
 		public BaseTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
 		{}
-		public string Path => base.FullPath.Replace("My Computer\\", "");
+
+		// remove roots My Computer and also the backslash in the drive letter
+		public string Path => base.FullPath.Replace("My Computer\\", "").Replace("\\\\","\\");
 	}
 	
 	public class RootTreeNode : BaseTreeNode
 	{
-		public RootTreeNode(string text):base(text)
-		{}
+		public RootTreeNode(string text) : base(text)
+		{
+			Name = text;
+		}
 		public RootTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{}
+		{
+			Name = text;
+		}
 	}
 
 	public class DriveTreeNode : BaseTreeNode
 	{
 		public DriveTreeNode(string text) : base(text)
-		{}
+		{
+			Name = text;
+		}
 		public DriveTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{}
+		{
+			Name = text;
+		}
 	}
 
 	public class FolderTreeNode : BaseTreeNode
 	{
 		public FolderTreeNode(string text):base(text)
-		{}
+		{
+			Name = text;
+		}
 		public FolderTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{}
+		{
+			Name = text;
+		}
 	}
 }
