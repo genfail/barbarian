@@ -28,6 +28,7 @@ namespace GF.Barbarian.UI
 
 		private void CtrlFolderTree_Load(object sender, EventArgs e)
 		{
+			// Add some exta images to the system imagelist
 			this.ImageListTreeView.Images.Add(Properties.Resources.Forbidden);
 			this.ImageListTreeView.Images.SetKeyName(idxFolderForbidden, "");
 			this.ImageListTreeView.Images.Add(Properties.Resources.Dummy);
@@ -52,38 +53,23 @@ namespace GF.Barbarian.UI
 			//Populate folders and files when a folder is selected
 			this.Cursor = Cursors.WaitCursor;
 
-			//get current selected drive or folder
 			TreeNode nodeCurrent = e.Node;
-
-			//clear all sub-folders (remove dummy)
-			nodeCurrent.Nodes.Clear();
-
 			if (nodeCurrent.SelectedImageIndex == 0)
 				PopulateTreeDriveList();//Selected My Computer - repopulate drive list
 			else
-				PopulateTreeDirectory(nodeCurrent);  //populate sub-folders and folder files
-
+				AddHiddenChidrenForExpandBox(nodeCurrent);
+			
+			PopulateListFiles(nodeCurrent);
 			this.Cursor = Cursors.Default;
 		}
 
 		private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
-			TreeNode nodeCurrent = e.Node;
-			DeleteDummy(nodeCurrent);
-		}
-
-		private void DeleteDummy(TreeNode nodeCurrent)
-		{
-			//clear all sub-folders (remove dummy)
-			TreeNode node = nodeCurrent.Nodes.Cast<TreeNode>().FirstOrDefault(x => x.Name == "DUMMY");
-			if (node != null)
-				nodeCurrent.Nodes.Remove(node);
+			AddHiddenChidrenForExpandBox(e.Node);
 		}
 
 		private void tvFolders_AfterExpand(object sender, TreeViewEventArgs e)
 		{
-			TreeNode nodeCurrent = e.Node;
-			DeleteDummy(nodeCurrent);
 		}
 
 #region Populate
@@ -136,14 +122,15 @@ namespace GF.Barbarian.UI
 				}
 				nodeTreeNode = new TreeNode(mo["Name"].ToString() + "\\", imageIndex, selectIndex);//create new drive node
 				nodeCollection.Add(nodeTreeNode);
+				RootAddHiddenChidrenForExpandBox(nodeTreeNode);
 			}
 
-			root.ExpandAll();
+			root.Expand();
 			InitListView();
 			this.Cursor = Cursors.Default;
 		}
 
-		protected void PopulateTreeDirectory(TreeNode nodeCurrent)
+		protected void xxPopulateTreeDirectory(TreeNode nodeCurrent)
 		{
 			TreeNode nodeDir;
 			if (nodeCurrent.SelectedImageIndex != 0)
@@ -175,7 +162,7 @@ namespace GF.Barbarian.UI
 							nodeDir = new TreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
 							nodeCurrent.Nodes.Add(nodeDir);
 
-							AddDummy(nodeDir);
+							AddHiddenChidrenForExpandBox(nodeDir);
 						}
 					}
 				}
@@ -194,18 +181,38 @@ namespace GF.Barbarian.UI
 			}
 		}
 
-		private void AddDummy(TreeNode nodeCurrent)
+		private void RootAddHiddenChidrenForExpandBox(TreeNode nodeCurrent)
 		{
 			try
 			{
+				nodeCurrent.Nodes.Clear();
 				// add placeholders
 				string[] dirs = Directory.GetDirectories(getFullPath(nodeCurrent.FullPath));
 				if (dirs?.Length > 0)
-					nodeCurrent.Nodes.Add(null, "DUMMY", idxFolderDummy, idxFolderDummy);
+				{
+					//loop throught all directories
+					foreach (string stringDir in dirs)
+					{
+						string stringFullPath = stringDir;
+						string stringPathName = GetPathName(stringFullPath);
+
+						//create node for directories
+						TreeNode nodeDir = new TreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
+						nodeCurrent.Nodes.Add(nodeDir);
+					}
+				}
 			}
 			catch (Exception)
 			{
 				nodeCurrent.ImageIndex = idxFolderForbidden;
+			}
+		}
+
+		private void AddHiddenChidrenForExpandBox(TreeNode nodeCurrent)
+		{
+			foreach(TreeNode tn in nodeCurrent.Nodes)
+			{
+				RootAddHiddenChidrenForExpandBox(tn);
 			}
 		}
 
@@ -288,7 +295,7 @@ namespace GF.Barbarian.UI
 			int _maxIndex = stringSplit.Length;
 			return stringSplit[_maxIndex - 1];
 		}
-		protected string getFullPath(string stringPath)
+		protected string xgetFullPath(string stringPath)
 		{
 			//Get Full path
 			string stringParse = "";
@@ -297,7 +304,6 @@ namespace GF.Barbarian.UI
 
 			return stringParse;
 		}
-
 		protected ManagementObjectCollection getDrives()
 		{
 			//get drive collection
@@ -305,7 +311,19 @@ namespace GF.Barbarian.UI
 			ManagementObjectCollection queryCollection = query.Get();
 			return queryCollection;
 		}
+#endregion
+	}
 
-		#endregion
+
+	public class FileTreeNode : TreeNode
+	{
+		public new string FullPath
+		{
+			get
+			{ 
+				//remove My Computer from path.
+				return base.FullPath.Replace("My Computer\\", "");
+			}
+		}
 	}
 }
