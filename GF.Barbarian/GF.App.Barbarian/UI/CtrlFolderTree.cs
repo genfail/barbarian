@@ -75,7 +75,7 @@ namespace GF.Barbarian.UI
 #region Populate
 		private void PopulateTreeDriveList()
 		{
-			TreeNode nodeTreeNode;
+			DriveTreeNode nodeTreeNode;
 			int imageIndex = 0;
 			int selectIndex = 0;
 
@@ -88,7 +88,7 @@ namespace GF.Barbarian.UI
 			this.Cursor = Cursors.WaitCursor;
 			//clear TreeView
 			tvFolders.Nodes.Clear();
-			TreeNode root = new TreeNode("My Computer", 0, 0);
+			RootTreeNode root = new RootTreeNode("My Computer", 0, 0);
 			tvFolders.Nodes.Add(root);
 
 			//set node collection
@@ -314,6 +314,29 @@ namespace GF.Barbarian.UI
 #endregion
 	}
 
+	public class RootTreeNode : TreeNode
+	{
+		public new string FullPath
+		{
+			get
+			{ 
+				//remove My Computer from path.
+				return base.FullPath.Replace("My Computer\\", "");
+			}
+		}
+	}
+
+	public class DriveTreeNode : TreeNode
+	{
+		public new string FullPath
+		{
+			get
+			{ 
+				//remove My Computer from path.
+				return base.FullPath.Replace("My Computer\\", "");
+			}
+		}
+	}
 
 	public class FileTreeNode : TreeNode
 	{
