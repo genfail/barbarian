@@ -33,7 +33,6 @@ namespace GF.Barbarian.UI
 			this.ImageListTreeView.Images.SetKeyName(idxFolderForbidden, "");
 			this.ImageListTreeView.Images.Add(Properties.Resources.Dummy);
 			this.ImageListTreeView.Images.SetKeyName(idxFolderDummy, "");
-
 			PopulateTreeDriveList();
 		}
 
@@ -53,13 +52,16 @@ namespace GF.Barbarian.UI
 			//Populate folders and files when a folder is selected
 			this.Cursor = Cursors.WaitCursor;
 
-			TreeNode nodeCurrent = e.Node;
+			BaseTreeNode nodeCurrent = (BaseTreeNode)e.Node;
 			if (nodeCurrent.SelectedImageIndex == 0)
 				PopulateTreeDriveList();//Selected My Computer - repopulate drive list
 			else
 				AddHiddenChidrenForExpandBox(nodeCurrent);
 			
 			PopulateListFiles(nodeCurrent);
+			if (nodeCurrent.Parent != null)
+				txtSelectedFolder.Text = nodeCurrent.Path;
+
 			this.Cursor = Cursors.Default;
 		}
 
@@ -75,7 +77,7 @@ namespace GF.Barbarian.UI
 #region Populate
 		private void PopulateTreeDriveList()
 		{
-			DriveTreeNode nodeTreeNode;
+			BaseTreeNode nodeTreeNode;
 			int imageIndex = 0;
 			int selectIndex = 0;
 
@@ -120,26 +122,31 @@ namespace GF.Barbarian.UI
 						selectIndex = 3;
 						break;
 				}
-				nodeTreeNode = new TreeNode(mo["Name"].ToString() + "\\", imageIndex, selectIndex);//create new drive node
+				nodeTreeNode = new DriveTreeNode(mo["Name"].ToString() + "\\", imageIndex, selectIndex);//create new drive node
 				nodeCollection.Add(nodeTreeNode);
 				RootAddHiddenChidrenForExpandBox(nodeTreeNode);
 			}
 
 			root.Expand();
+			if (root.Nodes.Count > 0)
+			{
+				tvFolders.SelectedNode = root.Nodes[0];
+				tvFolders.SelectedNode.Expand();
+			}
 			InitListView();
 			this.Cursor = Cursors.Default;
 		}
 
-		protected void xxPopulateTreeDirectory(TreeNode nodeCurrent)
+		protected void xxPopulateTreeDirectory(BaseTreeNode nodeCurrent)
 		{
-			TreeNode nodeDir;
+			BaseTreeNode nodeDir;
 			if (nodeCurrent.SelectedImageIndex != 0)
 			{
 				//populate treeview with folders
 				try
 				{
 					//check path
-					if (Directory.Exists(getFullPath(nodeCurrent.FullPath)) == false)
+					if (Directory.Exists(nodeCurrent.Path) == false)
 					{
 						MessageBox.Show("Directory or path " + nodeCurrent.ToString() + " does not exist.");
 					}
@@ -148,7 +155,7 @@ namespace GF.Barbarian.UI
 						//populate files
 						PopulateListFiles(nodeCurrent);
 
-						string[] stringDirectories = Directory.GetDirectories(getFullPath(nodeCurrent.FullPath));
+						string[] stringDirectories = Directory.GetDirectories(nodeCurrent.Path);
 						string stringFullPath = "";
 						string stringPathName = "";
 
@@ -156,10 +163,10 @@ namespace GF.Barbarian.UI
 						foreach (string stringDir in stringDirectories)
 						{
 							stringFullPath = stringDir;
-							stringPathName = GetPathName(stringFullPath);
+							stringPathName = GetLastFolder(stringFullPath);
 
 							//create node for directories
-							nodeDir = new TreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
+							nodeDir = new FolderTreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
 							nodeCurrent.Nodes.Add(nodeDir);
 
 							AddHiddenChidrenForExpandBox(nodeDir);
@@ -181,23 +188,23 @@ namespace GF.Barbarian.UI
 			}
 		}
 
-		private void RootAddHiddenChidrenForExpandBox(TreeNode nodeCurrent)
+		private void RootAddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent)
 		{
 			try
 			{
 				nodeCurrent.Nodes.Clear();
 				// add placeholders
-				string[] dirs = Directory.GetDirectories(getFullPath(nodeCurrent.FullPath));
+				string[] dirs = Directory.GetDirectories(nodeCurrent.Path);
 				if (dirs?.Length > 0)
 				{
 					//loop throught all directories
 					foreach (string stringDir in dirs)
 					{
 						string stringFullPath = stringDir;
-						string stringPathName = GetPathName(stringFullPath);
+						string stringPathName = GetLastFolder(stringFullPath);
 
 						//create node for directories
-						TreeNode nodeDir = new TreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
+						FolderTreeNode nodeDir = new FolderTreeNode(stringPathName.ToString(), idxFolderOther, idxFolderSelected);
 						nodeCurrent.Nodes.Add(nodeDir);
 					}
 				}
@@ -210,13 +217,13 @@ namespace GF.Barbarian.UI
 
 		private void AddHiddenChidrenForExpandBox(TreeNode nodeCurrent)
 		{
-			foreach(TreeNode tn in nodeCurrent.Nodes)
+			foreach(BaseTreeNode tn in nodeCurrent.Nodes)
 			{
 				RootAddHiddenChidrenForExpandBox(tn);
 			}
 		}
 
-		protected void PopulateListFiles(TreeNode nodeCurrent)
+		protected void PopulateListFiles(BaseTreeNode nodeCurrent)
 		{
 			//Populate listview with files
 			string[] lvData = new string[4];
@@ -227,7 +234,7 @@ namespace GF.Barbarian.UI
 			if (nodeCurrent.SelectedImageIndex != 0)
 			{
 				//check path
-				if (Directory.Exists((string)getFullPath(nodeCurrent.FullPath)) == false)
+				if (Directory.Exists(nodeCurrent.Path) == false)
 				{
 					MessageBox.Show("Directory or path " + nodeCurrent.ToString() + " does not exist.");
 				}
@@ -235,7 +242,7 @@ namespace GF.Barbarian.UI
 				{
 					try
 					{
-						string[] stringFiles = Directory.GetFiles(getFullPath(nodeCurrent.FullPath));
+						string[] stringFiles = Directory.GetFiles(nodeCurrent.Path);
 						string stringFileName = "";
 						DateTime dtCreateDate, dtModifyDate;
 						Int64 lFileSize = 0;
@@ -250,7 +257,7 @@ namespace GF.Barbarian.UI
 							dtModifyDate = objFileSize.LastWriteTime; //GetLastWriteTime(stringFileName);
 
 							//create listview data
-							lvData[0] = GetPathName(stringFileName);
+							lvData[0] = GetLastFolder(stringFileName);
 							lvData[1] = GF.Lib.Global.Helpers.FormatSize(lFileSize);
 
 							//check if file is in local current day light saving time
@@ -288,21 +295,12 @@ namespace GF.Barbarian.UI
 #endregion
 
 #region Helpers
-		protected string GetPathName(string stringPath)
+		protected string GetLastFolder(string stringPath)
 		{
 			//Get Name of folder
 			string[] stringSplit = stringPath.Split('\\');
 			int _maxIndex = stringSplit.Length;
 			return stringSplit[_maxIndex - 1];
-		}
-		protected string xgetFullPath(string stringPath)
-		{
-			//Get Full path
-			string stringParse = "";
-			//remove My Computer from path.
-			stringParse = stringPath.Replace("My Computer\\", "");
-
-			return stringParse;
 		}
 		protected ManagementObjectCollection getDrives()
 		{
@@ -314,39 +312,37 @@ namespace GF.Barbarian.UI
 #endregion
 	}
 
-	public class RootTreeNode : TreeNode
+	public class BaseTreeNode : TreeNode
 	{
-		public new string FullPath
-		{
-			get
-			{ 
-				//remove My Computer from path.
-				return base.FullPath.Replace("My Computer\\", "");
-			}
-		}
+		public BaseTreeNode(string text) : base(text)
+		{}
+
+		public BaseTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
+		{}
+		public string Path => base.FullPath.Replace("My Computer\\", "");
+	}
+	
+	public class RootTreeNode : BaseTreeNode
+	{
+		public RootTreeNode(string text):base(text)
+		{}
+		public RootTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
+		{}
 	}
 
-	public class DriveTreeNode : TreeNode
+	public class DriveTreeNode : BaseTreeNode
 	{
-		public new string FullPath
-		{
-			get
-			{ 
-				//remove My Computer from path.
-				return base.FullPath.Replace("My Computer\\", "");
-			}
-		}
+		public DriveTreeNode(string text) : base(text)
+		{}
+		public DriveTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
+		{}
 	}
 
-	public class FileTreeNode : TreeNode
+	public class FolderTreeNode : BaseTreeNode
 	{
-		public new string FullPath
-		{
-			get
-			{ 
-				//remove My Computer from path.
-				return base.FullPath.Replace("My Computer\\", "");
-			}
-		}
+		public FolderTreeNode(string text):base(text)
+		{}
+		public FolderTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
+		{}
 	}
 }
