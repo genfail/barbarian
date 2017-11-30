@@ -17,15 +17,18 @@ namespace GF.Barbarian.UI
 	public partial class CtrlFolderTree : UserControl
 	{
 		private RootTreeNode root = null;
+/*
 		public const int idxFolderOther = 2;
 		public const int idxFolderSelected = 3;
 		public const int idxFolderForbidden = 9;
 		public const int idxFolderDummy = 10;
+*/
 
 		public CtrlFolderTree()
 		{
 			InitializeComponent();
 
+/*
 			BaseTreeNode r1 = new BaseTreeNode("r1");
 			BaseTreeNode r2 = new BaseTreeNode("r2");
 			BaseTreeNode r3 = new BaseTreeNode("r3");
@@ -39,35 +42,37 @@ namespace GF.Barbarian.UI
 			string s2 = r3.FullPath;
 
 			Debug.WriteLine("----");
+*/
 		}
 
 		private void CtrlFolderTree_Load(object sender, EventArgs e)
 		{
 			// Add some exta images to the system imagelist
 			this.ImageListTreeView.Images.Add(Properties.Resources.Forbidden);
-			this.ImageListTreeView.Images.SetKeyName(idxFolderForbidden, "");
+			this.ImageListTreeView.Images.SetKeyName(BaseTreeNode.IdxFolderForbidden, "");
 			this.ImageListTreeView.Images.Add(Properties.Resources.Dummy);
-			this.ImageListTreeView.Images.SetKeyName(idxFolderDummy, "");
+			this.ImageListTreeView.Images.SetKeyName(BaseTreeNode.IdxFolderDummy, "");
 			PopulateTreeDriveList();
 		}
 
 		public void SetFolder(string suggested)
 		{
-			TreeNodeCollection someNodes = root.Nodes;
+			BaseTreeNode someNode = root;
 			string[] parts = suggested.Split(new char[] {'\\'});
 			for (int i = 0; i < parts.Length; i++)
 			{
-				parts[i] = parts[i].Replace(":", ":\\");
-
-				foreach (BaseTreeNode node in someNodes)
+				parts[i] = parts[i].Replace(":", ":\\"); // Drive is not 'c:' but 'c:\\'
+/*
+				foreach (BaseTreeNode node in someNode.Nodes)
 				{
 					Debug.WriteLine("Folder  name: [" + node.Name + "] txt: [" + node.Text + "]");
 				}
-
-				TreeNode[] treeNodes = someNodes.Find(parts[i], false);
-
+*/
+				TreeNode[] foundNodes = someNode.Nodes.Find(parts[i], false);
+				if (foundNodes?.Length > 0) // should return 1 item, not possible to have 2 folders with same name
+					someNode = (BaseTreeNode)foundNodes[0];
 			}
-
+			someNode.ExpandAll();
 		}
 
 		protected void InitListView()
@@ -90,7 +95,7 @@ namespace GF.Barbarian.UI
 			if (nodeCurrent.SelectedImageIndex == 0)
 				PopulateTreeDriveList();//Selected My Computer - repopulate drive list
 			else
-				AddHiddenChidrenForExpandBox(nodeCurrent);
+				AddHiddenChidrenForExpandBox(nodeCurrent, true);
 			
 			PopulateListFiles(nodeCurrent);
 			if (nodeCurrent.Parent != null)
@@ -101,26 +106,19 @@ namespace GF.Barbarian.UI
 
 		private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
 		{
-			AddHiddenChidrenForExpandBox(e.Node);
+			BaseTreeNode nodeCurrent = (BaseTreeNode)e.Node;
+			AddHiddenChidrenForExpandBox(nodeCurrent);
 		}
 
 #region Populate
 		private void PopulateTreeDriveList()
 		{
 			BaseTreeNode nodeTreeNode;
-			int imageIndex = 0;
-			int selectIndex = 0;
-
-			const int Removable = 2;
-			const int LocalDisk = 3;
-			const int Network = 4;
-			const int CD = 5;
-			//const int RAMDrive = 6;
 
 			this.Cursor = Cursors.WaitCursor;
 			//clear TreeView
 			tvFolders.Nodes.Clear();
-			root = new RootTreeNode("My Computer", 0, 0);
+			root = new RootTreeNode("My Computer");
 			tvFolders.Nodes.Add(root);
 
 			//set node collection
@@ -129,30 +127,7 @@ namespace GF.Barbarian.UI
 			ManagementObjectCollection queryCollection = getDrives();
 			foreach (ManagementObject mo in queryCollection)
 			{
-				switch (int.Parse(mo["DriveType"].ToString()))
-				{
-					case Removable:         //removable drives
-						imageIndex = 5;
-						selectIndex = 5;
-						break;
-					case LocalDisk:         //Local drives
-						imageIndex = 6;
-						selectIndex = 6;
-						break;
-					case CD:                //CD rom drives
-						imageIndex = 7;
-						selectIndex = 7;
-						break;
-					case Network:           //Network drives
-						imageIndex = 8;
-						selectIndex = 8;
-						break;
-					default:                //defalut to folder
-						imageIndex = 2;
-						selectIndex = 3;
-						break;
-				}
-				nodeTreeNode = new DriveTreeNode(mo["Name"].ToString() + "\\", imageIndex, selectIndex);//create new drive node
+				nodeTreeNode = new DriveTreeNode(mo["Name"].ToString(), int.Parse(mo["DriveType"].ToString()) );
 				nodeCollection.Add(nodeTreeNode);
 				RootAddHiddenChidrenForExpandBox(nodeTreeNode);
 			}
@@ -220,37 +195,44 @@ namespace GF.Barbarian.UI
 		}
 */
 
-		private void RootAddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent)
+		private void RootAddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent, bool forcePrefetch = false)
 		{
 			try
 			{
 				nodeCurrent.Nodes.Clear();
-				// add placeholders
-				string[] dirs = Directory.GetDirectories(nodeCurrent.Path);
-				if (dirs?.Length > 0)
-				{
-					//loop throught all directories
-					foreach (string stringDir in dirs)
-					{
-						string folder = GetLastFolder(stringDir);
 
-						//create node for directories
-						FolderTreeNode nodeDir = new FolderTreeNode(folder, idxFolderOther, idxFolderSelected);
-						nodeCurrent.Nodes.Add(nodeDir);
+				if (nodeCurrent.WantPrefetchFolders || forcePrefetch)
+				{
+					// add placeholders
+					string[] dirs = Directory.GetDirectories(nodeCurrent.Path);
+					if (dirs?.Length > 0)
+					{
+						//loop throught all directories
+						foreach (string stringDir in dirs)
+						{
+							string folder = GetLastFolder(stringDir);
+
+							//create node for directories
+							FolderTreeNode nodeDir = new FolderTreeNode(folder);
+							nodeCurrent.Nodes.Add(nodeDir);
+						}
 					}
 				}
 			}
 			catch (Exception)
 			{
-				nodeCurrent.ImageIndex = idxFolderForbidden;
+				nodeCurrent.SetForbidden();
 			}
 		}
 
-		private void AddHiddenChidrenForExpandBox(TreeNode nodeCurrent)
+		private void AddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent, bool forcePrefetch = false)
 		{
-			foreach(BaseTreeNode tn in nodeCurrent.Nodes)
+			if (forcePrefetch)
+				RootAddHiddenChidrenForExpandBox(nodeCurrent, forcePrefetch);
+
+			foreach (BaseTreeNode tn in nodeCurrent.Nodes)
 			{
-				RootAddHiddenChidrenForExpandBox(tn);
+				RootAddHiddenChidrenForExpandBox(tn, forcePrefetch);
 			}
 		}
 
@@ -345,54 +327,6 @@ namespace GF.Barbarian.UI
 		private void txtSelectedFolder_Leave(object sender, EventArgs e)
 		{
 			SetFolder(txtSelectedFolder.Text);
-		}
-	}
-
-	public class BaseTreeNode : TreeNode
-	{
-		public BaseTreeNode(string text) : base(text)
-		{}
-
-		public BaseTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{}
-
-		// remove roots My Computer and also the backslash in the drive letter
-		public string Path => base.FullPath.Replace("My Computer\\", "").Replace("\\\\","\\");
-	}
-	
-	public class RootTreeNode : BaseTreeNode
-	{
-		public RootTreeNode(string text) : base(text)
-		{
-			Name = text;
-		}
-		public RootTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{
-			Name = text;
-		}
-	}
-
-	public class DriveTreeNode : BaseTreeNode
-	{
-		public DriveTreeNode(string text) : base(text)
-		{
-			Name = text;
-		}
-		public DriveTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{
-			Name = text;
-		}
-	}
-
-	public class FolderTreeNode : BaseTreeNode
-	{
-		public FolderTreeNode(string text):base(text)
-		{
-			Name = text;
-		}
-		public FolderTreeNode(string text, int imageIndex, int selectedImageIndex) : base(text, imageIndex, selectedImageIndex)
-		{
-			Name = text;
 		}
 	}
 }
