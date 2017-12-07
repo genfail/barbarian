@@ -18,6 +18,16 @@ namespace GF.Barbarian.UI
 	{
 		private RootTreeNode myComputer = null;
 
+		public string SelectedPath
+		{
+			get { return txtSelectedFolder.Text; }
+			set
+			{
+				txtSelectedFolder.Text = value;
+				SetFolder(txtSelectedFolder.Text);
+			}
+		}
+
 		public CtrlFolderTree()
 		{
 			InitializeComponent();
@@ -33,6 +43,8 @@ namespace GF.Barbarian.UI
 
 			InitListView();
 			CreateRoot();
+			SetFolder(Program.AppSettings.FileModeDirectory);
+			SetFile(Program.AppSettings.FileModeFileName);
 		}
 
 		protected void InitListView()
@@ -103,6 +115,8 @@ namespace GF.Barbarian.UI
 		// see if we can locate the correct node
 		public void SetFolder(string suggested)
 		{
+			if (myComputer == null)
+				return;
 			BaseTreeNode someNode = myComputer;
 			string[] parts = suggested.Split(new char[] {'\\'},StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < parts.Length; i++)
@@ -113,12 +127,24 @@ namespace GF.Barbarian.UI
 				if (foundNodes?.Length > 0) // should return 1 item, not possible to have 2 folders with same name
 				{
 					someNode = (BaseTreeNode) foundNodes[0]; // first found
-				// node might not yet been browsed. OnSelect will populate children
+					// node might not yet been browsed. OnSelect will populate children
 					tvFolders.SelectedNode = someNode;
-
 					someNode.Expand();
 				}
 			}
+		}
+
+		public void SetFile(string suggested)
+		{
+			foreach (ListViewItem lvi in lvFiles.Items)
+			{
+				if (lvi.Text == suggested)
+				{
+					lvi.Selected = true;
+					break;
+				}
+			}
+			lvFiles.Select();// so we see what's selected
 		}
 
 		private bool RootAddHiddenChidrenForExpandBox(BaseTreeNode nodeCurrent, bool forcePrefetch = false)
@@ -277,6 +303,12 @@ namespace GF.Barbarian.UI
 		private void cmbFileFilter_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			PopulateListFiles();
+		}
+
+		private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lvFiles.SelectedItems?.Count > 0)
+			Debug.WriteLine("Selected: " + lvFiles.SelectedItems[0]);
 		}
 	}
 }

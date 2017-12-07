@@ -20,12 +20,12 @@ namespace GF.Barbarian
 
 		public void ApplySettings()
 		{
-			lblSelectedFolder.Text = Program.AppSettings.FileModeDirectory;
+			ctrlFolderTree1.SelectedPath = Program.AppSettings.FileModeDirectory;
 		}
 
 		public void SaveSettings()
 		{
-			Properties.Settings.Default.LastSelectedFolder = lblSelectedFolder.Text;
+			Properties.Settings.Default.LastSelectedFolder = ctrlFolderTree1.SelectedPath;
 			Properties.Settings.Default.LastSelectedFile = "";
 		}
 
@@ -86,7 +86,7 @@ namespace GF.Barbarian
 
 			if (files != null && files.Length > 0)
 			{
-				lblSelectedFolder.Text = Path.GetDirectoryName(files[0]);
+				ctrlFolderTree1.SelectedPath = Path.GetDirectoryName(files[0]);
 
 				LoadFolder(Path.GetDirectoryName(files[0]), files[0]);
 			}

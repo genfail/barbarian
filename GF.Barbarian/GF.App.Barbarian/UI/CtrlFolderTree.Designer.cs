@@ -34,9 +34,9 @@
 			this.ImageListTreeView = new System.Windows.Forms.ImageList(this.components);
 			this.lvFiles = new System.Windows.Forms.ListView();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.txtSelectedFolder = new System.Windows.Forms.TextBox();
-			this.cmbFileFilter = new System.Windows.Forms.ComboBox();
 			this.lblFileListInfo = new System.Windows.Forms.Label();
+			this.cmbFileFilter = new System.Windows.Forms.ComboBox();
+			this.txtSelectedFolder = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -75,12 +75,16 @@
 			this.lvFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.lvFiles.FullRowSelect = true;
+			this.lvFiles.HideSelection = false;
 			this.lvFiles.Location = new System.Drawing.Point(0, 26);
+			this.lvFiles.MultiSelect = false;
 			this.lvFiles.Name = "lvFiles";
 			this.lvFiles.Size = new System.Drawing.Size(312, 251);
 			this.lvFiles.TabIndex = 5;
 			this.lvFiles.UseCompatibleStateImageBehavior = false;
 			this.lvFiles.View = System.Windows.Forms.View.Details;
+			this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
 			// 
 			// splitContainer1
 			// 
@@ -103,15 +107,15 @@
 			this.splitContainer1.SplitterDistance = 239;
 			this.splitContainer1.TabIndex = 6;
 			// 
-			// txtSelectedFolder
+			// lblFileListInfo
 			// 
-			this.txtSelectedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtSelectedFolder.Location = new System.Drawing.Point(3, 3);
-			this.txtSelectedFolder.Name = "txtSelectedFolder";
-			this.txtSelectedFolder.Size = new System.Drawing.Size(555, 20);
-			this.txtSelectedFolder.TabIndex = 7;
-			this.txtSelectedFolder.Leave += new System.EventHandler(this.txtSelectedFolder_Leave);
+			this.lblFileListInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lblFileListInfo.AutoSize = true;
+			this.lblFileListInfo.Location = new System.Drawing.Point(2, 280);
+			this.lblFileListInfo.Name = "lblFileListInfo";
+			this.lblFileListInfo.Size = new System.Drawing.Size(55, 13);
+			this.lblFileListInfo.TabIndex = 9;
+			this.lblFileListInfo.Text = "file list info";
 			// 
 			// cmbFileFilter
 			// 
@@ -126,15 +130,15 @@
 			this.cmbFileFilter.TabIndex = 8;
 			this.cmbFileFilter.SelectedIndexChanged += new System.EventHandler(this.cmbFileFilter_SelectedIndexChanged);
 			// 
-			// lblFileListInfo
+			// txtSelectedFolder
 			// 
-			this.lblFileListInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblFileListInfo.AutoSize = true;
-			this.lblFileListInfo.Location = new System.Drawing.Point(2, 280);
-			this.lblFileListInfo.Name = "lblFileListInfo";
-			this.lblFileListInfo.Size = new System.Drawing.Size(55, 13);
-			this.lblFileListInfo.TabIndex = 9;
-			this.lblFileListInfo.Text = "file list info";
+			this.txtSelectedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtSelectedFolder.Location = new System.Drawing.Point(3, 3);
+			this.txtSelectedFolder.Name = "txtSelectedFolder";
+			this.txtSelectedFolder.Size = new System.Drawing.Size(555, 20);
+			this.txtSelectedFolder.TabIndex = 7;
+			this.txtSelectedFolder.Leave += new System.EventHandler(this.txtSelectedFolder_Leave);
 			// 
 			// CtrlFolderTree
 			// 
