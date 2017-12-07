@@ -13,6 +13,8 @@ namespace GF.Barbarian.UI
 		// so when we fill a level, we have to retrieve a level deeper as well.
 		// But for network drives we do not pre-read the folders (slow)
 		public bool WantPrefetchFolders { get; protected set; } = false;
+		public bool FetchedFolders { get; set; } = false;
+
 
 		public BaseTreeNode()
 		{}
@@ -24,6 +26,7 @@ namespace GF.Barbarian.UI
 
 		public void SetForbidden()
 		{
+			ImageIndex = IdxFolderForbidden;
 			SelectedImageIndex = IdxFolderForbidden;
 		}
 

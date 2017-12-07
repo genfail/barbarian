@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -50,6 +51,23 @@ namespace GF.Barbarian
 			IEnumerable<Control> controls = control.Controls.Cast<Control>();
 			return controls
 				.OfType<T>()
-				.Concat<T>(controls.SelectMany<Control, T>(ctrl => FindAllChildrenByType<T>(ctrl)));		}
+				.Concat<T>(controls.SelectMany<Control, T>(ctrl => FindAllChildrenByType<T>(ctrl)));		
+		}
+
+		public static string GetLastFolder(string stringPath)
+		{
+			//Get Name of folder
+			string[] stringSplit = stringPath.Split('\\');
+			int _maxIndex = stringSplit.Length;
+			return stringSplit[_maxIndex - 1];
+		}
+
+		public static ManagementObjectCollection GetDrives()
+		{
+			//get drive collection
+			ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT * From Win32_LogicalDisk ");
+			ManagementObjectCollection queryCollection = query.Get();
+			return queryCollection;
+		}
 	}
 }
