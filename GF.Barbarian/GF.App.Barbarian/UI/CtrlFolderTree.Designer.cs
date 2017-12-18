@@ -37,6 +37,7 @@
 			this.lblFileListInfo = new System.Windows.Forms.Label();
 			this.cmbFileFilter = new System.Windows.Forms.ComboBox();
 			this.txtSelectedFolder = new System.Windows.Forms.TextBox();
+			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -51,7 +52,7 @@
 			this.tvFolders.Location = new System.Drawing.Point(0, 0);
 			this.tvFolders.Name = "tvFolders";
 			this.tvFolders.SelectedImageIndex = 0;
-			this.tvFolders.Size = new System.Drawing.Size(239, 296);
+			this.tvFolders.Size = new System.Drawing.Size(87, 116);
 			this.tvFolders.TabIndex = 0;
 			this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
 			this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
@@ -80,7 +81,7 @@
 			this.lvFiles.Location = new System.Drawing.Point(0, 26);
 			this.lvFiles.MultiSelect = false;
 			this.lvFiles.Name = "lvFiles";
-			this.lvFiles.Size = new System.Drawing.Size(312, 251);
+			this.lvFiles.Size = new System.Drawing.Size(113, 71);
 			this.lvFiles.TabIndex = 5;
 			this.lvFiles.UseCompatibleStateImageBehavior = false;
 			this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -103,15 +104,15 @@
 			this.splitContainer1.Panel2.Controls.Add(this.lblFileListInfo);
 			this.splitContainer1.Panel2.Controls.Add(this.cmbFileFilter);
 			this.splitContainer1.Panel2.Controls.Add(this.lvFiles);
-			this.splitContainer1.Size = new System.Drawing.Size(555, 296);
-			this.splitContainer1.SplitterDistance = 239;
+			this.splitContainer1.Size = new System.Drawing.Size(204, 116);
+			this.splitContainer1.SplitterDistance = 87;
 			this.splitContainer1.TabIndex = 6;
 			// 
 			// lblFileListInfo
 			// 
 			this.lblFileListInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblFileListInfo.AutoSize = true;
-			this.lblFileListInfo.Location = new System.Drawing.Point(2, 280);
+			this.lblFileListInfo.Location = new System.Drawing.Point(2, 100);
 			this.lblFileListInfo.Name = "lblFileListInfo";
 			this.lblFileListInfo.Size = new System.Drawing.Size(55, 13);
 			this.lblFileListInfo.TabIndex = 9;
@@ -124,7 +125,7 @@
 			this.cmbFileFilter.Items.AddRange(new object[] {
             "*.*",
             "*.g5l"});
-			this.cmbFileFilter.Location = new System.Drawing.Point(3, 2);
+			this.cmbFileFilter.Location = new System.Drawing.Point(-196, 2);
 			this.cmbFileFilter.Name = "cmbFileFilter";
 			this.cmbFileFilter.Size = new System.Drawing.Size(121, 21);
 			this.cmbFileFilter.TabIndex = 8;
@@ -136,18 +137,26 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtSelectedFolder.Location = new System.Drawing.Point(3, 3);
 			this.txtSelectedFolder.Name = "txtSelectedFolder";
-			this.txtSelectedFolder.Size = new System.Drawing.Size(555, 20);
+			this.txtSelectedFolder.Size = new System.Drawing.Size(779, 20);
 			this.txtSelectedFolder.TabIndex = 7;
 			this.txtSelectedFolder.Leave += new System.EventHandler(this.txtSelectedFolder_Leave);
+			// 
+			// shellTreeView1
+			// 
+			this.shellTreeView1.Location = new System.Drawing.Point(315, 29);
+			this.shellTreeView1.Name = "shellTreeView1";
+			this.shellTreeView1.Size = new System.Drawing.Size(248, 358);
+			this.shellTreeView1.TabIndex = 8;
 			// 
 			// CtrlFolderTree
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.shellTreeView1);
 			this.Controls.Add(this.txtSelectedFolder);
 			this.Controls.Add(this.splitContainer1);
 			this.Name = "CtrlFolderTree";
-			this.Size = new System.Drawing.Size(561, 328);
+			this.Size = new System.Drawing.Size(785, 488);
 			this.Load += new System.EventHandler(this.CtrlFolderTree_Load);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
@@ -168,5 +177,6 @@
 		private System.Windows.Forms.TextBox txtSelectedFolder;
 		private System.Windows.Forms.ComboBox cmbFileFilter;
 		private System.Windows.Forms.Label lblFileListInfo;
+		private GongSolutions.Shell.ShellTreeView shellTreeView1;
 	}
 }

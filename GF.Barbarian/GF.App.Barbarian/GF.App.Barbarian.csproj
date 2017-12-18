@@ -52,6 +52,10 @@
     <Reference Include="FluentCommandLineParser, Version=1.5.0.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentCommandLineParser.1.5.0.7-commands\lib\net35\FluentCommandLineParser.dll</HintPath>
     </Reference>
+    <Reference Include="GongShell, Version=0.6.0.38180, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Gong.Shell\Debug\GongShell.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />

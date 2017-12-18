@@ -11,6 +11,7 @@ using System.IO;
 using System.Management; // System.Management.dll
 using System.Globalization;
 using System.Diagnostics;
+using GongSolutions.Shell;
 
 namespace GF.Barbarian.UI
 {
@@ -43,8 +44,15 @@ namespace GF.Barbarian.UI
 
 			InitListView();
 			CreateRoot();
+
+			if (DesignMode)
+				return;
 			SetFolder(Program.AppSettings.FileModeDirectory);
 			SetFile(Program.AppSettings.FileModeFileName);
+
+
+			ShellItem si = new ShellItem(Program.AppSettings.FileModeDirectory);
+			shellTreeView1.SelectedFolder = si;
 		}
 
 		protected void InitListView()
@@ -266,7 +274,7 @@ namespace GF.Barbarian.UI
 						nodeCurrent.SetForbidden();
 						SetNeigbour(nodeCurrent);
 					}
-					catch (Exception e)
+					catch (Exception)
 					{
 						//MessageBox.Show("Error: " + e);
 						nodeCurrent.SetForbidden();

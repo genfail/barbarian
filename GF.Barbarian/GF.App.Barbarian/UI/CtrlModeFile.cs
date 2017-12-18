@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using GongSolutions.Shell;
 
 namespace GF.Barbarian
 {
@@ -20,12 +21,13 @@ namespace GF.Barbarian
 
 		public void ApplySettings()
 		{
-			ctrlFolderTree1.SelectedPath = Program.AppSettings.FileModeDirectory;
+			ShellItem si = new ShellItem(Program.AppSettings.FileModeDirectory);
+			shellTreeView1.SelectedFolder = si;
 		}
 
 		public void SaveSettings()
 		{
-			Properties.Settings.Default.LastSelectedFolder = ctrlFolderTree1.SelectedPath;
+			Properties.Settings.Default.LastSelectedFolder = shellTreeView1.SelectedFolder.FileSystemPath;
 			Properties.Settings.Default.LastSelectedFile = "";
 		}
 
@@ -86,7 +88,8 @@ namespace GF.Barbarian
 
 			if (files != null && files.Length > 0)
 			{
-				ctrlFolderTree1.SelectedPath = Path.GetDirectoryName(files[0]);
+				ShellItem si = new ShellItem(Path.GetDirectoryName(files[0]));
+				shellTreeView1.SelectedFolder = si;
 
 				LoadFolder(Path.GetDirectoryName(files[0]), files[0]);
 			}
@@ -113,5 +116,27 @@ namespace GF.Barbarian
 		}
 
 		#endregion
+
+		private void shellTreeView1_SelectionChanged(object sender, EventArgs e)
+		{
+			txtFolder.Text = shellTreeView1.SelectedFolder.FileSystemPath;
+		}
+
+		private void txtFolder_Leave(object sender, EventArgs e)
+		{
+			ShellItem si = new ShellItem(txtFolder.Text);
+			shellTreeView1.SelectedFolder = si;
+		}
+
+		private void shellViewFileList_LocationChanged(object sender, EventArgs e)
+		{
+			Debug.WriteLine("loc changed");
+		}
+
+		private void shellViewFileList_Navigated(object sender, EventArgs e)
+		{
+			Debug.WriteLine("nav" + shellTreeView1.SelectedFolder);
+
+		}
 	}
 }
