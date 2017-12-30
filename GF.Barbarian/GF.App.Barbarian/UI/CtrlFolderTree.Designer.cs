@@ -54,8 +54,8 @@
 			this.tvFolders.SelectedImageIndex = 0;
 			this.tvFolders.Size = new System.Drawing.Size(87, 116);
 			this.tvFolders.TabIndex = 0;
-			this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
-			this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
+//			this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
+//			this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
 			// 
 			// ImageListTreeView
 			// 

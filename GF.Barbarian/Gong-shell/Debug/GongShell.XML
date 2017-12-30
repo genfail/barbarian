@@ -581,14 +581,34 @@
             <see cref="M:System.Windows.Forms.Form.WndProc(System.Windows.Forms.Message@)"/> method.
             </returns>
         </member>
+        <member name="M:GongSolutions.Shell.ShellContextMenu.InvokeCopy">
+            <summary>
+            Invokes the Copy command on the shell item(s).
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellContextMenu.InvokeCut">
+            <summary>
+            Invokes the Copy command on the shell item(s).
+            </summary>
+        </member>
         <member name="M:GongSolutions.Shell.ShellContextMenu.InvokeDelete">
             <summary>
-            Invokes the Delete command on the shell item.
+            Invokes the Delete command on the shell item(s).
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellContextMenu.InvokePaste">
+            <summary>
+            Invokes the Paste command on the shell item(s).
             </summary>
         </member>
         <member name="M:GongSolutions.Shell.ShellContextMenu.InvokeRename">
             <summary>
             Invokes the Rename command on the shell item.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellContextMenu.InvokeVerb(System.String)">
+            <summary>
+            Invokes the specified verb on the shell item(s).
             </summary>
         </member>
         <member name="M:GongSolutions.Shell.ShellContextMenu.Populate(System.Windows.Forms.Menu)">
@@ -1349,9 +1369,30 @@
             </para>
             </remarks>    
         </member>
+        <member name="F:GongSolutions.Shell.ShellView.ColumnAutoSize">
+            <summary>
+            Constant passed to <see cref="M:GongSolutions.Shell.ShellView.SetColumnWidth(System.Int32,System.Int32)"/> which causes a column to be auto-sized.
+            </summary>
+        </member>
+        <member name="F:GongSolutions.Shell.ShellView.ColumnAutoSizeToHeader">
+            <summary>
+            Constant passed to <see cref="M:GongSolutions.Shell.ShellView.SetColumnWidth(System.Int32,System.Int32)"/> which causes a column to be auto-sized
+            to fit the column header text width.
+            </summary>
+        </member>
         <member name="M:GongSolutions.Shell.ShellView.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:GongSolutions.Shell.ShellView"/> class.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellView.CopySelectedItems">
+            <summary>
+            Copies the currently selected items to the clipboard.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellView.CutSelectedItems">
+            <summary>
+            Cuts the currently selected items.
             </summary>
         </member>
         <member name="M:GongSolutions.Shell.ShellView.CreateNewFolder">
@@ -1361,7 +1402,7 @@
         </member>
         <member name="M:GongSolutions.Shell.ShellView.DeleteSelectedItems">
             <summary>
-            Deletes the item currently selected in the <see cref="T:GongSolutions.Shell.ShellView"/>.
+            Deletes the currently selected items.
             </summary>
         </member>
         <member name="M:GongSolutions.Shell.ShellView.Navigate(GongSolutions.Shell.ShellItem)">
@@ -1532,6 +1573,11 @@
             navigated to, <see langword="false"/> otherwise.
             </returns>
         </member>
+        <member name="M:GongSolutions.Shell.ShellView.PasteClipboard">
+            <summary>
+            Pastes the contents of the clipboard into the current folder.
+            </summary>
+        </member>
         <member name="M:GongSolutions.Shell.ShellView.RefreshContents">
             <summary>
             Refreshes the contents of the <see cref="T:GongSolutions.Shell.ShellView"/>.
@@ -1542,6 +1588,23 @@
             Begins a rename on the item currently selected in the 
             <see cref="T:GongSolutions.Shell.ShellView"/>.
             </summary>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellView.GetColumnWidth(System.Int32)">
+            <summary>
+            Gets the width of the specified column.
+            </summary>
+            <param name="column">The column.</param>
+            <returns>Width in pixel</returns>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellView.SetColumnWidth(System.Int32,System.Int32)">
+            <summary>
+            Resizes the specified column.
+            </summary>
+            <param name="column">The column.</param>
+            <param name="width">
+            The width (in pixels) of the column or a special value : <see cref="F:GongSolutions.Shell.ShellView.ColumnAutoSize"/>,
+            <see cref="F:GongSolutions.Shell.ShellView.ColumnAutoSizeToHeader"/>
+            </param>
         </member>
         <member name="M:GongSolutions.Shell.ShellView.SelectAll">
             <summary>
@@ -1717,14 +1780,6 @@
             </summary>
             
             <param name="eventargs"/>
-        </member>
-        <member name="M:GongSolutions.Shell.ShellView.PreProcessMessage(System.Windows.Forms.Message@)">
-            <summary>
-            Overrides <see cref="M:System.Windows.Forms.Control.PreProcessMessage(System.Windows.Forms.Message@)"/>
-            </summary>
-            
-            <param name="msg"/>
-            <returns/>
         </member>
         <member name="M:GongSolutions.Shell.ShellView.WndProc(System.Windows.Forms.Message@)">
             <summary>
