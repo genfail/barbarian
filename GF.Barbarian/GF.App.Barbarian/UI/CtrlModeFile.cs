@@ -15,20 +15,36 @@ namespace GF.Barbarian
 		}
 
 		private void CtrlModeFile_Load(object sender, EventArgs e)
-		{}
+		{
+			ApplySettings();
+		}
 
 		public ProgramMode Mode{ get{return ProgramMode.File; }}
 
 		public void ApplySettings()
 		{
-			ShellItem si = new ShellItem(Program.AppSettings.FileModeDirectory);
+			if (!this.Visible) // if not yet loaded
+				return;
+
+			string complete = Path.Combine(Program.AppSettings.FileModeDirectory);
+
+			ShellItem si = new ShellItem(complete);
 			shellTreeView1.SelectedFolder = si;
+
+			shellViewFileList.Select(Program.AppSettings.FileModeFileName);
 		}
 
 		public void SaveSettings()
 		{
 			Properties.Settings.Default.LastSelectedFolder = shellTreeView1.SelectedFolder.FileSystemPath;
-			Properties.Settings.Default.LastSelectedFile = "";
+
+			if (shellViewFileList.SelectedItems != null && shellViewFileList.SelectedItems.Length > 0)
+			{
+				ShellItem si = shellViewFileList.SelectedItems[0];
+				Properties.Settings.Default.LastSelectedFile = si.DisplayName;
+			}
+			else
+				Properties.Settings.Default.LastSelectedFile = "";
 		}
 
 
@@ -124,8 +140,22 @@ namespace GF.Barbarian
 
 		private void txtFolder_Leave(object sender, EventArgs e)
 		{
-			ShellItem si = new ShellItem(txtFolder.Text);
-			shellTreeView1.SelectedFolder = si;
+			SetTree(txtFolder.Text);
+		}
+
+		private void txtFolder_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+				SetTree(txtFolder.Text);
+		}
+
+		private void SetTree(string _proposedPath)
+		{
+			if (Directory.Exists(_proposedPath))
+			{
+				ShellItem si = new ShellItem(_proposedPath);
+				shellTreeView1.SelectedFolder = si;
+			}
 		}
 
 		private void shellViewFileList_LocationChanged(object sender, EventArgs e)
@@ -135,7 +165,7 @@ namespace GF.Barbarian
 
 		private void shellViewFileList_Navigated(object sender, EventArgs e)
 		{
-			Debug.WriteLine("nav" + shellTreeView1.SelectedFolder);
+			Debug.WriteLine("nav: " + shellTreeView1.SelectedFolder);
 
 		}
 	}

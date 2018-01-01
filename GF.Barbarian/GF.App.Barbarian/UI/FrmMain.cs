@@ -84,6 +84,10 @@ namespace GF.Barbarian
 
 		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
 		{
+		}
+
+		private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
 			Properties.Settings.Default.LastProgramMode = (int)mode;
 			foreach (ICtrlMode c in modes.Values)
 			{

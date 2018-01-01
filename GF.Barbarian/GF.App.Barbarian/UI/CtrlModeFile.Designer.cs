@@ -107,6 +107,7 @@
 			this.txtFolder.Name = "txtFolder";
 			this.txtFolder.Size = new System.Drawing.Size(770, 20);
 			this.txtFolder.TabIndex = 4;
+			this.txtFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFolder_KeyUp);
 			this.txtFolder.Leave += new System.EventHandler(this.txtFolder_Leave);
 			// 
 			// label1

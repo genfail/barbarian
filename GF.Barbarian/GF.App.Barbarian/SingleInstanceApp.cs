@@ -106,7 +106,7 @@ namespace GF.Barbarian
 
 		private string ShowHelp()
 		{
-			return "Barbarian c:\\path\\libraryfile.g5l  -mode=[File|Library]";
+			return "Barbarian c:\\path\\libraryfile.g5l  -mode=[File|Library] -reset";
 		}
 	}
 }
