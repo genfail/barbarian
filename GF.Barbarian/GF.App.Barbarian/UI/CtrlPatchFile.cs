@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using Melanchall.DryWetMidi.Smf;
+using GF.Barbarian.Midi;
 
 namespace GF.Barbarian
 {
 	public partial class CtrlPatchFile : UserControl
 	{
+		private SysxFile activeFile = null;
 		private string fullFileName;
 		public string FileName
 		{
@@ -41,7 +44,11 @@ namespace GF.Barbarian
 
 		private void Reload()
 		{
-			Debug.WriteLine($"Loading file: {fullFileName}");
+			if (String.IsNullOrEmpty(fullFileName))
+				return;
+
+			activeFile = new SysxFile(fullFileName);
+			activeFile.Load();
 		}
 	}
 }
