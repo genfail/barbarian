@@ -16,7 +16,17 @@ namespace GF.Barbarian
 
 		private void CtrlModeFile_Load(object sender, EventArgs e)
 		{
+			shellViewFileList.SelectionChanged += ShellViewFileList_SelectionChanged;
 			ApplySettings();
+		}
+
+		private void ShellViewFileList_SelectionChanged(object sender, EventArgs e)
+		{
+			if (shellViewFileList.SelectedItems.Length > 0)
+			{
+				ShellItem si = shellViewFileList.SelectedItems[0];
+				activePatch.FileName = si.FileSystemPath;
+			}
 		}
 
 		public ProgramMode Mode{ get{return ProgramMode.File; }}
@@ -167,6 +177,13 @@ namespace GF.Barbarian
 		{
 			Debug.WriteLine("nav: " + shellTreeView1.SelectedFolder);
 
+		}
+
+		private void btnOpenFileExplorer_Click(object sender, EventArgs e)
+		{
+			ProcessStartInfo StartInformation = new ProcessStartInfo();
+			StartInformation.FileName = txtFolder.Text;
+			Process process = Process.Start(StartInformation);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using GF.Lib.Global;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -81,10 +81,6 @@ namespace GF.Barbarian
 			this.Close();
 		}
 		#endregion
-
-		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
-		{
-		}
 
 		private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
 		{

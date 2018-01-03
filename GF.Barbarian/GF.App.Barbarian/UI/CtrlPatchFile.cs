@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace GF.Barbarian
 {
@@ -24,6 +25,7 @@ namespace GF.Barbarian
 			{
 				fullFileName = value;
 				txtFname.Text = Path.GetFileNameWithoutExtension(value);
+				Reload();
 			}
 		}
 
@@ -35,6 +37,11 @@ namespace GF.Barbarian
 		private void CtrlPatchFile_Load(object sender, EventArgs e)
 		{
 
+		}
+
+		private void Reload()
+		{
+			Debug.WriteLine($"Loading file: {fullFileName}");
 		}
 	}
 }

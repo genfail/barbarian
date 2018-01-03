@@ -258,11 +258,18 @@ namespace GongSolutions.Shell
         /// </returns>
         public string GetDisplayName(SIGDN sigdn)
         {
-            IntPtr resultPtr = m_ComInterface.GetDisplayName(sigdn);
-            string result = Marshal.PtrToStringUni(resultPtr);
-            Marshal.FreeCoTaskMem(resultPtr);
-            return result;
-        }
+			try
+			{
+				IntPtr resultPtr = m_ComInterface.GetDisplayName(sigdn);
+				string result = Marshal.PtrToStringUni(resultPtr);
+				Marshal.FreeCoTaskMem(resultPtr);
+				return result != null ? result : "-";
+			}
+			catch (Exception)
+			{
+				return "?";
+			}
+		}
 
         /// <summary>
         /// Returns an enumerator detailing the child items of the

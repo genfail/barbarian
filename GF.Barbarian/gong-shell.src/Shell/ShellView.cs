@@ -664,7 +664,14 @@ namespace GongSolutions.Shell
            foreach (ShellItem item in ShellItem)
             {
 				if (item.DisplayName.Equals(fname))
+				{
 					m_ComInterface.SelectItem(Shell32.ILFindLastID(item.Pidl), SVSI.SVSI_SELECT);
+
+					// fire SelectionChanged
+					EventHandler handler = SelectionChanged;
+					if (handler != null)
+						handler(this, new EventArgs());
+				}
             }
 		}
 

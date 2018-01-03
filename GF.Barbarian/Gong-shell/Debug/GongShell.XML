@@ -1654,6 +1654,18 @@
             Gets the <see cref="T:GongSolutions.Shell.ShellView"/>'s navigation history.
             </summary>
         </member>
+        <member name="P:GongSolutions.Shell.ShellView.Items">
+            <summary>
+            Gets a list of the items currently selected in the 
+            <see cref="T:GongSolutions.Shell.ShellView"/>
+            </summary>
+            
+            <value>
+            A <see cref="P:GongSolutions.Shell.ShellView.ShellItem"/> array detailing the items currently 
+            selected in the control. If no items are currently selected, 
+            an empty array is returned. 
+            </value>
+        </member>
         <member name="P:GongSolutions.Shell.ShellView.SelectedItems">
             <summary>
             Gets a list of the items currently selected in the 
@@ -1665,6 +1677,9 @@
             selected in the control. If no items are currently selected, 
             an empty array is returned. 
             </value>
+        </member>
+        <member name="M:GongSolutions.Shell.ShellView.Select(System.String)">
+            <summary> Set selected by name </summary>
         </member>
         <member name="P:GongSolutions.Shell.ShellView.MultiSelect">
             <summary>
