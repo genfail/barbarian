@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Midi\SysxFile.cs" />
+    <Compile Include="Midi\FileFormatG5L.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\CtrlModeLibrary.cs">
       <SubType>UserControl</SubType>

@@ -16,7 +16,7 @@ namespace GF.Barbarian
 {
 	public partial class CtrlPatchFile : UserControl
 	{
-		private SysxFile activeFile = null;
+		private FileFormatG5L activeFile = null;
 		private string fullFileName;
 		public string FileName
 		{
@@ -47,7 +47,7 @@ namespace GF.Barbarian
 			if (String.IsNullOrEmpty(fullFileName))
 				return;
 
-			activeFile = new SysxFile(fullFileName);
+			activeFile = new FileFormatG5L(fullFileName);
 			activeFile.Load();
 		}
 	}
