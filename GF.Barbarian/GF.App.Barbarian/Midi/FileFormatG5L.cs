@@ -71,7 +71,12 @@ namespace GF.Barbarian.Midi
 				return FileLoadResult.ErrorBadStartBytes;
 
 			int cnt = FindPatches();
-			Debug.WriteLine($"  contains {cnt} patches");
+
+			Debug.WriteLine($"  found {cnt} patches");
+			foreach (Patch p in patches.Values)
+			{
+				Debug.WriteLine($"  - " + p.ToString());
+			}
 
 			return FileLoadResult.Ok;
 		}
@@ -103,6 +108,10 @@ namespace GF.Barbarian.Midi
 
 		private int FindPatches()
 		{
+			byte msb = fileBytes[34];     // find patch count msb bit in G5L file at byte 34
+			byte lsb = fileBytes[35];     // find patch count lsb bit in G5L file at byte 35
+			int patchCount = (msb<<8) + lsb;
+			Debug.WriteLine($"PatchCount according file: {patchCount} ");
 			int cnt = 0;
 			foreach (int position in fileBytes.Locate(prexixPatchNameBytes))
 			{
@@ -113,7 +122,7 @@ namespace GF.Barbarian.Midi
 				bool isOk = true;
 				for (int i = 0; i < buf2.Length; i++)
 				{
-					if (buf2[i] < 32 || buf2[i] > 126)
+					if (buf2[i] < 32 || buf2[i] > 126) // see if the 16 bytes are printable
 					{
 						buf2[i] = (byte)'.';
 						isOk = false;
@@ -146,8 +155,7 @@ namespace GF.Barbarian.Midi
 
 		public override string ToString()
 		{
-			return $"Patch: [{Name,-16}] Offset:{Offset}";
+			return $"Patch[{Count, 3}]: [{Name,-16}] Offset:{Offset}";
 		}
 	}
-
 }
