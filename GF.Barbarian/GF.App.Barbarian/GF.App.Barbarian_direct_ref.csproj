@@ -71,7 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Midi\FileFormatG5L.cs" />
+    <Compile Include="ApplicationData.cs" />
+    <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Midi\FileOpen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\CtrlModeLibrary.cs">
       <SubType>UserControl</SubType>
@@ -142,6 +144,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\HexLookupTable.hex" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -160,6 +163,8 @@
     <Content Include="Barbarian.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\default.g5l" />
+    <None Include="Resources\default.syx" />
     <None Include="Resources\FileExplorer.png" />
     <None Include="Resources\Dummy.png" />
     <None Include="Resources\Forbidden.png" />

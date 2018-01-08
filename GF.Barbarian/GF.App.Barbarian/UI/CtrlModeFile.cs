@@ -8,6 +8,8 @@ namespace GF.Barbarian
 {
 	public partial class CtrlModeFile : UserControl, ICtrlMode
 	{
+		public ProgramMode Mode{ get{return ProgramMode.File; }}
+
 		public CtrlModeFile()
 		{
 			InitializeComponent();
@@ -28,8 +30,6 @@ namespace GF.Barbarian
 				activePatch.FileName = si.FileSystemPath;
 			}
 		}
-
-		public ProgramMode Mode{ get{return ProgramMode.File; }}
 
 		public void ApplySettings()
 		{

@@ -19,22 +19,20 @@ namespace GF.Barbarian.Midi
 		ErrorUnspecified,
 	}
 
-	public class FileFormatG5L
+	public class FileOpen
 	{
-		private Dictionary<int,Patch> patches = new Dictionary<int, Patch>();
-		private byte[] startBytes = null;
-		private byte[] prexixPatchNameBytes = new byte[]{0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xF2, 0x00};
+		private Dictionary<int,Patch> patchList = new Dictionary<int, Patch>();
 		private byte[] fileBytes = null;
 		private string fullFileName = null;
 
 		public bool IsDataOk{ get { return fileBytes != null && fileBytes.Length > 1000; }}
 
-		public FileFormatG5L()
+		public FileOpen()
 		{
-			startBytes = Encoding.ASCII.GetBytes("G5LLibrarianFile0000");
+			patchList.Clear();
 		}
 
-		public FileFormatG5L(string _fullFileName):this()
+		public FileOpen(string _fullFileName):this()
 		{
 			fullFileName = _fullFileName;
 		}
@@ -42,7 +40,7 @@ namespace GF.Barbarian.Midi
 		public void Unload()
 		{
 			fileBytes = null;
-			patches.Clear();
+			patchList.Clear();
 		}
 
 		public FileLoadResult Load(string _fullFileName)
@@ -70,14 +68,14 @@ namespace GF.Barbarian.Midi
 			if (!ValidateFileFormat())
 				return FileLoadResult.ErrorBadStartBytes;
 
-			int cnt = FindPatches();
-
+			//int cnt = FindPatches();
+/*
 			Debug.WriteLine($"  found {cnt} patches");
 			foreach (Patch p in patches.Values)
 			{
 				Debug.WriteLine($"  - " + p.ToString());
 			}
-
+			*/
 			return FileLoadResult.Ok;
 		}
 
@@ -98,46 +96,66 @@ namespace GF.Barbarian.Midi
 
 		private bool ValidateFileFormat()
 		{
-			for (int i = 0; i < startBytes.Length; i++)
+			if(IsG5L())
 			{
-				if (fileBytes[i] != startBytes[i])
-					return false;
+				return DoG5L();
 			}
-			return true;
+			else if(IsSMF())
+			{
+				return false;
+			}
+			return false;
 		}
 
-		private int FindPatches()
+		private bool IsG5L()
+		{
+			byte[] g5lDefaultHeader = Barbarian.Properties.Resources.Default_G5L.SubArray(3,20);
+			if (fileBytes.LocateFirst(g5lDefaultHeader) > -1)  // expect 3
+				return true;
+
+			return false;
+		}
+		private bool IsSMF()
+		{
+			byte[] sysxDefaultHeader = Barbarian.Properties.Resources.Default_SYX.SubArray(0,7);
+			return false; // not yet supported
+		}
+
+		private bool DoG5L()
 		{
 			byte msb = fileBytes[34];     // find patch count msb bit in G5L file at byte 34
 			byte lsb = fileBytes[35];     // find patch count lsb bit in G5L file at byte 35
 			int patchCount = (msb<<8) + lsb;
 			Debug.WriteLine($"PatchCount according file: {patchCount} ");
+
+//			byte[] DefaultG5L = Barbarian.Properties.Resources.Default_G5L;
+//			byte[] DefaultSYX = Barbarian.Properties.Resources.Default_SYX;
+//			byte[] dataHeader = fileBytes.SubArray(0,7);
+
 			int cnt = 0;
-			foreach (int position in fileBytes.Locate(prexixPatchNameBytes))
+
+			if (patchCount > 1)
 			{
-				byte[] buf = fileBytes.SubArray(position + prexixPatchNameBytes.Length, 16);
-				byte[] buf2 = new byte[16];
-				Array.Copy(buf, buf2, 16);
+				int m_step = 162;
+                int a = m_step + 10;
+                patchList.Clear();
 
-				bool isOk = true;
-				for (int i = 0; i < buf2.Length; i++)
-				{
-					if (buf2[i] < 32 || buf2[i] > 126) // see if the 16 bytes are printable
-					{
-						buf2[i] = (byte)'.';
-						isOk = false;
-					}
-				}
-				string s = System.Text.Encoding.ASCII.GetString(buf2).Trim();
-//				if (s.Equals("Boss Dist w SYNT"))
-	//				Debug.WriteLine("-----------");  // wxHexEditor-64Bit
+				// for each patch
+				for (int h=0; h < patchCount; h++)
+                {
+					byte[] buf = fileBytes.SubArray(a, 17);
+					string name = System.Text.Encoding.ASCII.GetString(buf).Trim();
+					int patchNumber = h+1;
 
-				if (isOk)
-					patches.Add(++cnt, new Patch(cnt, position, s));
-				else
-					Debug.WriteLine ($"Found error patch [{s,-16}] on pos: {position}");
+
+					msb = fileBytes[m_step];     // find patch size msb bit
+                    lsb = fileBytes[m_step+1];   // find patch size lsb bit and calculate jump to next patch.
+					m_step = (msb<<8) + lsb;
+                    a = m_step + 10;   // move to start of patch
+                };
 			}
-			return cnt;
+
+			return true;
 		}
 	}
 

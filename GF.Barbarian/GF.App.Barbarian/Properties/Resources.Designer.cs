@@ -61,6 +61,26 @@ namespace GF.Barbarian.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Default_G5L {
+            get {
+                object obj = ResourceManager.GetObject("Default_G5L", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Default_SYX {
+            get {
+                object obj = ResourceManager.GetObject("Default_SYX", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Dummy {
@@ -87,6 +107,16 @@ namespace GF.Barbarian.Properties {
             get {
                 object obj = ResourceManager.GetObject("Forbidden", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] HexLookupTable {
+            get {
+                object obj = ResourceManager.GetObject("HexLookupTable", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

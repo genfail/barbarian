@@ -22,28 +22,6 @@ namespace GF.Barbarian
 		void SaveSettings();
 	}
 
-	public class ApplicationSettings
-	{
-		public ProgramMode Mode { get; set; }
-		public string FileModeDirectory { get; set; }
-		public string FileModeFileName { get; set; }
-		public string Test { get; set; }
-		public bool Reset { get; set; } = false;
-
-		public string FileModePath
-		{
-			get
-			{
-				return Path.Combine(FileModeDirectory, FileModeFileName);
-			}
-			set
-			{
-				FileModeDirectory = Path.GetDirectoryName(value);
-				FileModeFileName = Path.GetFileName(value);
-			}
-		}
-	}
-
 	public static class Global
 	{
 		public static T[] SubArray<T>(this T[] data, int index, int length)
@@ -72,7 +50,22 @@ namespace GF.Barbarian
 			return list.Count == 0 ? Empty : list.ToArray ();
 		}
 
-		static bool IsMatch (byte [] array, int position, byte [] candidate)
+		public static int LocateFirst (this byte [] self, byte [] candidate)
+		{
+			if (IsEmptyLocate (self, candidate))
+				return -1;
+
+			for (int i = 0; i < self.Length; i++) {
+				if (!IsMatch (self, i, candidate))
+					continue;
+
+				return i;
+			}
+			return -1;
+		}
+
+
+		private static bool IsMatch (byte [] array, int position, byte [] candidate)
 		{
 			if (candidate.Length > (array.Length - position))
 				return false;
@@ -85,7 +78,7 @@ namespace GF.Barbarian
 		}
 
 
-		static bool IsEmptyLocate (byte [] array, byte [] candidate)
+		private static bool IsEmptyLocate (byte [] array, byte [] candidate)
 		{
 			return array == null
 			       || candidate == null

@@ -6,6 +6,7 @@ namespace GF.Barbarian
 	static class Program
 	{
 		public static ApplicationSettings AppSettings { get; set;}
+		public static ApplicationData AppData { get; set;}
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -15,7 +16,10 @@ namespace GF.Barbarian
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+			AppData = new ApplicationData();
+			AppData.Init();
 			new SingleInstanceApp().Run(Environment.GetCommandLineArgs());
+			AppData.Shutdown();
 		}
 	}
 }
