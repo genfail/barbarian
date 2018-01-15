@@ -58,7 +58,7 @@ namespace GF.Barbarian.Midi
 
 		private FileLoadResult InternalLoad()
 		{
-			Debug.WriteLine($"Loading file: {fullFileName}");
+			Debug.WriteLine($"Loading file: [{fullFileName}]");
 			if (String.IsNullOrEmpty(fullFileName))
 				return FileLoadResult.ErrorFileNameNull;
 			if (!File.Exists(fullFileName))
@@ -69,13 +69,12 @@ namespace GF.Barbarian.Midi
 				return FileLoadResult.ErrorBadStartBytes;
 
 			//int cnt = FindPatches();
-/*
-			Debug.WriteLine($"  found {cnt} patches");
-			foreach (Patch p in patches.Values)
+
+			Debug.WriteLine($"  found {patchList.Count} patches");
+			foreach (Patch p in patchList.Values)
 			{
 				Debug.WriteLine($"  - " + p.ToString());
 			}
-			*/
 			return FileLoadResult.Ok;
 		}
 
@@ -98,10 +97,12 @@ namespace GF.Barbarian.Midi
 		{
 			if(IsG5L())
 			{
+				Debug.WriteLine("  This file has G5L format");
 				return DoG5L();
 			}
 			else if(IsSMF())
 			{
+				Debug.WriteLine("  This file has SMF format");
 				return false;
 			}
 			return false;
@@ -109,7 +110,7 @@ namespace GF.Barbarian.Midi
 
 		private bool IsG5L()
 		{
-			byte[] g5lDefaultHeader = Barbarian.Properties.Resources.Default_G5L.SubArray(3,20);
+			byte[] g5lDefaultHeader = Barbarian.Properties.Resources.Default_G5L.SubArrayCopy(3,20);
 			if (fileBytes.LocateFirst(g5lDefaultHeader) > -1)  // expect 3
 				return true;
 
@@ -117,7 +118,7 @@ namespace GF.Barbarian.Midi
 		}
 		private bool IsSMF()
 		{
-			byte[] sysxDefaultHeader = Barbarian.Properties.Resources.Default_SYX.SubArray(0,7);
+			byte[] sysxDefaultHeader = Barbarian.Properties.Resources.Default_SYX.SubArrayCopy(0,7);
 			return false; // not yet supported
 		}
 
@@ -125,36 +126,32 @@ namespace GF.Barbarian.Midi
 		{
 			byte msb = fileBytes[34];     // find patch count msb bit in G5L file at byte 34
 			byte lsb = fileBytes[35];     // find patch count lsb bit in G5L file at byte 35
-			int patchCount = (msb<<8) + lsb;
+			uint patchCount = (uint)((msb<<8) + lsb);
 			Debug.WriteLine($"PatchCount according file: {patchCount} ");
-
-//			byte[] DefaultG5L = Barbarian.Properties.Resources.Default_G5L;
-//			byte[] DefaultSYX = Barbarian.Properties.Resources.Default_SYX;
-//			byte[] dataHeader = fileBytes.SubArray(0,7);
-
-			int cnt = 0;
 
 			if (patchCount > 1)
 			{
-				int m_step = 162;
-                int a = m_step + 10;
+				uint m_step = 162;
+                uint a = m_step + 10;
                 patchList.Clear();
 
 				// for each patch
-				for (int h=0; h < patchCount; h++)
+				for (int patchNumber=1; patchNumber <= patchCount; patchNumber++)
                 {
-					byte[] buf = fileBytes.SubArray(a, 17);
-					string name = System.Text.Encoding.ASCII.GetString(buf).Trim();
-					int patchNumber = h+1;
-
-
 					msb = fileBytes[m_step];     // find patch size msb bit
                     lsb = fileBytes[m_step+1];   // find patch size lsb bit and calculate jump to next patch.
-					m_step = (msb<<8) + lsb;
-                    a = m_step + 10;   // move to start of patch
-                };
-			}
+					uint size = (uint)((msb<<8) + lsb);
 
+					m_step += 4 + size;
+
+					//Debug.WriteLine($"  - ({patchNumber}) - [{name}] size:{m_step}");
+
+					Patch p = new Patch(patchNumber);
+					p.SetData(fileBytes, a, size);
+					patchList.Add(patchNumber, p);
+                    a = m_step + 10;   // move to start of patch
+                }
+			}
 			return true;
 		}
 	}
@@ -162,18 +159,110 @@ namespace GF.Barbarian.Midi
 	public class Patch
 	{
 		public int Count { get; private set; }
-		public int Offset { get; private set; }
-		public string Name { get; private set; }
-		public Patch(int cnt, int offset, string name)
+		public string Name { get; private set; } = "NotSet";
+
+		private byte[] sysxData = null;
+
+		public Patch(int cnt)
 		{
 			Count = cnt;
-			Offset = offset;
-			Name = name;
+		}
+
+		public bool SetData(byte[] fileData, uint offset, uint length)
+		{
+			if (fileData == null)
+			{
+				Debug.WriteLine($"Size error: ");
+				return false;
+			}
+			else if (fileData.Length < offset + length)
+			{
+				Debug.WriteLine($"Size error. Expected {length} but got {fileData} bytes");
+				return false;
+			}
+
+			byte[] buf = fileData.SubArrayCopy(offset + 1, 16);
+			Name = System.Text.Encoding.ASCII.GetString(buf).Trim();
+
+			// copy base data from clean file
+			sysxData = Properties.Resources.Default_SYX.SubArrayCopy(0, (uint)Properties.Resources.Default_SYX.Length);
+
+			//temp = data.mid(a, 128);
+            //default_data.replace(11, 128, temp);      //address "00"
+			sysxData.Replace(11, fileData, offset + 0, 128);//address "00"
+
+            //temp = data.mid(a+128, 114);
+            //default_data.replace(152, 114, temp);     //address "01"
+			sysxData.Replace(152, fileData, offset + 128, 114); //address "01"
+
+            //temp = data.mid(a+250, 14);
+            //default_data.replace(266, 14, temp);     //address "01"
+			sysxData.Replace(266, fileData, offset + 250, 14); //address "01"
+
+            //temp = data.mid(a+264, 78);
+            //default_data.replace(293, 78, temp);     //address "02" +
+			sysxData.Replace(293, fileData, offset + 264, 78); //address "02"
+
+			//temp = data.mid(a+350, 128);
+            //default_data.replace(384, 128, temp);     //address "03" +
+			sysxData.Replace(384, fileData, offset + 350, 128); //address "03"
+
+			//temp = data.mid(a+478, 72);
+            //default_data.replace(525, 72, temp);     //address "04" +
+			sysxData.Replace(525, fileData, offset + 478, 72); //address "04"
+
+			//temp = data.mid(a+606, 18);
+            //default_data.replace(666, 18, temp);     //address "05" +
+			sysxData.Replace(666, fileData, offset + 606, 18); //address "05"
+
+			//temp = data.mid(a+640, 30);
+            //default_data.replace(697, 30, temp);     //address "06" +
+			sysxData.Replace(697, fileData, offset + 640, 30); //address "06"
+
+			//temp = data.mid(a+678, 125);
+            //default_data.replace(740, 125, temp);     //address "07" +
+			sysxData.Replace(740, fileData, offset + 678, 125); //address "07"
+
+			//temp = data.mid(a+811, 128);
+            //default_data.replace(878, 128, temp);     //address "10" +
+			sysxData.Replace(878, fileData, offset + 811, 128); //address "10"
+
+			//temp = data.mid(a+939, 86);
+            //default_data.replace(1019, 86, temp);     //address "11" +
+			sysxData.Replace(1019, fileData, offset + 939, 86); //address "11"
+
+			//temp = data.mid(a+1033, 35);
+            //default_data.replace(1118, 35, temp);    //address "20" +
+			sysxData.Replace(1118, fileData, offset + 1033, 35); //address "20"
+
+			//temp = data.mid(a+1072, 35);
+            //default_data.replace(1166, 35, temp);    //address "21" +
+			sysxData.Replace(1166, fileData, offset + 1072, 35); //address "21"
+
+			//temp = data.mid(a+1115, 52);
+            //default_data.replace(1214, 52, temp);    //address "30" +
+			sysxData.Replace(1214, fileData, offset + 1115, 52); //address "30"
+
+			//temp = data.mid(a+1171, 52);
+            //default_data.replace(1279, 52, temp);    //address "31" +
+			sysxData.Replace(1279, fileData, offset + 1171, 52); //address "31"
+
+#if _DBG_BYTE
+			for (int i = 0; i < sysxData.Length;i++)
+			{
+				byte b = sysxData[i];
+				if (char.IsControl((char)b))
+					Debug.WriteLine($"{i, 4}\t \t{(int)b}");
+				else
+					Debug.WriteLine($"{i, 4}\t'{(char)b}'\t{(int)b}");
+			}
+#endif			
+			return true;
 		}
 
 		public override string ToString()
 		{
-			return $"Patch[{Count, 3}]: [{Name,-16}] Offset:{Offset}";
+			return $"Patch[{Count, 3}]: [{Name,-16}] {(sysxData==null?"NULL":sysxData.Length.ToString())} Bytes";
 		}
 	}
 }

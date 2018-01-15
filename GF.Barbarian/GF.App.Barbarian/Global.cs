@@ -24,11 +24,28 @@ namespace GF.Barbarian
 
 	public static class Global
 	{
-		public static T[] SubArray<T>(this T[] data, int index, int length)
+		public static T[] SubArrayCopy<T>(this T[] data, uint index, uint length)
 		{
 			T[] result = new T[length];
 			Array.Copy(data, index, result, 0, length);
 			return result;
+		}
+
+		public static bool Replace<T>(this T[] data, uint indexData,  T[] replace)
+		{
+			if (data == null || indexData > data.Length - 1 || indexData + replace.Length > data.Length )
+				return false;
+
+			return Replace(data, indexData,  replace, 0,  (uint)replace.Length);
+		}
+
+		public static bool Replace<T>(this T[] data, uint indexData,  T[] replace, uint indexReplace,  uint lengthReplace)
+		{
+			for(int i = 0; i<lengthReplace;i++)
+			{
+				data[indexData+i] = replace[indexReplace + i];
+			}
+			return true;
 		}
 
 		static readonly int [] Empty = new int [0];
