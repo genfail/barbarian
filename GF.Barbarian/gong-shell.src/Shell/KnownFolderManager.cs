@@ -9,8 +9,10 @@ using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
+	/// <summary></summary>
     public class KnownFolderManager : IEnumerable<KnownFolder>
     {
+		/// <summary></summary>
         public KnownFolderManager()
         {
             if (Environment.OSVersion.Version.Major >= 6)
@@ -34,7 +36,8 @@ namespace GongSolutions.Shell
             }
         }
 
-        public KnownFolder FindNearestParent(ShellItem item)
+	 	/// <summary></summary>
+       public KnownFolder FindNearestParent(ShellItem item)
         {
             if (m_ComInterface != null)
             {
@@ -86,6 +89,7 @@ namespace GongSolutions.Shell
             return null;
         }
 
+		/// <returns></returns>
         public IEnumerator<KnownFolder> GetEnumerator()
         {
             IntPtr buffer;
@@ -127,11 +131,14 @@ namespace GongSolutions.Shell
             }
         }
 
-        public KnownFolder GetFolder(Guid guid)
+
+		/// <summary></summary>
+		public KnownFolder GetFolder(Guid guid)
         {
             return CreateFolder(m_ComInterface.GetFolder(guid));
         }
 
+		/// <summary></summary>
         public KnownFolder GetFolder(string name)
         {
             if (m_ComInterface != null)
@@ -223,8 +230,10 @@ namespace GongSolutions.Shell
         Dictionary<string, KnownFolder> m_PathIndex;
     }
 
+	/// <summary></summary>
     public class KnownFolder
     {
+		/// <summary></summary>
         public KnownFolder(IKnownFolder iface, string name, string parsingName)
         {
             m_ComInterface = iface;
@@ -232,14 +241,16 @@ namespace GongSolutions.Shell
             m_ParsingName = parsingName;
         }
 
-        public KnownFolder(CSIDL csidl, string name, string parsingName)
+ 		/// <summary></summary>
+       public KnownFolder(CSIDL csidl, string name, string parsingName)
         {
             m_Csidl = csidl;
             m_Name = name;
             m_ParsingName = parsingName;
         }
 
-        public ShellItem CreateShellItem()
+		/// <summary></summary>
+      public ShellItem CreateShellItem()
         {
             if (m_ComInterface != null)
             {
@@ -252,11 +263,13 @@ namespace GongSolutions.Shell
             }
         }
 
+		/// <summary></summary>
         public string Name
         {
             get { return m_Name; }
         }
 
+		/// <summary></summary>
         public string ParsingName
         {
             get { return m_ParsingName; }

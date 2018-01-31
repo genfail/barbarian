@@ -14,7 +14,7 @@ using GF.Barbarian.Midi;
 
 namespace GF.Barbarian
 {
-	public partial class CtrlPatchFile : UserControl
+	public partial class CtrlFileContent : UserControl
 	{
 		private FileOpen activeFile = null;
 		private string fullFileName;
@@ -32,7 +32,7 @@ namespace GF.Barbarian
 			}
 		}
 
-		public CtrlPatchFile()
+		public CtrlFileContent()
 		{
 			InitializeComponent();
 		}

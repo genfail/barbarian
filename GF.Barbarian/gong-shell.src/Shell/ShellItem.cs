@@ -200,7 +200,7 @@ namespace GongSolutions.Shell
             return result;
         }
 
-		// just to avoid warning
+		/// <summary> just to avoid warning</summary>
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();

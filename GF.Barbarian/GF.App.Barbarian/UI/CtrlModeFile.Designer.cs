@@ -37,7 +37,7 @@
 			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
 			this.shellViewFileList = new GongSolutions.Shell.ShellView();
 			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
-			this.activePatch = new GF.Barbarian.CtrlPatchFile();
+			this.activePatch = new GF.Barbarian.CtrlFileContent();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -174,7 +174,7 @@
 		private GongSolutions.Shell.FileFilterComboBox fileFilterComboBox1;
 		private System.Windows.Forms.TextBox txtFolder;
 		private System.Windows.Forms.Label label1;
-		private CtrlPatchFile activePatch;
+		private CtrlFileContent activePatch;
 		private System.Windows.Forms.Button btnOpenFileExplorer;
 		private System.Windows.Forms.ToolTip toolTipControl;
 	}

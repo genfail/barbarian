@@ -87,11 +87,11 @@
     <Compile Include="UI\CtrlModeFile.Designer.cs">
       <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CtrlPatchFile.cs">
+    <Compile Include="UI\CtrlFileContent.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\CtrlPatchFile.Designer.cs">
-      <DependentUpon>CtrlPatchFile.cs</DependentUpon>
+    <Compile Include="UI\CtrlFileContent.Designer.cs">
+      <DependentUpon>CtrlFileContent.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
@@ -115,8 +115,8 @@
     <EmbeddedResource Include="UI\CtrlModeFile.resx">
       <DependentUpon>CtrlModeFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CtrlPatchFile.resx">
-      <DependentUpon>CtrlPatchFile.cs</DependentUpon>
+    <EmbeddedResource Include="UI\CtrlFileContent.resx">
+      <DependentUpon>CtrlFileContent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

@@ -83,12 +83,12 @@ namespace GF.Barbarian
 
 			foreach(string fname in _fnames)
 			{
-				AddPatchFile(fname);
+				AddFileContent(fname);
 			}
 		}
-		public void AddPatchFile(string _fname)
+		public void AddFileContent(string _fname)
 		{
-			CtrlPatchFile p = new CtrlPatchFile();
+			CtrlFileContent p = new CtrlFileContent();
 			p.FileName = _fname;
 //			flowLayoutPatches.Controls.Add(p);
 		}
