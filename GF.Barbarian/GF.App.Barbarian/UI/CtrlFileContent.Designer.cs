@@ -57,19 +57,20 @@
 			this.flwPatches.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.flwPatches.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flwPatches.Location = new System.Drawing.Point(3, 28);
 			this.flwPatches.Name = "flwPatches";
 			this.flwPatches.Size = new System.Drawing.Size(815, 347);
 			this.flwPatches.TabIndex = 2;
 			// 
-			// CtrlPatchFile
+			// CtrlFileContent
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.flwPatches);
 			this.Controls.Add(this.txtFname);
 			this.Controls.Add(this.lblFname);
-			this.Name = "CtrlPatchFile";
+			this.Name = "CtrlFileContent";
 			this.Size = new System.Drawing.Size(822, 378);
 			this.Load += new System.EventHandler(this.CtrlPatchFile_Load);
 			this.ResumeLayout(false);

@@ -93,6 +93,12 @@
     <Compile Include="UI\CtrlFileContent.Designer.cs">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CtrlPatch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\CtrlPatch.Designer.cs">
+      <DependentUpon>CtrlPatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CtrlFileContent.resx">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CtrlPatch.resx">
+      <DependentUpon>CtrlPatch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

@@ -22,14 +22,17 @@ namespace GF.Barbarian.Midi
 	public class FileOpen
 	{
 		private Dictionary<int,Patch> patchList = new Dictionary<int, Patch>();
+		public Dictionary<int, Patch> PatchList { get => patchList; set => patchList = value; }
+
 		private byte[] fileBytes = null;
 		private string fullFileName = null;
 
 		public bool IsDataOk{ get { return fileBytes != null && fileBytes.Length > 1000; }}
 
+
 		public FileOpen()
 		{
-			patchList.Clear();
+			PatchList.Clear();
 		}
 
 		public FileOpen(string _fullFileName):this()
@@ -40,7 +43,7 @@ namespace GF.Barbarian.Midi
 		public void Unload()
 		{
 			fileBytes = null;
-			patchList.Clear();
+			PatchList.Clear();
 		}
 
 		public FileLoadResult Load(string _fullFileName)
@@ -70,8 +73,8 @@ namespace GF.Barbarian.Midi
 
 			//int cnt = FindPatches();
 
-			Debug.WriteLine($"  found {patchList.Count} patches");
-			foreach (Patch p in patchList.Values)
+			Debug.WriteLine($"  found {PatchList.Count} patches");
+			foreach (Patch p in PatchList.Values)
 			{
 				Debug.WriteLine($"  - " + p.ToString());
 			}
@@ -133,7 +136,7 @@ namespace GF.Barbarian.Midi
 			{
 				uint m_step = 162;
                 uint a = m_step + 10;
-                patchList.Clear();
+                PatchList.Clear();
 
 				// for each patch
 				for (int patchNumber=1; patchNumber <= patchCount; patchNumber++)
@@ -148,7 +151,7 @@ namespace GF.Barbarian.Midi
 
 					Patch p = Patch.MakePatch(patchNumber, fileBytes, a, size);
 					if (p != null)
-						patchList.Add(patchNumber, p);
+						PatchList.Add(patchNumber, p);
                     a = m_step + 10;   // move to start of next patch
                 }
 			}

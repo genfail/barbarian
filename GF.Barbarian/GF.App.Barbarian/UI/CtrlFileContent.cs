@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using Melanchall.DryWetMidi.Smf;
 using GF.Barbarian.Midi;
+using GF.Barbarian.UI;
 
 namespace GF.Barbarian
 {
@@ -47,8 +48,15 @@ namespace GF.Barbarian
 			if (String.IsNullOrEmpty(fullFileName))
 				return;
 
+			flwPatches.Controls.Clear();
 			activeFile = new FileOpen(fullFileName);
 			activeFile.Load();
+
+			foreach (KeyValuePair<int,Patch> kvp in activeFile.PatchList)
+			{
+				CtrlPatch ctrl = new CtrlPatch(kvp.Value);
+				flwPatches.Controls.Add(ctrl);
+			}
 		}
 	}
 }

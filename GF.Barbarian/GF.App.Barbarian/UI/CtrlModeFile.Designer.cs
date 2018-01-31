@@ -30,13 +30,13 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
+			this.shellViewFileList = new GongSolutions.Shell.ShellView();
+			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
 			this.txtFolder = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnOpenFileExplorer = new System.Windows.Forms.Button();
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
-			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
-			this.shellViewFileList = new GongSolutions.Shell.ShellView();
-			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -63,39 +63,6 @@
 			this.splitContainer1.Size = new System.Drawing.Size(1062, 323);
 			this.splitContainer1.SplitterDistance = 373;
 			this.splitContainer1.TabIndex = 3;
-			// 
-			// txtFolder
-			// 
-			this.txtFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtFolder.Location = new System.Drawing.Point(3, 20);
-			this.txtFolder.Name = "txtFolder";
-			this.txtFolder.Size = new System.Drawing.Size(1019, 20);
-			this.txtFolder.TabIndex = 4;
-			this.txtFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFolder_KeyUp);
-			this.txtFolder.Leave += new System.EventHandler(this.txtFolder_Leave);
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(7, 4);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(81, 13);
-			this.label1.TabIndex = 5;
-			this.label1.Text = "Selected folder:";
-			// 
-			// btnOpenFileExplorer
-			// 
-			this.btnOpenFileExplorer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnOpenFileExplorer.BackgroundImage = global::GF.Barbarian.Properties.Resources.FileExplorer;
-			this.btnOpenFileExplorer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.btnOpenFileExplorer.Location = new System.Drawing.Point(1024, 18);
-			this.btnOpenFileExplorer.Name = "btnOpenFileExplorer";
-			this.btnOpenFileExplorer.Size = new System.Drawing.Size(41, 24);
-			this.btnOpenFileExplorer.TabIndex = 7;
-			this.toolTipControl.SetToolTip(this.btnOpenFileExplorer, "Open file explorer in this folder");
-			this.btnOpenFileExplorer.UseVisualStyleBackColor = true;
-			this.btnOpenFileExplorer.Click += new System.EventHandler(this.btnOpenFileExplorer_Click);
 			// 
 			// shellTreeView1
 			// 
@@ -137,12 +104,48 @@
 			this.fileFilterComboBox1.Size = new System.Drawing.Size(680, 21);
 			this.fileFilterComboBox1.TabIndex = 1;
 			// 
+			// txtFolder
+			// 
+			this.txtFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtFolder.Location = new System.Drawing.Point(3, 20);
+			this.txtFolder.Name = "txtFolder";
+			this.txtFolder.Size = new System.Drawing.Size(1019, 20);
+			this.txtFolder.TabIndex = 4;
+			this.txtFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFolder_KeyUp);
+			this.txtFolder.Leave += new System.EventHandler(this.txtFolder_Leave);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(7, 4);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(81, 13);
+			this.label1.TabIndex = 5;
+			this.label1.Text = "Selected folder:";
+			// 
+			// btnOpenFileExplorer
+			// 
+			this.btnOpenFileExplorer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOpenFileExplorer.BackgroundImage = global::GF.Barbarian.Properties.Resources.FileExplorer;
+			this.btnOpenFileExplorer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.btnOpenFileExplorer.Location = new System.Drawing.Point(1024, 18);
+			this.btnOpenFileExplorer.Name = "btnOpenFileExplorer";
+			this.btnOpenFileExplorer.Size = new System.Drawing.Size(41, 24);
+			this.btnOpenFileExplorer.TabIndex = 7;
+			this.toolTipControl.SetToolTip(this.btnOpenFileExplorer, "Open file explorer in this folder");
+			this.btnOpenFileExplorer.UseVisualStyleBackColor = true;
+			this.btnOpenFileExplorer.Click += new System.EventHandler(this.btnOpenFileExplorer_Click);
+			// 
 			// activePatch
 			// 
+			this.activePatch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.activePatch.FileName = null;
 			this.activePatch.Location = new System.Drawing.Point(3, 375);
 			this.activePatch.Name = "activePatch";
-			this.activePatch.Size = new System.Drawing.Size(373, 81);
+			this.activePatch.Size = new System.Drawing.Size(1059, 306);
 			this.activePatch.TabIndex = 6;
 			// 
 			// CtrlModeFile
