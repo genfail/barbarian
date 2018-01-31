@@ -28,7 +28,7 @@ namespace GF.Barbarian
 			{
 				fullFileName = value;
 				txtFname.Text = Path.GetFileNameWithoutExtension(value);
-				Reload();
+				Reload(); // File is read, patches are known now
 			}
 		}
 

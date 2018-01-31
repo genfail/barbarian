@@ -22,12 +22,18 @@ namespace GF.Barbarian
 			ApplySettings();
 		}
 
+		// Selection for some reason change fires 3 SelectionChanged events: old, empty and new. We only want load once
+		string prevSel = ""; 
 		private void ShellViewFileList_SelectionChanged(object sender, EventArgs e)
 		{
 			if (shellViewFileList.SelectedItems.Length > 0)
 			{
 				ShellItem si = shellViewFileList.SelectedItems[0];
-				activePatch.FileName = si.FileSystemPath;
+				if (prevSel != si.FileSystemPath)
+				{
+					activePatch.FileName = si.FileSystemPath; // Patches loaded inside here
+					prevSel = si.FileSystemPath;  
+				}
 			}
 		}
 
