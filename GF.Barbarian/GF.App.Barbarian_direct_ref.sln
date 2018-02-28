@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.Lib.Global", "GF.Lib.Glo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "gong-shell.src\Shell\Shell.csproj", "{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.Test.UnitTests", "GF.Test.UnitTests\GF.Test.UnitTests.csproj", "{414EC4B5-CD0A-4C2C-85C1-5CFA9F5C687E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF.Lib.Communication.Midi", "GF.Lib.Communication.Midi\GF.Lib.Communication.Midi.csproj", "{889AE9D0-7944-4405-87BF-6E3D34A1107B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{414EC4B5-CD0A-4C2C-85C1-5CFA9F5C687E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{414EC4B5-CD0A-4C2C-85C1-5CFA9F5C687E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{414EC4B5-CD0A-4C2C-85C1-5CFA9F5C687E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{414EC4B5-CD0A-4C2C-85C1-5CFA9F5C687E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889AE9D0-7944-4405-87BF-6E3D34A1107B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889AE9D0-7944-4405-87BF-6E3D34A1107B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889AE9D0-7944-4405-87BF-6E3D34A1107B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889AE9D0-7944-4405-87BF-6E3D34A1107B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

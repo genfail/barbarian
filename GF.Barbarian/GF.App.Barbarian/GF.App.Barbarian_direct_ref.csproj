@@ -72,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationData.cs" />
+    <Compile Include="ConnectionManager.cs" />
     <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Midi\Commands.cs" />
     <Compile Include="Midi\FileOpen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\CtrlModeLibrary.cs">
@@ -92,12 +94,6 @@
     </Compile>
     <Compile Include="UI\CtrlFileContent.Designer.cs">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\CtrlPatch.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\CtrlPatch.Designer.cs">
-      <DependentUpon>CtrlPatch.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
@@ -123,9 +119,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CtrlFileContent.resx">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CtrlPatch.resx">
-      <DependentUpon>CtrlPatch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
@@ -159,6 +152,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GF.Lib.Communication.Midi\GF.Lib.Communication.Midi.csproj">
+      <Project>{889ae9d0-7944-4405-87bf-6e3d34a1107b}</Project>
+      <Name>GF.Lib.Communication.Midi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GF.Lib.Global\GF.Lib.Global.csproj">
       <Project>{4860ad0f-227e-41a5-9550-7f982da58a47}</Project>
       <Name>GF.Lib.Global</Name>
@@ -172,6 +169,8 @@
     <Content Include="Barbarian.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\LedOff.png" />
+    <Content Include="Resources\LedOn.png" />
     <None Include="Resources\default.g5l" />
     <None Include="Resources\default.syx" />
     <None Include="Resources\FileExplorer.png" />

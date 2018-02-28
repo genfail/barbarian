@@ -39,6 +39,7 @@
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.panelMain = new System.Windows.Forms.Panel();
+			this.toolStripStatusMidi = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -104,7 +105,8 @@
 			// statusStripBarbarian
 			// 
 			this.statusStripBarbarian.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.toolStripStatusMidi});
 			this.statusStripBarbarian.Location = new System.Drawing.Point(0, 666);
 			this.statusStripBarbarian.Name = "statusStripBarbarian";
 			this.statusStripBarbarian.Size = new System.Drawing.Size(1107, 22);
@@ -113,8 +115,9 @@
 			// 
 			// toolStripStatusLabel1
 			// 
+			this.toolStripStatusLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(115, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
 			this.toolStripStatusLabel1.Text = "toolStripStatusMode";
 			// 
 			// panelMain
@@ -124,6 +127,13 @@
 			this.panelMain.Name = "panelMain";
 			this.panelMain.Size = new System.Drawing.Size(1107, 642);
 			this.panelMain.TabIndex = 3;
+			// 
+			// toolStripStatusMidi
+			// 
+			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.LedOff;
+			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
+			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 17);
+			this.toolStripStatusMidi.Text = "Midi";
 			// 
 			// FrmMain
 			// 
@@ -160,6 +170,7 @@
 		private System.Windows.Forms.StatusStrip statusStripBarbarian;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.Panel panelMain;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMidi;
 	}
 }
 

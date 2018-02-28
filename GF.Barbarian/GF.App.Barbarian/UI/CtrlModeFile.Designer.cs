@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.splitContainerExplorer = new System.Windows.Forms.SplitContainer();
 			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
 			this.shellViewFileList = new GongSolutions.Shell.ShellView();
 			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
@@ -37,32 +37,35 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnOpenFileExplorer = new System.Windows.Forms.Button();
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
+			this.splitContainerMain = new System.Windows.Forms.SplitContainer();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).BeginInit();
+			this.splitContainerExplorer.Panel1.SuspendLayout();
+			this.splitContainerExplorer.Panel2.SuspendLayout();
+			this.splitContainerExplorer.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
+			this.splitContainerMain.Panel1.SuspendLayout();
+			this.splitContainerMain.Panel2.SuspendLayout();
+			this.splitContainerMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// splitContainer1
+			// splitContainerExplorer
 			// 
-			this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.splitContainer1.Location = new System.Drawing.Point(3, 46);
-			this.splitContainer1.Name = "splitContainer1";
+			this.splitContainerExplorer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainerExplorer.Location = new System.Drawing.Point(0, 0);
+			this.splitContainerExplorer.Name = "splitContainerExplorer";
 			// 
-			// splitContainer1.Panel1
+			// splitContainerExplorer.Panel1
 			// 
-			this.splitContainer1.Panel1.Controls.Add(this.shellTreeView1);
+			this.splitContainerExplorer.Panel1.Controls.Add(this.shellTreeView1);
 			// 
-			// splitContainer1.Panel2
+			// splitContainerExplorer.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.fileFilterComboBox1);
-			this.splitContainer1.Panel2.Controls.Add(this.shellViewFileList);
-			this.splitContainer1.Size = new System.Drawing.Size(1062, 323);
-			this.splitContainer1.SplitterDistance = 373;
-			this.splitContainer1.TabIndex = 3;
+			this.splitContainerExplorer.Panel2.Controls.Add(this.fileFilterComboBox1);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.shellViewFileList);
+			this.splitContainerExplorer.Size = new System.Drawing.Size(804, 248);
+			this.splitContainerExplorer.SplitterDistance = 282;
+			this.splitContainerExplorer.TabIndex = 3;
 			// 
 			// shellTreeView1
 			// 
@@ -70,7 +73,7 @@
 			this.shellTreeView1.Location = new System.Drawing.Point(0, 0);
 			this.shellTreeView1.Name = "shellTreeView1";
 			this.shellTreeView1.ShellView = this.shellViewFileList;
-			this.shellTreeView1.Size = new System.Drawing.Size(373, 323);
+			this.shellTreeView1.Size = new System.Drawing.Size(282, 248);
 			this.shellTreeView1.TabIndex = 0;
 			this.shellTreeView1.SelectionChanged += new System.EventHandler(this.shellTreeView1_SelectionChanged);
 			// 
@@ -83,7 +86,7 @@
 			this.shellViewFileList.MultiSelect = false;
 			this.shellViewFileList.Name = "shellViewFileList";
 			this.shellViewFileList.SelectedItems = new GongSolutions.Shell.ShellItem[0];
-			this.shellViewFileList.Size = new System.Drawing.Size(679, 290);
+			this.shellViewFileList.Size = new System.Drawing.Size(512, 215);
 			this.shellViewFileList.StatusBar = null;
 			this.shellViewFileList.TabIndex = 0;
 			this.shellViewFileList.Text = "shellView1";
@@ -101,7 +104,7 @@
 			this.fileFilterComboBox1.Location = new System.Drawing.Point(2, 3);
 			this.fileFilterComboBox1.Name = "fileFilterComboBox1";
 			this.fileFilterComboBox1.ShellView = this.shellViewFileList;
-			this.fileFilterComboBox1.Size = new System.Drawing.Size(680, 21);
+			this.fileFilterComboBox1.Size = new System.Drawing.Size(513, 21);
 			this.fileFilterComboBox1.TabIndex = 1;
 			// 
 			// txtFolder
@@ -110,7 +113,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtFolder.Location = new System.Drawing.Point(3, 20);
 			this.txtFolder.Name = "txtFolder";
-			this.txtFolder.Size = new System.Drawing.Size(1019, 20);
+			this.txtFolder.Size = new System.Drawing.Size(761, 20);
 			this.txtFolder.TabIndex = 4;
 			this.txtFolder.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFolder_KeyUp);
 			this.txtFolder.Leave += new System.EventHandler(this.txtFolder_Leave);
@@ -129,7 +132,7 @@
 			this.btnOpenFileExplorer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOpenFileExplorer.BackgroundImage = global::GF.Barbarian.Properties.Resources.FileExplorer;
 			this.btnOpenFileExplorer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.btnOpenFileExplorer.Location = new System.Drawing.Point(1024, 18);
+			this.btnOpenFileExplorer.Location = new System.Drawing.Point(766, 18);
 			this.btnOpenFileExplorer.Name = "btnOpenFileExplorer";
 			this.btnOpenFileExplorer.Size = new System.Drawing.Size(41, 24);
 			this.btnOpenFileExplorer.TabIndex = 7;
@@ -137,15 +140,33 @@
 			this.btnOpenFileExplorer.UseVisualStyleBackColor = true;
 			this.btnOpenFileExplorer.Click += new System.EventHandler(this.btnOpenFileExplorer_Click);
 			// 
-			// activePatch
+			// splitContainerMain
 			// 
-			this.activePatch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.splitContainerMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.splitContainerMain.Location = new System.Drawing.Point(3, 59);
+			this.splitContainerMain.Name = "splitContainerMain";
+			this.splitContainerMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// splitContainerMain.Panel1
+			// 
+			this.splitContainerMain.Panel1.Controls.Add(this.splitContainerExplorer);
+			// 
+			// splitContainerMain.Panel2
+			// 
+			this.splitContainerMain.Panel2.Controls.Add(this.activePatch);
+			this.splitContainerMain.Size = new System.Drawing.Size(804, 485);
+			this.splitContainerMain.SplitterDistance = 248;
+			this.splitContainerMain.TabIndex = 8;
+			// 
+			// activePatch
+			// 
+			this.activePatch.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.activePatch.FileName = null;
-			this.activePatch.Location = new System.Drawing.Point(3, 375);
+			this.activePatch.Location = new System.Drawing.Point(0, 0);
 			this.activePatch.Name = "activePatch";
-			this.activePatch.Size = new System.Drawing.Size(1059, 306);
+			this.activePatch.Size = new System.Drawing.Size(804, 233);
 			this.activePatch.TabIndex = 6;
 			// 
 			// CtrlModeFile
@@ -153,25 +174,28 @@
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.splitContainerMain);
 			this.Controls.Add(this.btnOpenFileExplorer);
-			this.Controls.Add(this.activePatch);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtFolder);
-			this.Controls.Add(this.splitContainer1);
 			this.Name = "CtrlModeFile";
-			this.Size = new System.Drawing.Size(1068, 684);
+			this.Size = new System.Drawing.Size(810, 547);
 			this.Load += new System.EventHandler(this.CtrlModeFile_Load);
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-			this.splitContainer1.ResumeLayout(false);
+			this.splitContainerExplorer.Panel1.ResumeLayout(false);
+			this.splitContainerExplorer.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).EndInit();
+			this.splitContainerExplorer.ResumeLayout(false);
+			this.splitContainerMain.Panel1.ResumeLayout(false);
+			this.splitContainerMain.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
+			this.splitContainerMain.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-		private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.SplitContainer splitContainerExplorer;
 		private GongSolutions.Shell.ShellTreeView shellTreeView1;
 		private GongSolutions.Shell.ShellView shellViewFileList;
 		private GongSolutions.Shell.FileFilterComboBox fileFilterComboBox1;
@@ -180,5 +204,6 @@
 		private CtrlFileContent activePatch;
 		private System.Windows.Forms.Button btnOpenFileExplorer;
 		private System.Windows.Forms.ToolTip toolTipControl;
+		private System.Windows.Forms.SplitContainer splitContainerMain;
 	}
 }

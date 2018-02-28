@@ -60,8 +60,8 @@ namespace GF.Barbarian
 			args = args.Skip(1).ToArray(); 
 			var result = p.Parse(args);// /test="D:\admin\Roland_GR55\patches\Mustang Sally.g5l"
 
-			var UserConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel .PerUserRoamingAndLocal);
-			string sss= UserConfig.FilePath;
+			Configuration userConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+			string sss= userConfig.FilePath;
 			Trace.WriteLine("Settings are in file: " + sss);
 
 			if(result.HelpCalled)

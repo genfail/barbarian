@@ -58,5 +58,17 @@ namespace GF.Barbarian.Properties {
                 this["LastProgramMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastSelectedPatchIndex {
+            get {
+                return ((int)(this["LastSelectedPatchIndex"]));
+            }
+            set {
+                this["LastSelectedPatchIndex"] = value;
+            }
+        }
     }
 }

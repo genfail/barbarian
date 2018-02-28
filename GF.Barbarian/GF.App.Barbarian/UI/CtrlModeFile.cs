@@ -48,6 +48,8 @@ namespace GF.Barbarian
 			shellTreeView1.SelectedFolder = si;
 
 			shellViewFileList.Select(Program.AppSettings.FileModeFileName);
+
+			activePatch.SelectedPatchIndex = Properties.Settings.Default.LastSelectedPatchIndex;
 		}
 
 		public void SaveSettings()
@@ -58,11 +60,12 @@ namespace GF.Barbarian
 			{
 				ShellItem si = shellViewFileList.SelectedItems[0];
 				Properties.Settings.Default.LastSelectedFile = si.DisplayName;
+				Properties.Settings.Default.LastSelectedPatchIndex = activePatch.SelectedPatchIndex;
+
 			}
 			else
 				Properties.Settings.Default.LastSelectedFile = "";
 		}
-
 
 		private void LoadFolder(string _folder, string _selectedFile = null)
 		{

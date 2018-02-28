@@ -27,7 +27,16 @@ namespace GF.Barbarian
 		}
 
 		private void FrmMain_Load(object sender, EventArgs e)
-		{}
+		{
+			Program.Connection.ConnectionChanged += Connection_ConnectionChanged;
+			Connection_ConnectionChanged(null, null);
+		}
+
+		private void Connection_ConnectionChanged(object sender, EventArgs e)
+		{
+			toolStripStatusMidi.Text = Program.Connection.ConnectedDevice;
+			toolStripStatusMidi.Image = Program.Connection.Connected ? Properties.Resources.LedOn :  Properties.Resources.LedOff;
+		}
 
 		public void ApplySettings()
 		{
