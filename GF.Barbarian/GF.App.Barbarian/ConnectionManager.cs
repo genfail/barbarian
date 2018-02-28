@@ -58,9 +58,15 @@ namespace GF.Barbarian
 				if (cnt-- <= 0)
 				{
 					cnt = 10;
-					string[] devices = MidiCommands.GetDeviceNamesWaveIn().Where(s => s.Contains("GR-55")).ToArray();
-					if (devices != null && (devices.Count() > 0) )
-						SetConnected(true, devices[0]);
+					string[] devices;
+					if (MidiCommands.ListDevicesMidiIn(out devices) > 0)
+					{
+						devices = devices.Where(s => s.Contains("GR-55")).ToArray();
+						if (devices != null && (devices.Count() > 0) )
+							SetConnected(true, devices[0]);
+						else
+							SetConnected(false);
+					}
 					else
 						SetConnected(false);
 				}
