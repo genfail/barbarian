@@ -39,6 +39,7 @@
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainerMain = new System.Windows.Forms.SplitContainer();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
+			this.button1 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).BeginInit();
 			this.splitContainerExplorer.Panel1.SuspendLayout();
 			this.splitContainerExplorer.Panel2.SuspendLayout();
@@ -155,6 +156,7 @@
 			// 
 			// splitContainerMain.Panel2
 			// 
+			this.splitContainerMain.Panel2.Controls.Add(this.button1);
 			this.splitContainerMain.Panel2.Controls.Add(this.activePatch);
 			this.splitContainerMain.Size = new System.Drawing.Size(804, 485);
 			this.splitContainerMain.SplitterDistance = 248;
@@ -166,8 +168,19 @@
 			this.activePatch.FileName = null;
 			this.activePatch.Location = new System.Drawing.Point(0, 0);
 			this.activePatch.Name = "activePatch";
+			this.activePatch.SelectedPatchIndex = -1;
 			this.activePatch.Size = new System.Drawing.Size(804, 233);
 			this.activePatch.TabIndex = 6;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(433, 172);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 7;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// CtrlModeFile
 			// 
@@ -205,5 +218,6 @@
 		private System.Windows.Forms.Button btnOpenFileExplorer;
 		private System.Windows.Forms.ToolTip toolTipControl;
 		private System.Windows.Forms.SplitContainer splitContainerMain;
+		private System.Windows.Forms.Button button1;
 	}
 }

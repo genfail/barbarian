@@ -18,6 +18,7 @@ namespace GF.Test.UnitTests
 
 			Assert.IsTrue(devices != null, "Returned null");
 			Assert.IsTrue(devices.Contains("GR-55"), "does not contain ");
+
 		}
 	}
 }

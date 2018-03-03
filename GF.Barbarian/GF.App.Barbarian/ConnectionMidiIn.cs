@@ -17,7 +17,7 @@ namespace GF.Barbarian
 		Connected,
 	}
 
-	public class ConnectionManager
+	public class ConnectionMidiIn
 	{
 		private bool threadRunning = false;
 
@@ -47,7 +47,6 @@ namespace GF.Barbarian
 		private ConnectionState __connectState = ConnectionState.Connected;
 		public ConnectionState ConnectState { get{return __connectState; }}
 
-
 		private void SetState(ConnectionState _connState)
 		{
 			if(__connectState != _connState)
@@ -72,7 +71,7 @@ namespace GF.Barbarian
 			}
 		}
 
-		public ConnectionManager()
+		public ConnectionMidiIn()
 		{
 			SetState(ConnectionState.Unavailable);
 			syncContext = SynchronizationContext.Current;
@@ -80,7 +79,7 @@ namespace GF.Barbarian
 		}
 
 		#region Dispose
-        ~ConnectionManager()
+        ~ConnectionMidiIn()
         {
             Dispose(false);
         }
@@ -574,8 +573,5 @@ namespace GF.Barbarian
                 }, null);
             }
         }
-
-
-
 	}
 }

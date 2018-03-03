@@ -13,7 +13,7 @@ namespace GF.Barbarian
 {
 	public partial class FrmMain : Form
 	{
-		public ConnectionManager Connection { get; }
+		public ConnectionMidiIn Connection { get; }
 
 		private ProgramMode mode = ProgramMode.File;
 		private Dictionary<ProgramMode,ICtrlMode> modes = null;
@@ -21,7 +21,7 @@ namespace GF.Barbarian
 
 		public FrmMain()
 		{
-			Connection = new ConnectionManager();
+			Connection = new ConnectionMidiIn();
 			Connection.Init();
 
 			InitializeComponent();
