@@ -13,12 +13,17 @@ namespace GF.Barbarian
 {
 	public partial class FrmMain : Form
 	{
+		public ConnectionManager Connection { get; }
+
 		private ProgramMode mode = ProgramMode.File;
 		private Dictionary<ProgramMode,ICtrlMode> modes = null;
 		private ICtrlMode activeControl { get{ return modes[mode];} }
 
 		public FrmMain()
 		{
+			Connection = new ConnectionManager();
+			Connection.Init();
+
 			InitializeComponent();
 			modes = new Dictionary<ProgramMode, ICtrlMode>();
 			modes.Add(ProgramMode.File, new CtrlModeFile());
@@ -28,14 +33,14 @@ namespace GF.Barbarian
 
 		private void FrmMain_Load(object sender, EventArgs e)
 		{
-			Program.Connection.ConnectionChanged += Connection_ConnectionChanged;
+			Connection.OnConnectionStateChanged += Connection_ConnectionChanged;
 			Connection_ConnectionChanged(null, null);
 		}
 
 		private void Connection_ConnectionChanged(object sender, EventArgs e)
 		{
-			toolStripStatusMidi.Text = Program.Connection.ConnectedDevice;
-			toolStripStatusMidi.Image = Program.Connection.Connected ? Properties.Resources.LedOn :  Properties.Resources.LedOff;
+			toolStripStatusMidi.Text = Connection.DeviceConnectedText;
+			toolStripStatusMidi.Image = Global.GetConnectedIcon(Connection.ConnectState);
 		}
 
 		public void ApplySettings()
@@ -93,12 +98,34 @@ namespace GF.Barbarian
 
 		private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			Connection.Shutdown();
 			Properties.Settings.Default.LastProgramMode = (int)mode;
 			foreach (ICtrlMode c in modes.Values)
 			{
 				c.SaveSettings();
 			}
 			Properties.Settings.Default.Save();
+		}
+
+		private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			connectionToolStripMenuItem.Enabled = Connection.ConnectState != ConnectionState.Unavailable;
+			connectionToolStripMenuItem.Checked = Connection.ConnectState == ConnectionState.Connected;
+
+			switch (Connection.ConnectState)
+			{
+				case ConnectionState.Unavailable: connectionToolStripMenuItem.Text = "Connection unavailable";		break;
+				case ConnectionState.Available:   connectionToolStripMenuItem.Text = "Open connection";				break;
+				case ConnectionState.Connected:   connectionToolStripMenuItem.Text = "Close connection";			break;
+				default:
+					connectionToolStripMenuItem.Text = "Connection unknown"; break;
+			}
+		}
+
+		private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Connection.ToggleConnect();
+
 		}
 	}
 }

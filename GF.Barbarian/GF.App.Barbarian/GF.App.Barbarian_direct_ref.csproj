@@ -169,8 +169,10 @@
     <Content Include="Barbarian.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\LedOff.png" />
-    <Content Include="Resources\LedOn.png" />
+    <None Include="Resources\Question.png" />
+    <None Include="Resources\ConnectionAvailable.png" />
+    <None Include="Resources\ConnectionNotAvailable.png" />
+    <None Include="Resources\ConnectionOpen.png" />
     <None Include="Resources\default.g5l" />
     <None Include="Resources\default.syx" />
     <None Include="Resources\FileExplorer.png" />

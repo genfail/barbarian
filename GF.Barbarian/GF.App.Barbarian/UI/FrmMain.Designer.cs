@@ -39,6 +39,7 @@
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.panelMain = new System.Windows.Forms.Panel();
+			this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripStatusMidi = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
@@ -90,15 +91,17 @@
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.connectionToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
+			this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.toolsToolStripMenuItem_DropDownOpening);
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
@@ -128,11 +131,18 @@
 			this.panelMain.Size = new System.Drawing.Size(1107, 642);
 			this.panelMain.TabIndex = 3;
 			// 
+			// connectionToolStripMenuItem
+			// 
+			this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
+			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.connectionToolStripMenuItem.Text = "Device connection";
+			this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
+			// 
 			// toolStripStatusMidi
 			// 
-			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.LedOff;
+			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionNotAvailable;
 			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
-			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 17);
+			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 16);
 			this.toolStripStatusMidi.Text = "Midi";
 			// 
 			// FrmMain
@@ -171,6 +181,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.Panel panelMain;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMidi;
+		private System.Windows.Forms.ToolStripMenuItem connectionToolStripMenuItem;
 	}
 }
 

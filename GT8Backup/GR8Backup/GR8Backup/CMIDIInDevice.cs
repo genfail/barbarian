@@ -1,86 +1,57 @@
-﻿using GF.Lib.Communication.Midi;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
-namespace GF.Barbarian
+namespace MIDI
 {
-	public enum ConnectionState
-	{
-		Unavailable,
-		Available,
-		Connected,
-	}
-
-	public class ConnectionManager
-	{
-		private bool threadRunning = false;
-
-		// Needed for midi interaction
-        private SynchronizationContext syncContext;
-		private MidiInCallbackDel MidiCall;
-		private IntPtr MIDIInHandle;
-		private int mInBufferLength;
-		private IntPtr DataBufferPointer;
-		/// <summary> Updates status changes to the MIDI in port.</summary>
+    delegate void MessageInDel(object sender, MidiMsgEventArgs e);
+    delegate void ShortDel(object sender, MidiShortMsgEventArgs e);
+    delegate void LongDel(object sender, MidiLongMsgEventArgs e);
+    delegate void ReceiveErrorDel(object sender, MidiErrorEventArgs e);
+    
+    class CMIDIInDevice
+    {
+        /// <summary>
+        /// Updates status changes to the MIDI in port.
+        /// </summary>
         public event MessageInDel MessageReceived;
-		/// <summary> Short message received. MIDI status and parameter data are specified as parameters. Port is automatically reset to receive next message. </summary>
-		public event ShortDel ShortMessage;
-		/// <summary>Long message received. MIDI system exclusive data is sent as byte array parameter. Port is automatically reset to receive next message. </summary>
-		public event LongDel LongMessage;
-		/// <summary> Any Exceptions occurring within the class are sent to the instantiating class via this event. </summary>
-		public event ReceiveErrorDel ReceiveError;
+        /// <summary>
+        /// Short message received. MIDI status and parameter data are specified as parameters. 
+        /// Port is automatically reset to receive next message. 
+        /// </summary>
+        public event ShortDel ShortMessage;
+        /// <summary>
+        /// Long message received. MIDI system exclusive data is sent as byte array parameter. 
+        /// Port is automatically reset to receive next message.
+        /// </summary>
+        public event LongDel LongMessage;
+        /// <summary>
+        /// Any Exceptions occurring within the class are sent to the instantiating class via this event.
+        /// </summary>
+        public event ReceiveErrorDel ReceiveError;
 
+        private SynchronizationContext syncContext;
+        private CExternals.MidiInCallbackDel MidiCall;
+        private IntPtr MIDIInHandle;
+        private IntPtr DataBufferPointer;
+        private bool mPortOpen;
+        private int mInBufferLength;
+        private bool disposed = false;
 
-		public bool DeviceAvailable { get { return gr55DeviceId != -1; } }
-		private int gr55DeviceId = -1;
-		private string gr55DeviceName = "";
-		public string DeviceConnectedText { get; private set;} 
-
-		public event EventHandler<EventArgs> OnConnectionStateChanged; 
-
-		private ConnectionState __connectState = ConnectionState.Connected;
-		public ConnectionState ConnectState { get{return __connectState; }}
-
-
-		private void SetState(ConnectionState _connState)
-		{
-			if(__connectState != _connState)
-			{
-				__connectState = _connState;
-
-				switch (__connectState)
-				{
-					case ConnectionState.Unavailable:
-						DeviceConnectedText = "GR55 Not available";
-						break;
-					case ConnectionState.Available:
-						DeviceConnectedText = "GR55 Available";
-						break;
-					case ConnectionState.Connected:
-						DeviceConnectedText = "GR55 Connected";
-						break;
-					default:
-						break;
-				}
-				OnConnectionStateChanged?.Invoke(this, new EventArgs());
-			}
-		}
-
-		public ConnectionManager()
-		{
-			SetState(ConnectionState.Unavailable);
-			syncContext = SynchronizationContext.Current;
-			mInBufferLength = 256;
-		}
-
-		#region Dispose
-        ~ConnectionManager()
+        /// <summary>
+        /// To instantiate the class it is necessary to provide a System Exclusive message buffer length.
+        /// </summary>
+        /// <param name="inBufferLength">System Exclusive message buffer length.</param>
+        public CMIDIInDevice(int inBufferLength)
+        {
+            syncContext = SynchronizationContext.Current;
+            mInBufferLength = inBufferLength;
+        }
+        
+        ~CMIDIInDevice()
         {
             Dispose(false);
         }
@@ -90,7 +61,6 @@ namespace GF.Barbarian
             Dispose(true);
         }
 
-        private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
@@ -106,68 +76,67 @@ namespace GF.Barbarian
             //Free unmanaged objects here;
             ClosePort();
         }
-		#endregion
 
-		private bool mPortOpen = false;
-		public bool Connected { get{ return mPortOpen; } }
-		public void Connect()
-		{
-			if (DeviceAvailable && !Connected)
-				OpenPort((uint)gr55DeviceId);
-		}
-		public void Disconnect()
-		{
-			ClosePort();
-		}
-		public void ToggleConnect()
-		{
-			if (DeviceAvailable && !Connected)
-				Connect();
-			else if (DeviceAvailable && Connected)
-				Disconnect();
-		}
+        public bool PortOpen
+        {
+            get
+            {
+                return mPortOpen;
+            }
+        }
 
-		public void Init()
-		{
-			if (threadRunning)
-				return; // nothing to do
+        /// <summary>
+        /// Get a list of the available MIDI in devices on the PC.
+        /// </summary>
+        /// <param name="deviceList">The index of the list is used to select the desired device.
+        /// The index of the list is used to select the desired device.</param>
+        /// <returns>The function return value is the number of devices on the current PC.</returns>
+        public uint ListDevices(out string[] deviceList)
+        {
+            CExternals.MIDIINCAPS MyMIDIInDevCaps = new CExternals.MIDIINCAPS();
+            uint returnValue, lngNumOfDevices;
+            List<string> devices = new List<string>();
 
-			Task task = new Task(new Action(CheckConnected));
-			task.Start();
-		}
+            //Get the number of MIDI in devices installed.
+            lngNumOfDevices = CExternals.midiInGetNumDevs();
+            if(lngNumOfDevices > 0) 
+            {
+                //Loop through all devices and store the device names.
+                for(uint intLoop=0;intLoop<lngNumOfDevices;intLoop++)
+                {
+                    returnValue = (uint)CExternals.midiInGetDevCaps((UIntPtr)intLoop, ref MyMIDIInDevCaps, (uint)Marshal.SizeOf(MyMIDIInDevCaps));
+                    if (returnValue == (uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
+                    {
+                        devices.Add(MyMIDIInDevCaps.szPname);
+                    }
+                    else
+                    {
+                        //An Error occurred
+                        ErrorHandler(returnValue);
+                        break;
+                    }
+                }
+            }
 
-		public void Shutdown()
-		{
-			threadRunning = false;
-		}
+            deviceList = devices.ToArray();
+            return lngNumOfDevices;
+        }
 
-		private void CheckConnected()
-		{
-			int cnt = 10;
-			threadRunning = true;
-			while(threadRunning)
-			{
-				if (cnt-- <= 0)
-				{
-					cnt = 10;
-
-					bool hasChanged = IsConnetionAvailableChanged();
-					CheckConnetionOpen();
-				}
-				Thread.Sleep(100);
-			}
-		}
-
-		private bool OpenPort(uint deviceNumber)
+        /// <summary>
+        /// Open the MIDI in device specified
+        /// </summary>
+        /// <param name="deviceNumber">MIDI in port to open. Index corresponds to port name list from ListDevices().</param>
+        /// <returns>Returns true if the port can be opened. Otherwise returns false.</returns>
+        public bool OpenPort(uint deviceNumber)
         {
             uint returnValue;
             bool startSuccess, openSuccess;
 
-            MidiCall = new MidiInCallbackDel(MidiCallback);
+            MidiCall = new CExternals.MidiInCallbackDel(MidiCallback);
 
-            returnValue = MidiCommands.midiInOpen(out MIDIInHandle, deviceNumber, MidiCall, new IntPtr(), (uint)MidiCommands.CALLBACK_FUNCTION);
-
-            if (returnValue == (uint)MMSYSERR.MMSYSERR_NOERROR)
+            returnValue = CExternals.midiInOpen(out MIDIInHandle, deviceNumber, 
+                MidiCall, new IntPtr(), (uint)CExternals.CALLBACK_FUNCTION);
+            if (returnValue == (uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
             {
                 startSuccess = StartRecording();
                 if (startSuccess == false)
@@ -180,7 +149,6 @@ namespace GF.Barbarian
             else
             {
                 ErrorHandler(returnValue);
-
                 mPortOpen = false;
                 openSuccess = false;
             }
@@ -191,7 +159,7 @@ namespace GF.Barbarian
         /// Close the currently open port. If no port is open then this method does nothing.
         /// </summary>
         /// <returns>Returns true is the port is closed correctly. Otherwise returns false.</returns>
-        private bool ClosePort()
+        public bool ClosePort()
         {
             uint returnValue = 0;
             bool stopSuccess, closeSuccess = false;
@@ -203,8 +171,8 @@ namespace GF.Barbarian
                 stopSuccess = StopRecording();
                 if (stopSuccess)
                 {
-                    returnValue = MidiCommands.midiInClose(MIDIInHandle);
-                    if (returnValue == (uint)MMSYSERR.MMSYSERR_NOERROR)
+                    returnValue = CExternals.midiInClose(MIDIInHandle);
+                    if (returnValue == (uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
                     {
                         closeSuccess = true;
                     }
@@ -226,8 +194,7 @@ namespace GF.Barbarian
             return closeSuccess;
         }
 
-
-       private void MidiCallback(int handle, int msg, int instance, int param1, int param2)
+        private void MidiCallback(int handle, int msg, int instance, int param1, int param2)
         {
             string message = "";
             bool statusMsg;
@@ -235,27 +202,27 @@ namespace GF.Barbarian
             statusMsg = true;
             switch (msg)
             {
-                case (int)MIM.MM_MIM_OPEN:
+                case (int)CExternals.MIM.MM_MIM_OPEN:
                     message = "MIDI In, Open" + Environment.NewLine;
                     break;
-                case (int)MIM.MM_MIM_CLOSE:
+                case (int)CExternals.MIM.MM_MIM_CLOSE:
                     message = "MIDI In, Close" + Environment.NewLine;
                     break;
-                case (int)MIM.MM_MIM_DATA:
+                case (int)CExternals.MIM.MM_MIM_DATA:
                     ShortMessageReceived((uint)param1);
                     statusMsg = false;
                     break;
-                case (int)MIM.MM_MIM_LONGDATA:
+                case (int)CExternals.MIM.MM_MIM_LONGDATA:
                     LongMessageReceived();
                     statusMsg = false;
                     break;
-                case (int)MIM.MM_MIM_ERROR:
+                case (int)CExternals.MIM.MM_MIM_ERROR:
                     message = "MIDI In, Error" + Environment.NewLine;
                     break;
-                case (int)MIM.MM_MIM_LONGERROR:
+                case (int)CExternals.MIM.MM_MIM_LONGERROR:
                     message = "MIDI In, Long Error" + Environment.NewLine;
                     break;
-                case (int)MIM.MM_MIM_MOREDATA:
+                case (int)CExternals.MIM.MM_MIM_MOREDATA:
                     message = "MIDI In, More Data" + Environment.NewLine;
                     break;
                 default:
@@ -263,7 +230,7 @@ namespace GF.Barbarian
                     break;
             }
 
-           if (statusMsg)
+            if (statusMsg)
             {
                 //Fire the event on the class instatiating thread.
                 if (!disposed)
@@ -277,90 +244,7 @@ namespace GF.Barbarian
             }
         }
 
-		private void CheckConnetionOpen()
-		{
-			if (DeviceAvailable)
-			{
-				if (Connected)
-					SetState(ConnectionState.Connected);
-				else
-					SetState(ConnectionState.Available);
-			}
-			else
-			{
-				SetState(ConnectionState.Unavailable);
-				Disconnect();
-			}
-		}
-
-		// Returns true if something has changed
-		private bool IsConnetionAvailableChanged()
-		{
-			bool hasChanged = false;
-			bool hasFound = false;
-			string[] devices;
-			if (ListDevicesMidiIn(out devices) > 0)
-			{
-				for (int i = 0; i < devices.Length; i++)
-				{
-					if (devices[i].Contains("GR-55"))
-					{
-						hasFound = true;
-						if (gr55DeviceId != i)
-						{
-							gr55DeviceName = devices[i];
-							gr55DeviceId = i;
-							hasChanged = true;
-							break;
-						}
-					}
-				}
-			}
-			if (!hasFound)
-			{
-				if (gr55DeviceId != -1)
-				{
-					gr55DeviceName = "";
-					gr55DeviceId = -1;
-					hasChanged = true;
-				}
-			}
-			return hasChanged;
-		}
-
-//---------------------
-		private uint ListDevicesMidiIn(out string[] deviceList)
-        {
-            MIDIINCAPS MyMIDIInDevCaps = new MIDIINCAPS();
-            uint returnValue, lngNumOfDevices;
-            List<string> devices = new List<string>();
-
-            //Get the number of MIDI in devices installed.
-            lngNumOfDevices = MidiCommands.midiInGetNumDevs();
-            if(lngNumOfDevices > 0) 
-            {
-                //Loop through all devices and store the device names.
-                for(uint intLoop=0;intLoop<lngNumOfDevices;intLoop++)
-                {
-                    returnValue = (uint)MidiCommands.midiInGetDevCaps((UIntPtr)intLoop, ref MyMIDIInDevCaps, (uint)Marshal.SizeOf(MyMIDIInDevCaps));
-                    if (returnValue == (uint)MMSYSERR.MMSYSERR_NOERROR)
-                    {
-                        devices.Add(MyMIDIInDevCaps.szPname);
-                    }
-                    else
-                    {
-                        //An Error occurred
-                        ErrorHandler(returnValue);
-                        break;
-                    }
-                }
-            }
-
-            deviceList = devices.ToArray();
-            return lngNumOfDevices;
-        }
-
-		private void ShortMessageReceived(uint MIDIMessage)
+        private void ShortMessageReceived(uint MIDIMessage)
         {
             byte MIDIStatus;
             byte MIDIData1, MIDIData2;
@@ -385,7 +269,7 @@ namespace GF.Barbarian
             System.Diagnostics.Debug.Assert(mInBufferLength > 0);
             
             bool tempResult;
-            MIDIHDR InHeader = new MIDIHDR();
+            CExternals.MIDIHDR InHeader = new CExternals.MIDIHDR();
             byte[] MIDIInBuffer = new byte[mInBufferLength];
 
             if(mPortOpen)
@@ -393,7 +277,7 @@ namespace GF.Barbarian
                 //Stop recording while processing the current data.
                 tempResult = StopRecording();
 
-                InHeader = (MIDIHDR) Marshal.PtrToStructure(DataBufferPointer, typeof(MIDIHDR));
+                InHeader = (CExternals.MIDIHDR) Marshal.PtrToStructure(DataBufferPointer, typeof(CExternals.MIDIHDR));
                 Marshal.Copy(InHeader.lpData, MIDIInBuffer, 0, mInBufferLength);
 
                 if(InHeader.dwBytesRecorded > 0)
@@ -420,7 +304,7 @@ namespace GF.Barbarian
         {
             uint tempReturn;
             bool StartSuccess = false;
-            MIDIHDR InHeader = new MIDIHDR();
+            CExternals.MIDIHDR InHeader = new CExternals.MIDIHDR();
             byte[] MIDIInBuffer = new byte[mInBufferLength];
 
             System.Diagnostics.Debug.Assert(mInBufferLength > 0);
@@ -459,11 +343,13 @@ namespace GF.Barbarian
             }
 
             //Prepare the header, add it to the input port and start recording data.
-            tempReturn = MidiCommands.midiInPrepareHeader(MIDIInHandle, DataBufferPointer, (uint)Marshal.SizeOf(new MIDIHDR()));
-            if(tempReturn==(uint)MMSYSERR.MMSYSERR_NOERROR)
+            tempReturn = CExternals.midiInPrepareHeader(MIDIInHandle, DataBufferPointer, 
+                (uint)Marshal.SizeOf(new CExternals.MIDIHDR()));
+            if(tempReturn==(uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
             {
-                tempReturn = MidiCommands.midiInAddBuffer(MIDIInHandle, DataBufferPointer, (uint)Marshal.SizeOf(new MIDIHDR()));
-                if(tempReturn!=(uint)MMSYSERR.MMSYSERR_NOERROR)
+                tempReturn = CExternals.midiInAddBuffer(MIDIInHandle, DataBufferPointer, 
+                    (uint)Marshal.SizeOf(new CExternals.MIDIHDR()));
+                if(tempReturn!=(uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
                 {
                     ErrorHandler(tempReturn);
                 }
@@ -473,8 +359,8 @@ namespace GF.Barbarian
                 ErrorHandler(tempReturn);
             }
 
-            tempReturn = MidiCommands.midiInStart(MIDIInHandle);
-            if(tempReturn==(uint)MMSYSERR.MMSYSERR_NOERROR)
+            tempReturn = CExternals.midiInStart(MIDIInHandle);
+            if(tempReturn==(uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
             {
                 StartSuccess = true;
             }
@@ -489,21 +375,21 @@ namespace GF.Barbarian
         {
             uint tempReturn;
             bool stopSuccess;
-            MIDIHDR tempHeader;
+            CExternals.MIDIHDR tempHeader;
 
             stopSuccess = false;
-            tempReturn = MidiCommands.midiInStop(MIDIInHandle);
-            if(tempReturn==(uint)MMSYSERR.MMSYSERR_NOERROR)
+            tempReturn = CExternals.midiInStop(MIDIInHandle);
+            if(tempReturn==(uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
             {
-                tempReturn = MidiCommands.midiInReset(MIDIInHandle);
-                if(tempReturn==(uint)MMSYSERR.MMSYSERR_NOERROR)
+                tempReturn = CExternals.midiInReset(MIDIInHandle);
+                if(tempReturn==(uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
                 {
                     //Unprepare header so it can be unassigned.
-                    tempReturn = MidiCommands.midiInUnprepareHeader(MIDIInHandle, DataBufferPointer, 
-                        (uint)Marshal.SizeOf(new MIDIHDR()));
-                    if (tempReturn == (uint)MMSYSERR.MMSYSERR_NOERROR)
+                    tempReturn = CExternals.midiInUnprepareHeader(MIDIInHandle, DataBufferPointer, 
+                        (uint)Marshal.SizeOf(new CExternals.MIDIHDR()));
+                    if (tempReturn == (uint)CExternals.MMSYSERR.MMSYSERR_NOERROR)
                     {
-                        tempHeader = (MIDIHDR)Marshal.PtrToStructure(DataBufferPointer, typeof(MIDIHDR));
+                        tempHeader = (CExternals.MIDIHDR)Marshal.PtrToStructure(DataBufferPointer, typeof(CExternals.MIDIHDR));
                         Marshal.Release(tempHeader.lpData);
                         Marshal.Release(DataBufferPointer);
                         stopSuccess = true;
@@ -532,31 +418,31 @@ namespace GF.Barbarian
 
             switch(midiErrorNumber)
             {
-                case (uint)MMSYSERR.MMSYSERR_ALLOCATED:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_ALLOCATED:
                     strError = "Allocated";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_BADDEVICEID:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_BADDEVICEID:
                     strError = "Bad Device ID";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_INVALFLAG:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_INVALFLAG:
                     strError = "Invalid Flag";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_INVALPARAM:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_INVALPARAM:
                     strError = "Invalid Parameter";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_NODRIVER:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_NODRIVER:
                     strError = "No Driver";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_NOMEM:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_NOMEM:
                     strError = "No Mem";
                     break;
-                case (uint)MMSYSERR.MMSYSERR_INVALHANDLE:
+                case (uint)CExternals.MMSYSERR.MMSYSERR_INVALHANDLE:
                     strError = "Invalid Handle";
                     break;
-                case (uint)MIDIERR.MIDIERR_STILLPLAYING:
+                case (uint)CExternals.MIDIERR.MIDIERR_STILLPLAYING:
                     strError = "Still Playing";
                     break;
-                case (uint)MIDIERR.MIDIERR_UNPREPARED:
+                case (uint)CExternals.MIDIERR.MIDIERR_UNPREPARED:
                     strError = "Unprepared";
                     break;
                 default:
@@ -574,8 +460,5 @@ namespace GF.Barbarian
                 }, null);
             }
         }
-
-
-
-	}
+    }
 }

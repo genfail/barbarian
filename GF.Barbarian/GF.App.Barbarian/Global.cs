@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -94,7 +95,6 @@ namespace GF.Barbarian
 			return true;
 		}
 
-
 		private static bool IsEmptyLocate (byte [] array, byte [] candidate)
 		{
 			return array == null
@@ -102,6 +102,21 @@ namespace GF.Barbarian
 			       || array.Length == 0
 			       || candidate.Length == 0
 			       || candidate.Length > array.Length;
+		}
+
+		public static Image GetConnectedIcon(ConnectionState _state)
+		{
+			switch (_state)
+			{
+				case ConnectionState.Unavailable:
+					return Properties.Resources.ConnectionNotAvailable;
+				case ConnectionState.Available:
+					return Properties.Resources.ConnectionAvailable;
+				case ConnectionState.Connected:
+					return Properties.Resources.ConnectionOpen;
+				default:
+					return Properties.Resources.Question;
+			}
 		}
 	}
 }
