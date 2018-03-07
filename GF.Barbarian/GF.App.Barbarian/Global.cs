@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GF.Barbarian.Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -14,6 +15,13 @@ namespace GF.Barbarian
 	{
 		File = 1,
 		Library = 2
+	}
+
+	public enum MSgSeverity
+	{
+		Message = 1,
+		Warning = 2,
+		Error = 3
 	}
 
 	public interface ICtrlMode
@@ -104,15 +112,26 @@ namespace GF.Barbarian
 			       || candidate.Length > array.Length;
 		}
 
-		public static Image GetConnectedIcon(ConnectionState _state)
+		public static Image GetMSgSeverityIcon(MSgSeverity _sev)
+		{
+			switch (_sev)
+			{
+				case MSgSeverity.Message: return Properties.Resources.msg_info;
+				case MSgSeverity.Warning: return Properties.Resources.msg_warning;
+				case MSgSeverity.Error:   return Properties.Resources.msg_error;
+				default: return Properties.Resources.Question;
+			}
+		}
+
+		public static Image GetConnectedIcon(MidiConnectionState _state)
 		{
 			switch (_state)
 			{
-				case ConnectionState.Unavailable:
+				case MidiConnectionState.Unavailable:
 					return Properties.Resources.ConnectionNotAvailable;
-				case ConnectionState.Available:
+				case MidiConnectionState.Available:
 					return Properties.Resources.ConnectionAvailable;
-				case ConnectionState.Connected:
+				case MidiConnectionState.Connected:
 					return Properties.Resources.ConnectionOpen;
 				default:
 					return Properties.Resources.Question;

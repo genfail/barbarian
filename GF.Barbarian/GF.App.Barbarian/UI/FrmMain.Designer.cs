@@ -36,11 +36,12 @@
 			this.eXitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.panelMain = new System.Windows.Forms.Panel();
-			this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripStatusMidi = new System.Windows.Forms.ToolStripStatusLabel();
+			this.panelMain = new System.Windows.Forms.Panel();
+			this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -105,11 +106,19 @@
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
+			// connectionToolStripMenuItem
+			// 
+			this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
+			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.connectionToolStripMenuItem.Text = "Device connection";
+			this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
+			// 
 			// statusStripBarbarian
 			// 
 			this.statusStripBarbarian.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusMidi});
+            this.toolStripStatusMidi,
+            this.toolStripStatusMessage});
 			this.statusStripBarbarian.Location = new System.Drawing.Point(0, 666);
 			this.statusStripBarbarian.Name = "statusStripBarbarian";
 			this.statusStripBarbarian.Size = new System.Drawing.Size(1107, 22);
@@ -123,6 +132,13 @@
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
 			this.toolStripStatusLabel1.Text = "toolStripStatusMode";
 			// 
+			// toolStripStatusMidi
+			// 
+			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionNotAvailable;
+			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
+			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 17);
+			this.toolStripStatusMidi.Text = "Midi";
+			// 
 			// panelMain
 			// 
 			this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -131,19 +147,11 @@
 			this.panelMain.Size = new System.Drawing.Size(1107, 642);
 			this.panelMain.TabIndex = 3;
 			// 
-			// connectionToolStripMenuItem
+			// toolStripStatusMessage
 			// 
-			this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
-			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-			this.connectionToolStripMenuItem.Text = "Device connection";
-			this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
-			// 
-			// toolStripStatusMidi
-			// 
-			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionNotAvailable;
-			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
-			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 16);
-			this.toolStripStatusMidi.Text = "Midi";
+			this.toolStripStatusMessage.Name = "toolStripStatusMessage";
+			this.toolStripStatusMessage.Size = new System.Drawing.Size(28, 17);
+			this.toolStripStatusMessage.Text = "Info";
 			// 
 			// FrmMain
 			// 
@@ -182,6 +190,7 @@
 		private System.Windows.Forms.Panel panelMain;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMidi;
 		private System.Windows.Forms.ToolStripMenuItem connectionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMessage;
 	}
 }
 

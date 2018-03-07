@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GF.Barbarian
+namespace GF.Barbarian.Midi
 {
-	public enum ConnectionState
+	public enum MidiConnectionState
 	{
 		Unavailable,
 		Available,
@@ -27,6 +27,7 @@ namespace GF.Barbarian
 		private IntPtr MIDIInHandle;
 		private int mInBufferLength;
 		private IntPtr DataBufferPointer;
+
 		/// <summary> Updates status changes to the MIDI in port.</summary>
         public event MessageInDel MessageReceived;
 		/// <summary> Short message received. MIDI status and parameter data are specified as parameters. Port is automatically reset to receive next message. </summary>
@@ -44,10 +45,10 @@ namespace GF.Barbarian
 
 		public event EventHandler<EventArgs> OnConnectionStateChanged; 
 
-		private ConnectionState __connectState = ConnectionState.Connected;
-		public ConnectionState ConnectState { get{return __connectState; }}
+		private MidiConnectionState __connectState = MidiConnectionState.Connected;
+		public MidiConnectionState ConnectState { get{return __connectState; }}
 
-		private void SetState(ConnectionState _connState)
+		private void SetState(MidiConnectionState _connState)
 		{
 			if(__connectState != _connState)
 			{
@@ -55,13 +56,13 @@ namespace GF.Barbarian
 
 				switch (__connectState)
 				{
-					case ConnectionState.Unavailable:
+					case MidiConnectionState.Unavailable:
 						DeviceConnectedText = "GR55 Not available";
 						break;
-					case ConnectionState.Available:
+					case MidiConnectionState.Available:
 						DeviceConnectedText = "GR55 Available";
 						break;
-					case ConnectionState.Connected:
+					case MidiConnectionState.Connected:
 						DeviceConnectedText = "GR55 Connected";
 						break;
 					default:
@@ -73,7 +74,7 @@ namespace GF.Barbarian
 
 		public ConnectionMidiIn()
 		{
-			SetState(ConnectionState.Unavailable);
+			SetState(MidiConnectionState.Unavailable);
 			syncContext = SynchronizationContext.Current;
 			mInBufferLength = 256;
 		}
@@ -235,10 +236,10 @@ namespace GF.Barbarian
             switch (msg)
             {
                 case (int)MIM.MM_MIM_OPEN:
-                    message = "MIDI In, Open" + Environment.NewLine;
+                    message = "MIDI In, Open";
                     break;
                 case (int)MIM.MM_MIM_CLOSE:
-                    message = "MIDI In, Close" + Environment.NewLine;
+                    message = "MIDI In, Close";
                     break;
                 case (int)MIM.MM_MIM_DATA:
                     ShortMessageReceived((uint)param1);
@@ -249,13 +250,13 @@ namespace GF.Barbarian
                     statusMsg = false;
                     break;
                 case (int)MIM.MM_MIM_ERROR:
-                    message = "MIDI In, Error" + Environment.NewLine;
+                    message = "MIDI In, Error";
                     break;
                 case (int)MIM.MM_MIM_LONGERROR:
-                    message = "MIDI In, Long Error" + Environment.NewLine;
+                    message = "MIDI In, Long Error";
                     break;
                 case (int)MIM.MM_MIM_MOREDATA:
-                    message = "MIDI In, More Data" + Environment.NewLine;
+                    message = "MIDI In, More Data";
                     break;
                 default:
                     message = "Unknown Message Recieved!";
@@ -281,13 +282,13 @@ namespace GF.Barbarian
 			if (DeviceAvailable)
 			{
 				if (Connected)
-					SetState(ConnectionState.Connected);
+					SetState(MidiConnectionState.Connected);
 				else
-					SetState(ConnectionState.Available);
+					SetState(MidiConnectionState.Available);
 			}
 			else
 			{
-				SetState(ConnectionState.Unavailable);
+				SetState(MidiConnectionState.Unavailable);
 				Disconnect();
 			}
 		}
