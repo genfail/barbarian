@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 using GF.Lib.Communication.Midi;
 using System.Linq;
+using System.IO;
+using System.Threading;
 
 namespace GF.Test.UnitTests
 {
@@ -10,15 +12,19 @@ namespace GF.Test.UnitTests
 	public class TestMidi
 	{
 		[TestCase]
-		public void TestDeviceInquiry()
+		public void TestWriteSysx()
 		{
-			int cnt = MidiCommands.GetDeviceCountWaveIn();
+			GF.Barbarian.Midi.ConnectionMidi Midi = new Barbarian.Midi.ConnectionMidi();
+			Midi.Init();
+			Midi.Connect();
 
-			string[] devices = MidiCommands.GetDeviceNamesWaveIn();
+			string pth = @"D:\Data\Project.src\barbarian\GF.Barbarian\Patches\ceiling.syx";
+			byte[] b = File.ReadAllBytes(pth);
+			bool success = Midi.Out.SendLongMessage(b);
+			Assert.IsTrue(success, "Should be true");
 
-			Assert.IsTrue(devices != null, "Returned null");
-			Assert.IsTrue(devices.Contains("GR-55"), "does not contain ");
-
+			Midi.Disconnect();
+			Midi.Shutdown();
 		}
 	}
 }

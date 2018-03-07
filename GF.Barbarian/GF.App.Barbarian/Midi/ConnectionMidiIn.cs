@@ -10,155 +10,17 @@ using System.Threading.Tasks;
 
 namespace GF.Barbarian.Midi
 {
-	public enum MidiConnectionState
+	public class ConnectionMidiIn : ConnectionMidiBase
 	{
-		Unavailable,
-		Available,
-		Connected,
-	}
+		protected IntPtr MIDIInHandle;
+		protected MidiInCallbackDel MidiCall;
 
-	public class ConnectionMidiIn
-	{
-		private bool threadRunning = false;
-
-		// Needed for midi interaction
-        private SynchronizationContext syncContext;
-		private MidiInCallbackDel MidiCall;
-		private IntPtr MIDIInHandle;
-		private int mInBufferLength;
-		private IntPtr DataBufferPointer;
-
-		/// <summary> Updates status changes to the MIDI in port.</summary>
-        public event MessageInDel MessageReceived;
-		/// <summary> Short message received. MIDI status and parameter data are specified as parameters. Port is automatically reset to receive next message. </summary>
-		public event ShortDel ShortMessage;
-		/// <summary>Long message received. MIDI system exclusive data is sent as byte array parameter. Port is automatically reset to receive next message. </summary>
-		public event LongDel LongMessage;
-		/// <summary> Any Exceptions occurring within the class are sent to the instantiating class via this event. </summary>
-		public event ReceiveErrorDel ReceiveError;
-
-
-		public bool DeviceAvailable { get { return gr55DeviceId != -1; } }
-		private int gr55DeviceId = -1;
-		private string gr55DeviceName = "";
-		public string DeviceConnectedText { get; private set;} 
-
-		public event EventHandler<EventArgs> OnConnectionStateChanged; 
-
-		private MidiConnectionState __connectState = MidiConnectionState.Connected;
-		public MidiConnectionState ConnectState { get{return __connectState; }}
-
-		private void SetState(MidiConnectionState _connState)
+		public ConnectionMidiIn() : base()
 		{
-			if(__connectState != _connState)
-			{
-				__connectState = _connState;
-
-				switch (__connectState)
-				{
-					case MidiConnectionState.Unavailable:
-						DeviceConnectedText = "GR55 Not available";
-						break;
-					case MidiConnectionState.Available:
-						DeviceConnectedText = "GR55 Available";
-						break;
-					case MidiConnectionState.Connected:
-						DeviceConnectedText = "GR55 Connected";
-						break;
-					default:
-						break;
-				}
-				OnConnectionStateChanged?.Invoke(this, new EventArgs());
-			}
+			MidiDeviceType = DeviceTypeMidi.MidiIn;
 		}
 
-		public ConnectionMidiIn()
-		{
-			SetState(MidiConnectionState.Unavailable);
-			syncContext = SynchronizationContext.Current;
-			mInBufferLength = 256;
-		}
-
-		#region Dispose
-        ~ConnectionMidiIn()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private bool disposed = false;
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            disposed = true;
-
-            if (disposing)
-            {
-                //Free any managed objects here.
-            }
-
-            //Free unmanaged objects here;
-            ClosePort();
-        }
-		#endregion
-
-		private bool mPortOpen = false;
-		public bool Connected { get{ return mPortOpen; } }
-		public void Connect()
-		{
-			if (DeviceAvailable && !Connected)
-				OpenPort((uint)gr55DeviceId);
-		}
-		public void Disconnect()
-		{
-			ClosePort();
-		}
-		public void ToggleConnect()
-		{
-			if (DeviceAvailable && !Connected)
-				Connect();
-			else if (DeviceAvailable && Connected)
-				Disconnect();
-		}
-
-		public void Init()
-		{
-			if (threadRunning)
-				return; // nothing to do
-
-			Task task = new Task(new Action(CheckConnected));
-			task.Start();
-		}
-
-		public void Shutdown()
-		{
-			threadRunning = false;
-		}
-
-		private void CheckConnected()
-		{
-			int cnt = 10;
-			threadRunning = true;
-			while(threadRunning)
-			{
-				if (cnt-- <= 0)
-				{
-					cnt = 10;
-
-					bool hasChanged = IsConnetionAvailableChanged();
-					CheckConnetionOpen();
-				}
-				Thread.Sleep(100);
-			}
-		}
-
-		private bool OpenPort(uint deviceNumber)
+		protected override bool OpenPort(uint deviceNumber)
         {
             uint returnValue;
             bool startSuccess, openSuccess;
@@ -187,11 +49,7 @@ namespace GF.Barbarian.Midi
             return openSuccess;
         }
 
-        /// <summary>
-        /// Close the currently open port. If no port is open then this method does nothing.
-        /// </summary>
-        /// <returns>Returns true is the port is closed correctly. Otherwise returns false.</returns>
-        private bool ClosePort()
+        protected override bool ClosePort()
         {
             uint returnValue = 0;
             bool stopSuccess, closeSuccess = false;
@@ -226,8 +84,45 @@ namespace GF.Barbarian.Midi
             return closeSuccess;
         }
 
+		/// <summary>
+		/// </summary>
+		/// <param name="countDevices"></param>
+		/// <param name="deviceList"></param>
+		/// <returns>Midi error </returns>
+		public override uint GetDevices(out uint countDevices, out string[] deviceList)
+        {
+            MIDIINCAPS MyMIDIInDevCaps = new MIDIINCAPS();
+            uint returnValue = (uint)MMSYSERR.MMSYSERR_NOERROR;
+            List<string> devices = new List<string>();
 
-       private void MidiCallback(int handle, int msg, int instance, int param1, int param2)
+            countDevices = GetDeviceCount(); //Get number of MIDI output devices installed.
+            if(countDevices > 0) 
+            {
+                //Loop through all devices and store the device names.
+                for(uint intLoop=0;intLoop < countDevices;intLoop++)
+                {
+                    returnValue = MidiCommands.midiInGetDevCaps((UIntPtr)intLoop, ref MyMIDIInDevCaps, (uint)Marshal.SizeOf(MyMIDIInDevCaps));
+                    if (returnValue == (uint)MMSYSERR.MMSYSERR_NOERROR)
+                    {
+                        devices.Add(MyMIDIInDevCaps.szPname);
+                    }
+                    else
+                    {
+                        break; //An Error occurred
+                    }
+                }
+            }
+
+            deviceList = devices.ToArray();
+            return returnValue;
+        }
+
+		public override uint GetDeviceCount()
+		{
+			return MidiCommands.midiInGetNumDevs();
+		}
+
+		protected void MidiCallback(int handle, int msg, int instance, int param1, int param2)
         {
             string message = "";
             bool statusMsg;
@@ -236,10 +131,10 @@ namespace GF.Barbarian.Midi
             switch (msg)
             {
                 case (int)MIM.MM_MIM_OPEN:
-                    message = "MIDI In, Open";
+                    message = $"MIDI {MidiDeviceType}, Open";
                     break;
                 case (int)MIM.MM_MIM_CLOSE:
-                    message = "MIDI In, Close";
+                    message = $"MIDI {MidiDeviceType}, Close";
                     break;
                 case (int)MIM.MM_MIM_DATA:
                     ShortMessageReceived((uint)param1);
@@ -250,168 +145,28 @@ namespace GF.Barbarian.Midi
                     statusMsg = false;
                     break;
                 case (int)MIM.MM_MIM_ERROR:
-                    message = "MIDI In, Error";
+                    message = $"MIDI {MidiDeviceType}, Error";
                     break;
                 case (int)MIM.MM_MIM_LONGERROR:
-                    message = "MIDI In, Long Error";
+                    message = $"MIDI {MidiDeviceType}, Long Error";
                     break;
                 case (int)MIM.MM_MIM_MOREDATA:
-                    message = "MIDI In, More Data";
+                    message = $"MIDI {MidiDeviceType}, More Data";
                     break;
                 default:
-                    message = "Unknown Message Recieved!";
+                    message = $"MIDI {MidiDeviceType} Unknown Message Recieved!";
                     break;
             }
 
            if (statusMsg)
             {
                 //Fire the event on the class instatiating thread.
-                if (!disposed)
+                if (!disposed && syncContext != null)
                 {
                     syncContext.Send(state =>
                     {
-                        if (MessageReceived != null)
-                            MessageReceived(this, new MidiMsgEventArgs(message));
+                       FireMessageReceived(message);
                     }, null);
-                }
-            }
-        }
-
-		private void CheckConnetionOpen()
-		{
-			if (DeviceAvailable)
-			{
-				if (Connected)
-					SetState(MidiConnectionState.Connected);
-				else
-					SetState(MidiConnectionState.Available);
-			}
-			else
-			{
-				SetState(MidiConnectionState.Unavailable);
-				Disconnect();
-			}
-		}
-
-		// Returns true if something has changed
-		private bool IsConnetionAvailableChanged()
-		{
-			bool hasChanged = false;
-			bool hasFound = false;
-			string[] devices;
-			if (ListDevicesMidiIn(out devices) > 0)
-			{
-				for (int i = 0; i < devices.Length; i++)
-				{
-					if (devices[i].Contains("GR-55"))
-					{
-						hasFound = true;
-						if (gr55DeviceId != i)
-						{
-							gr55DeviceName = devices[i];
-							gr55DeviceId = i;
-							hasChanged = true;
-							break;
-						}
-					}
-				}
-			}
-			if (!hasFound)
-			{
-				if (gr55DeviceId != -1)
-				{
-					gr55DeviceName = "";
-					gr55DeviceId = -1;
-					hasChanged = true;
-				}
-			}
-			return hasChanged;
-		}
-
-//---------------------
-		private uint ListDevicesMidiIn(out string[] deviceList)
-        {
-            MIDIINCAPS MyMIDIInDevCaps = new MIDIINCAPS();
-            uint returnValue, lngNumOfDevices;
-            List<string> devices = new List<string>();
-
-            //Get the number of MIDI in devices installed.
-            lngNumOfDevices = MidiCommands.midiInGetNumDevs();
-            if(lngNumOfDevices > 0) 
-            {
-                //Loop through all devices and store the device names.
-                for(uint intLoop=0;intLoop<lngNumOfDevices;intLoop++)
-                {
-                    returnValue = (uint)MidiCommands.midiInGetDevCaps((UIntPtr)intLoop, ref MyMIDIInDevCaps, (uint)Marshal.SizeOf(MyMIDIInDevCaps));
-                    if (returnValue == (uint)MMSYSERR.MMSYSERR_NOERROR)
-                    {
-                        devices.Add(MyMIDIInDevCaps.szPname);
-                    }
-                    else
-                    {
-                        //An Error occurred
-                        ErrorHandler(returnValue);
-                        break;
-                    }
-                }
-            }
-
-            deviceList = devices.ToArray();
-            return lngNumOfDevices;
-        }
-
-		private void ShortMessageReceived(uint MIDIMessage)
-        {
-            byte MIDIStatus;
-            byte MIDIData1, MIDIData2;
-
-            MIDIData2 = (byte)((MIDIMessage / 65536) & 0xFF);
-            MIDIData1 = (byte)((MIDIMessage / 256) & 0xFF);
-            MIDIStatus = (byte)(MIDIMessage & 0xFF);
-
-            //Fire the event on the class instatiating thread.
-            if (!disposed)
-            {
-                syncContext.Send(state =>
-                {
-                    if (ShortMessage != null)
-                        ShortMessage(this, new MidiShortMsgEventArgs(MIDIStatus, MIDIData1, MIDIData2));
-                }, null);
-            }
-        }
-
-        private void LongMessageReceived()
-        {
-            System.Diagnostics.Debug.Assert(mInBufferLength > 0);
-            
-            bool tempResult;
-            MIDIHDR InHeader = new MIDIHDR();
-            byte[] MIDIInBuffer = new byte[mInBufferLength];
-
-            if(mPortOpen)
-            {
-                //Stop recording while processing the current data.
-                tempResult = StopRecording();
-
-                InHeader = (MIDIHDR) Marshal.PtrToStructure(DataBufferPointer, typeof(MIDIHDR));
-                Marshal.Copy(InHeader.lpData, MIDIInBuffer, 0, mInBufferLength);
-
-                if(InHeader.dwBytesRecorded > 0)
-                {
-                    //Fire the event on the class instatiating thread.
-                    if (!disposed)
-                    {
-                        syncContext.Send(state =>
-                        {
-                            if (LongMessage != null)
-                                LongMessage(this, new MidiLongMsgEventArgs(MIDIInBuffer));
-                        }, null);
-                    }
-                }
-
-                if (mPortOpen)
-                {
-                    tempResult = StartRecording();
                 }
             }
         }
@@ -448,12 +203,11 @@ namespace GF.Barbarian.Midi
             catch(OutOfMemoryException ex)
             {
                 //Send error to instatiating thread via event.
-                if (!disposed)
+                if (!disposed && syncContext != null)
                 {
                     syncContext.Send(state =>
                     {
-                        if (ReceiveError != null)
-                            ReceiveError(this, new MidiErrorEventArgs(ex));
+						FireReceiveError(ex);
                     }, null);
                 }
             }
@@ -526,51 +280,56 @@ namespace GF.Barbarian.Midi
             return stopSuccess;
         }
 
-        private void ErrorHandler(uint midiErrorNumber)
+		protected void LongMessageReceived()
         {
-            string strError;
+            System.Diagnostics.Debug.Assert(mInBufferLength > 0);
+            
+            bool tempResult;
+            MIDIHDR InHeader = new MIDIHDR();
+            byte[] MIDIInBuffer = new byte[mInBufferLength];
 
-            switch(midiErrorNumber)
+            if(mPortOpen)
             {
-                case (uint)MMSYSERR.MMSYSERR_ALLOCATED:
-                    strError = "Allocated";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_BADDEVICEID:
-                    strError = "Bad Device ID";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_INVALFLAG:
-                    strError = "Invalid Flag";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_INVALPARAM:
-                    strError = "Invalid Parameter";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_NODRIVER:
-                    strError = "No Driver";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_NOMEM:
-                    strError = "No Mem";
-                    break;
-                case (uint)MMSYSERR.MMSYSERR_INVALHANDLE:
-                    strError = "Invalid Handle";
-                    break;
-                case (uint)MIDIERR.MIDIERR_STILLPLAYING:
-                    strError = "Still Playing";
-                    break;
-                case (uint)MIDIERR.MIDIERR_UNPREPARED:
-                    strError = "Unprepared";
-                    break;
-                default:
-                    strError = "Unknown Error = " + midiErrorNumber.ToString();
-                    break;
-            }
+                //Stop recording while processing the current data.
+                tempResult = StopRecording();
 
-            //Send error to instatiating thread via event.
-            if (!disposed)
+                InHeader = (MIDIHDR) Marshal.PtrToStructure(DataBufferPointer, typeof(MIDIHDR));
+                Marshal.Copy(InHeader.lpData, MIDIInBuffer, 0, mInBufferLength);
+
+                if(InHeader.dwBytesRecorded > 0)
+                {
+                    //Fire the event on the class instatiating thread.
+                    if (!disposed && syncContext != null)
+                    {
+                        syncContext.Send(state =>
+                        {
+							FireLongMessage(MIDIInBuffer);
+                        }, null);
+                    }
+                }
+
+                if (mPortOpen)
+                {
+                    tempResult = StartRecording();
+                }
+            }
+        }
+
+		protected void ShortMessageReceived(uint MIDIMessage)
+        {
+            byte MIDIStatus;
+            byte MIDIData1, MIDIData2;
+
+            MIDIData2 = (byte)((MIDIMessage / 65536) & 0xFF);
+            MIDIData1 = (byte)((MIDIMessage / 256) & 0xFF);
+            MIDIStatus = (byte)(MIDIMessage & 0xFF);
+
+            //Fire the event on the class instatiating thread.
+            if (!disposed && syncContext != null)
             {
                 syncContext.Send(state =>
                 {
-                    if (ReceiveError != null)
-                        ReceiveError(this, new MidiErrorEventArgs(new Exception(strError)));
+                    FireShortMessage(MIDIStatus, MIDIData1, MIDIData2);
                 }, null);
             }
         }

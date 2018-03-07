@@ -164,7 +164,7 @@ namespace GF.Barbarian.Midi
 		public int Count { get; private set; }
 		public string Name { get; private set; } = "NotSet";
 
-		private byte[] sysxData = null;
+		public byte[] SysxData { get; private set; } = null;
 
 		public Patch(int cnt)
 		{
@@ -196,67 +196,67 @@ namespace GF.Barbarian.Midi
 			p.Name = System.Text.Encoding.ASCII.GetString(buf).Trim();
 
 			// copy base data from clean file
-			p.sysxData = Properties.Resources.Default_SYX.SubArrayCopy(0, (uint)Properties.Resources.Default_SYX.Length);
+			p.SysxData = Properties.Resources.Default_SYX.SubArrayCopy(0, (uint)Properties.Resources.Default_SYX.Length);
 
 			//temp = data.mid(a, 128);
             //default_data.replace(11, 128, temp);      //address "00"
-			p.sysxData.Replace(11, fileData, offset + 0, 128);//address "00"
+			p.SysxData.Replace(11, fileData, offset + 0, 128);//address "00"
 
             //temp = data.mid(a+128, 114);
             //default_data.replace(152, 114, temp);     //address "01"
-			p.sysxData.Replace(152, fileData, offset + 128, 114); //address "01"
+			p.SysxData.Replace(152, fileData, offset + 128, 114); //address "01"
 
             //temp = data.mid(a+250, 14);
             //default_data.replace(266, 14, temp);     //address "01"
-			p.sysxData.Replace(266, fileData, offset + 250, 14); //address "01"
+			p.SysxData.Replace(266, fileData, offset + 250, 14); //address "01"
 
             //temp = data.mid(a+264, 78);
             //default_data.replace(293, 78, temp);     //address "02" +
-			p.sysxData.Replace(293, fileData, offset + 264, 78); //address "02"
+			p.SysxData.Replace(293, fileData, offset + 264, 78); //address "02"
 
 			//temp = data.mid(a+350, 128);
             //default_data.replace(384, 128, temp);     //address "03" +
-			p.sysxData.Replace(384, fileData, offset + 350, 128); //address "03"
+			p.SysxData.Replace(384, fileData, offset + 350, 128); //address "03"
 
 			//temp = data.mid(a+478, 72);
             //default_data.replace(525, 72, temp);     //address "04" +
-			p.sysxData.Replace(525, fileData, offset + 478, 72); //address "04"
+			p.SysxData.Replace(525, fileData, offset + 478, 72); //address "04"
 
 			//temp = data.mid(a+606, 18);
             //default_data.replace(666, 18, temp);     //address "05" +
-			p.sysxData.Replace(666, fileData, offset + 606, 18); //address "05"
+			p.SysxData.Replace(666, fileData, offset + 606, 18); //address "05"
 
 			//temp = data.mid(a+640, 30);
             //default_data.replace(697, 30, temp);     //address "06" +
-			p.sysxData.Replace(697, fileData, offset + 640, 30); //address "06"
+			p.SysxData.Replace(697, fileData, offset + 640, 30); //address "06"
 
 			//temp = data.mid(a+678, 125);
             //default_data.replace(740, 125, temp);     //address "07" +
-			p.sysxData.Replace(740, fileData, offset + 678, 125); //address "07"
+			p.SysxData.Replace(740, fileData, offset + 678, 125); //address "07"
 
 			//temp = data.mid(a+811, 128);
             //default_data.replace(878, 128, temp);     //address "10" +
-			p.sysxData.Replace(878, fileData, offset + 811, 128); //address "10"
+			p.SysxData.Replace(878, fileData, offset + 811, 128); //address "10"
 
 			//temp = data.mid(a+939, 86);
             //default_data.replace(1019, 86, temp);     //address "11" +
-			p.sysxData.Replace(1019, fileData, offset + 939, 86); //address "11"
+			p.SysxData.Replace(1019, fileData, offset + 939, 86); //address "11"
 
 			//temp = data.mid(a+1033, 35);
             //default_data.replace(1118, 35, temp);    //address "20" +
-			p.sysxData.Replace(1118, fileData, offset + 1033, 35); //address "20"
+			p.SysxData.Replace(1118, fileData, offset + 1033, 35); //address "20"
 
 			//temp = data.mid(a+1072, 35);
             //default_data.replace(1166, 35, temp);    //address "21" +
-			p.sysxData.Replace(1166, fileData, offset + 1072, 35); //address "21"
+			p.SysxData.Replace(1166, fileData, offset + 1072, 35); //address "21"
 
 			//temp = data.mid(a+1115, 52);
             //default_data.replace(1214, 52, temp);    //address "30" +
-			p.sysxData.Replace(1214, fileData, offset + 1115, 52); //address "30"
+			p.SysxData.Replace(1214, fileData, offset + 1115, 52); //address "30"
 
 			//temp = data.mid(a+1171, 52);
             //default_data.replace(1279, 52, temp);    //address "31" +
-			p.sysxData.Replace(1279, fileData, offset + 1171, 52); //address "31"
+			p.SysxData.Replace(1279, fileData, offset + 1171, 52); //address "31"
 
 #if _DBG_BYTE
 			for (int i = 0; i < sysxData.Length;i++)
@@ -273,7 +273,7 @@ namespace GF.Barbarian.Midi
 
 		public override string ToString()
 		{
-			return $"Patch[{Count, 3}]: [{Name,-16}] {(sysxData==null?"NULL":sysxData.Length.ToString())} Bytes";
+			return $"Patch[{Count, 3}]: [{Name,-16}] {(SysxData==null?"NULL":SysxData.Length.ToString())} Bytes";
 		}
 	}
 }

@@ -72,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationData.cs" />
+    <Compile Include="Midi\ConnectionMidi.cs" />
+    <Compile Include="Midi\ConnectionMidiBase.cs" />
+    <Compile Include="Midi\ConnectionMidiOut.cs" />
     <Compile Include="Midi\ConnectionMidiIn.cs" />
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="Midi\Commands.cs" />
@@ -169,6 +172,7 @@
     <Content Include="Barbarian.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ConnectionUncertain.png" />
     <None Include="Resources\msg_warning.png" />
     <None Include="Resources\msg_info.png" />
     <None Include="Resources\msg_error.png" />

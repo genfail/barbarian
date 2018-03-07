@@ -53,6 +53,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GF.App.Barbarian\GF.App.Barbarian_direct_ref.csproj">
+      <Project>{ef3692e0-acf5-40c3-b9fd-9ecf783da4e2}</Project>
+      <Name>GF.App.Barbarian_direct_ref</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GF.Lib.Communication.Midi\GF.Lib.Communication.Midi.csproj">
       <Project>{889ae9d0-7944-4405-87bf-6e3d34a1107b}</Project>
       <Name>GF.Lib.Communication.Midi</Name>

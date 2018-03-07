@@ -194,10 +194,5 @@ namespace GF.Barbarian
 			StartInformation.FileName = txtFolder.Text;
 			Process process = Process.Start(StartInformation);
 		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

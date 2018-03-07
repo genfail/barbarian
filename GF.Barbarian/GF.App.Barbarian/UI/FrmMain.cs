@@ -14,37 +14,45 @@ namespace GF.Barbarian
 {
 	public partial class FrmMain : Form
 	{
-		public ConnectionMidiIn MidiIn { get; }
-
 		private ProgramMode mode = ProgramMode.File;
 		private Dictionary<ProgramMode,ICtrlMode> modes = null;
 		private ICtrlMode activeControl { get{ return modes[mode];} }
 
 		public FrmMain()
 		{
-			MidiIn = new ConnectionMidiIn();
-			MidiIn.Init();
-
 			InitializeComponent();
 			modes = new Dictionary<ProgramMode, ICtrlMode>();
 			modes.Add(ProgramMode.File, new CtrlModeFile());
 			modes.Add(ProgramMode.Library, new CtrlModeLibrary());
 			SetMode(Program.AppSettings.Mode);
-
-			MidiIn.MessageReceived += MidiIn_MessageReceived;
-			MidiIn.ReceiveError += MidiIn_ReceiveError;
 		}
 
-		private void MidiIn_ReceiveError(object sender, Lib.Communication.Midi.MidiErrorEventArgs e)
+		private void FrmMain_Load(object sender, EventArgs e)
 		{
-			Debug.WriteLine($"MidiIn ERR: [{e.MidiException}]");
+			Program.Midi.SetSynchronizationContext();
+			Program.Midi.OnConnectionStateChanged += Connection_ConnectionChanged;
+
+			Program.Midi.In.MessageReceived += Midi_MessageReceived;
+			Program.Midi.In.ReceiveError += Midi_ReceiveError;
+			Program.Midi.Out.MessageReceived += Midi_MessageReceived;
+			Program.Midi.Out.ReceiveError += Midi_ReceiveError;
+
+			Connection_ConnectionChanged(null, null); // Fire to set first time
+			SetMessage(MSgSeverity.Message, "Application started");
+
+			if (Properties.Settings.Default.AutoConnect)
+				Program.Midi.Connect();
+		}
+
+		private void Midi_ReceiveError(object sender, Lib.Communication.Midi.MidiErrorEventArgs e)
+		{
+			Debug.WriteLine($"--> {e.DeviceType,7} ERR: [{e.MidiException}]");
 			SetMessage(MSgSeverity.Error, e.MidiException.ToString());
 		}
 
-		private void MidiIn_MessageReceived(object sender, Lib.Communication.Midi.MidiMsgEventArgs e)
+		private void Midi_MessageReceived(object sender, Lib.Communication.Midi.MidiMsgEventArgs e)
 		{
-			Debug.WriteLine($"MidiIn MSG:  [{e.MsgText}]");
-
+			Debug.WriteLine($"--> {e.DeviceType,7} MSG:  [{e.MsgText}]");
 			SetMessage(MSgSeverity.Message, e.MsgText);
 		}
 
@@ -54,17 +62,10 @@ namespace GF.Barbarian
 			toolStripStatusMessage.Image = Global.GetMSgSeverityIcon(_sev);
 		}
 
-		private void FrmMain_Load(object sender, EventArgs e)
-		{
-			MidiIn.OnConnectionStateChanged += Connection_ConnectionChanged;
-			Connection_ConnectionChanged(null, null);
-			SetMessage(MSgSeverity.Message, "Application started");
-		}
-
 		private void Connection_ConnectionChanged(object sender, EventArgs e)
 		{
-			toolStripStatusMidi.Text = MidiIn.DeviceConnectedText;
-			toolStripStatusMidi.Image = Global.GetConnectedIcon(MidiIn.ConnectState);
+			toolStripStatusMidi.Text = Program.Midi.DeviceConnectedText;
+			toolStripStatusMidi.Image = Global.GetConnectedIcon(Program.Midi.ConnectState);
 		}
 
 		public void ApplySettings()
@@ -93,7 +94,7 @@ namespace GF.Barbarian
 			panelMain.Controls.Add((Control)activeControl);
 		}
 
-	#region Menu
+	#region Menu File
 		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
 			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);
@@ -119,24 +120,13 @@ namespace GF.Barbarian
 			this.Close();
 		}
 		#endregion
-
-		private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			MidiIn.Shutdown();
-			Properties.Settings.Default.LastProgramMode = (int)mode;
-			foreach (ICtrlMode c in modes.Values)
-			{
-				c.SaveSettings();
-			}
-			Properties.Settings.Default.Save();
-		}
-
+		#region Menu Tools
 		private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
-			connectionToolStripMenuItem.Enabled = MidiIn.ConnectState != MidiConnectionState.Unavailable;
-			connectionToolStripMenuItem.Checked = MidiIn.ConnectState == MidiConnectionState.Connected;
+			connectionToolStripMenuItem.Enabled = Program.Midi.ConnectState != MidiConnectionState.Unavailable;
+			connectionToolStripMenuItem.Checked = Program.Midi.ConnectState == MidiConnectionState.Connected;
 
-			switch (MidiIn.ConnectState)
+			switch (Program.Midi.ConnectState)
 			{
 				case MidiConnectionState.Unavailable: connectionToolStripMenuItem.Text = "Connection unavailable";		break;
 				case MidiConnectionState.Available:   connectionToolStripMenuItem.Text = "Open connection";				break;
@@ -145,11 +135,24 @@ namespace GF.Barbarian
 					connectionToolStripMenuItem.Text = "Connection unknown"; break;
 			}
 		}
+		#endregion
 
 		private void connectionToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			MidiIn.ToggleConnect();
-
+			Program.Midi.ToggleConnect();
 		}
+
+		private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Program.Midi.Disconnect();
+			Program.Midi.Shutdown();
+			Properties.Settings.Default.LastProgramMode = (int)mode;
+			foreach (ICtrlMode c in modes.Values)
+			{
+				c.SaveSettings();
+			}
+			Properties.Settings.Default.Save();
+		}
+
 	}
 }

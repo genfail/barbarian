@@ -12,7 +12,7 @@ namespace GF.Barbarian
 		public ProgramMode Mode { get; set; }
 		public string FileModeDirectory { get; set; }
 		public string FileModeFileName { get; set; }
-		public string Test { get; set; }
+		public bool AutoConnect { get; set; }
 		public bool Reset { get; set; } = false;
 
 		public string FileModePath

@@ -73,9 +73,9 @@ namespace GF.Barbarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ConnectionNotAvailable {
+        internal static System.Drawing.Bitmap ConnectionConnected {
             get {
-                object obj = ResourceManager.GetObject("ConnectionNotAvailable", resourceCulture);
+                object obj = ResourceManager.GetObject("ConnectionConnected", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,19 @@ namespace GF.Barbarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ConnectionOpen {
+        internal static System.Drawing.Bitmap ConnectionUnavailable {
             get {
-                object obj = ResourceManager.GetObject("ConnectionOpen", resourceCulture);
+                object obj = ResourceManager.GetObject("ConnectionUnavailable", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ConnectionUncertain {
+            get {
+                object obj = ResourceManager.GetObject("ConnectionUncertain", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

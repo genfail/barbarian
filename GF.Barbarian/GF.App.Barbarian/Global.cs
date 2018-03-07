@@ -128,11 +128,14 @@ namespace GF.Barbarian
 			switch (_state)
 			{
 				case MidiConnectionState.Unavailable:
-					return Properties.Resources.ConnectionNotAvailable;
+					return Properties.Resources.ConnectionUnavailable;
 				case MidiConnectionState.Available:
 					return Properties.Resources.ConnectionAvailable;
 				case MidiConnectionState.Connected:
-					return Properties.Resources.ConnectionOpen;
+					return Properties.Resources.ConnectionConnected;
+				case MidiConnectionState.Uncertain:
+					return Properties.Resources.ConnectionUncertain;
+				case MidiConnectionState.Undefined:
 				default:
 					return Properties.Resources.Question;
 			}

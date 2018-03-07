@@ -80,6 +80,8 @@ namespace GF.Barbarian
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
 		{
+			byte[] b = ((ListItemPatch)lstPatches?.SelectedItems[0]).SysxData;
+			Program.Midi.Out.SendLongMessage(b);
 		}
 
 		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,6 +104,7 @@ namespace GF.Barbarian
 	{
 		public string PatchName{ get{ return patch.Name;} }
 		public int PatchCount { get{ return patch.Count;} }
+		public byte[] SysxData { get{ return patch.SysxData;} }
 
 		private Patch patch;
 		public ListItemPatch(Patch p)

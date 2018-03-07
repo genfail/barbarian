@@ -134,7 +134,7 @@
 			// 
 			// toolStripStatusMidi
 			// 
-			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionNotAvailable;
+			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionUnavailable;
 			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
 			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 17);
 			this.toolStripStatusMidi.Text = "Midi";

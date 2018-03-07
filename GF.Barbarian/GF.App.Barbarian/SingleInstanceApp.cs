@@ -46,9 +46,11 @@ namespace GF.Barbarian
 			// create a generic parser for the ApplicationArguments type
 			var p = new FluentCommandLineParser<ApplicationSettings>();
 
+			p.Object.AutoConnect = Properties.Settings.Default.AutoConnect;
+
 			p.Setup<string>(arg => arg.FileModePath).As('f', "file").UseForOrphanArguments(); // if no option specified then values are bound to this option
 			p.Setup<bool>(arg => arg.Reset).As('r', "reset");
-			p.Setup<string>(arg => arg.Test).As('t', "test");
+			p.Setup<bool>(arg => arg.AutoConnect).As('a', "autoconnect");
 			p.Setup<ProgramMode>(arg => arg.Mode).As('m', "mode").SetDefault(ProgramMode.File);
 
 			p.SetupHelp("?", "help")
@@ -90,7 +92,6 @@ namespace GF.Barbarian
 
 				if (String.IsNullOrEmpty(p.Object.FileModeFileName))
 					p.Object.FileModeFileName = Properties.Settings.Default.LastSelectedFile;
-
 
 				Program.AppSettings = p.Object;
 				return true;

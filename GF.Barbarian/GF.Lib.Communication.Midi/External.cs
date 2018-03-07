@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace GF.Lib.Communication.Midi
 {
+    public delegate void MidiOutCallbackDel(int handle, int msg, int instance, int param1, int param2);
 	public delegate void MidiInCallbackDel(int handle, int msg, int instance, int param1, int param2);
+
 	public delegate void MessageInDel(object sender, MidiMsgEventArgs e);
 	public delegate void ShortDel(object sender, MidiShortMsgEventArgs e);
 	public delegate void LongDel(object sender, MidiLongMsgEventArgs e);
@@ -52,12 +54,30 @@ namespace GF.Lib.Communication.Midi
 		public uint dwSupport;
 	}
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MIDIOUTCAPS
+    {
+        public ushort wMid;
+        public ushort wPid;
+        public uint vDriverVersion;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst=MidiCommands.MAXPNAMELEN)]
+        public string szPname;
+        public ushort wTechnology;
+        public ushort wVoices;
+        public ushort wNotes;
+        public ushort wChannelMask;
+        public uint dwSupport;
+    }
+
+
 	public class MidiMsgEventArgs : EventArgs
 	{
 		public string MsgText { get;}
+		public DeviceTypeMidi DeviceType { get; }
 
-		public MidiMsgEventArgs(string msgText)
+		public MidiMsgEventArgs(DeviceTypeMidi deviceType, string msgText)
 		{
+			DeviceType = deviceType;
 			MsgText = msgText;
 		}
 	}
@@ -89,10 +109,12 @@ namespace GF.Lib.Communication.Midi
 	public class MidiErrorEventArgs : EventArgs
     {
         public Exception MidiException { get;}
+		public DeviceTypeMidi DeviceType { get; }
 
-        public MidiErrorEventArgs(Exception ex)
+        public MidiErrorEventArgs(DeviceTypeMidi deviceType, Exception ex)
         {
             MidiException = ex;
+			DeviceType = deviceType;
         }
     }
 

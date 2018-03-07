@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace GF.Lib.Communication.Midi
 {
+	public enum DeviceTypeMidi
+	{
+		MidiIn,
+		MidiOut,
+	}
+
 	public enum MIM : uint
     {
         MM_MIM_OPEN = 0x3C1,                            //MIDI input
@@ -24,6 +30,16 @@ namespace GF.Lib.Communication.Midi
         MIM_MOREDATA = MM_MIM_MOREDATA              //MIM_DONE w/ pending events
     }
 
+	public enum MOM : uint
+	{
+		MM_MOM_OPEN = 0x3C7,                            //MIDI output
+		MM_MOM_CLOSE = 0x3C8,
+		MM_MOM_DONE = 0x3C9,
+		MOM_OPEN = MM_MOM_OPEN,
+		MOM_CLOSE = MM_MOM_CLOSE,
+		MOM_DONE = MM_MOM_DONE
+	}
+
     public enum MMSYSERR : uint
     {
         MMSYSERR_NOERROR = 0,
@@ -34,7 +50,8 @@ namespace GF.Lib.Communication.Midi
         MMSYSERR_NOMEM = (MMSYSERR_BASE + 7),           //memory allocation error
         MMSYSERR_INVALHANDLE = (MMSYSERR_BASE + 5),     //device handle is invalid
         MMSYSERR_ALLOCATED = (MMSYSERR_BASE + 4),       //device already allocated
-        MMSYSERR_INVALFLAG = (MMSYSERR_BASE + 10)       //invalid flag passed
+        MMSYSERR_INVALFLAG = (MMSYSERR_BASE + 10),       //invalid flag passed
+        MMSYSERR_UNKNOWN_ERROR = 323232                 //dunno
     }
 
     public enum MIDIERR : uint

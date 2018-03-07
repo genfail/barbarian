@@ -18,9 +18,22 @@ namespace GF.Barbarian
 			InitializeComponent();
 		}
 
-		private void btnOk_Click(object sender, EventArgs e)
+		private void frmCloseButton_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void FrmSettings_Load(object sender, EventArgs e)
+		{
+			chkAutoConnect.Checked = Properties.Settings.Default.AutoConnect;
+		}
+
+		private void FrmSettings_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (DialogResult == DialogResult.OK)
+			{
+				Properties.Settings.Default.AutoConnect = chkAutoConnect.Checked;
+			}
 		}
 	}
 }
