@@ -26,5 +26,9 @@ namespace GF.Test.UnitTests
 			Midi.Disconnect();
 			Midi.Shutdown();
 		}
+		[TestCase]
+		public void xx()
+		{
+		}
 	}
 }

@@ -194,5 +194,17 @@ namespace GF.Barbarian
 			StartInformation.FileName = txtFolder.Text;
 			Process process = Process.Start(StartInformation);
 		}
+
+		private void btnOneFolderUp_Click(object sender, EventArgs e)
+		{
+			string fldr = Path.GetFullPath(Path.Combine(txtFolder.Text, @"..\"));// one up
+			SetTree(fldr);
+		}
+
+		private void btnRootFolder_Click(object sender, EventArgs e)
+		{
+			string fldr = Path.GetPathRoot(txtFolder.Text);
+			SetTree(fldr);
+		}
 	}
 }

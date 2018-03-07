@@ -38,7 +38,11 @@
 			this.btnOpenFileExplorer = new System.Windows.Forms.Button();
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainerMain = new System.Windows.Forms.SplitContainer();
+			this.btnOneFolderUp = new System.Windows.Forms.Button();
+			this.btnRootFolder = new System.Windows.Forms.Button();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
+			this.btnFavorite = new System.Windows.Forms.Button();
+			this.cmbFavorites = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).BeginInit();
 			this.splitContainerExplorer.Panel1.SuspendLayout();
 			this.splitContainerExplorer.Panel2.SuspendLayout();
@@ -61,6 +65,10 @@
 			// 
 			// splitContainerExplorer.Panel2
 			// 
+			this.splitContainerExplorer.Panel2.Controls.Add(this.cmbFavorites);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.btnFavorite);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.btnRootFolder);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.btnOneFolderUp);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.fileFilterComboBox1);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.shellViewFileList);
 			this.splitContainerExplorer.Size = new System.Drawing.Size(804, 248);
@@ -82,11 +90,11 @@
 			this.shellViewFileList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.shellViewFileList.Location = new System.Drawing.Point(3, 30);
+			this.shellViewFileList.Location = new System.Drawing.Point(3, 28);
 			this.shellViewFileList.MultiSelect = false;
 			this.shellViewFileList.Name = "shellViewFileList";
 			this.shellViewFileList.SelectedItems = new GongSolutions.Shell.ShellItem[0];
-			this.shellViewFileList.Size = new System.Drawing.Size(512, 215);
+			this.shellViewFileList.Size = new System.Drawing.Size(512, 217);
 			this.shellViewFileList.StatusBar = null;
 			this.shellViewFileList.TabIndex = 0;
 			this.shellViewFileList.Text = "shellView1";
@@ -96,15 +104,14 @@
 			// 
 			// fileFilterComboBox1
 			// 
-			this.fileFilterComboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.fileFilterComboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.fileFilterComboBox1.Filter = "*.g5l";
 			this.fileFilterComboBox1.FilterItems = "All Files (*.*)|*.*|Patch Files (*.g5l)|*.g5l";
 			this.fileFilterComboBox1.FormattingEnabled = true;
-			this.fileFilterComboBox1.Location = new System.Drawing.Point(2, 3);
+			this.fileFilterComboBox1.Location = new System.Drawing.Point(292, 3);
 			this.fileFilterComboBox1.Name = "fileFilterComboBox1";
 			this.fileFilterComboBox1.ShellView = this.shellViewFileList;
-			this.fileFilterComboBox1.Size = new System.Drawing.Size(513, 21);
+			this.fileFilterComboBox1.Size = new System.Drawing.Size(226, 21);
 			this.fileFilterComboBox1.TabIndex = 1;
 			// 
 			// txtFolder
@@ -160,6 +167,30 @@
 			this.splitContainerMain.SplitterDistance = 248;
 			this.splitContainerMain.TabIndex = 8;
 			// 
+			// btnOneFolderUp
+			// 
+			this.btnOneFolderUp.Location = new System.Drawing.Point(3, 2);
+			this.btnOneFolderUp.Margin = new System.Windows.Forms.Padding(0);
+			this.btnOneFolderUp.Name = "btnOneFolderUp";
+			this.btnOneFolderUp.Size = new System.Drawing.Size(33, 21);
+			this.btnOneFolderUp.TabIndex = 2;
+			this.btnOneFolderUp.Text = "..";
+			this.toolTipControl.SetToolTip(this.btnOneFolderUp, "Go one folder up");
+			this.btnOneFolderUp.UseVisualStyleBackColor = true;
+			this.btnOneFolderUp.Click += new System.EventHandler(this.btnOneFolderUp_Click);
+			// 
+			// btnRootFolder
+			// 
+			this.btnRootFolder.Location = new System.Drawing.Point(40, 2);
+			this.btnRootFolder.Margin = new System.Windows.Forms.Padding(0);
+			this.btnRootFolder.Name = "btnRootFolder";
+			this.btnRootFolder.Size = new System.Drawing.Size(33, 21);
+			this.btnRootFolder.TabIndex = 2;
+			this.btnRootFolder.Text = "\\";
+			this.toolTipControl.SetToolTip(this.btnRootFolder, "Go to the root of this drive");
+			this.btnRootFolder.UseVisualStyleBackColor = true;
+			this.btnRootFolder.Click += new System.EventHandler(this.btnRootFolder_Click);
+			// 
 			// activePatch
 			// 
 			this.activePatch.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -169,6 +200,29 @@
 			this.activePatch.SelectedPatchIndex = -1;
 			this.activePatch.Size = new System.Drawing.Size(804, 233);
 			this.activePatch.TabIndex = 6;
+			// 
+			// btnFavorite
+			// 
+			this.btnFavorite.Location = new System.Drawing.Point(73, 2);
+			this.btnFavorite.Margin = new System.Windows.Forms.Padding(0);
+			this.btnFavorite.Name = "btnFavorite";
+			this.btnFavorite.Size = new System.Drawing.Size(33, 21);
+			this.btnFavorite.TabIndex = 2;
+			this.btnFavorite.Text = "*";
+			this.toolTipControl.SetToolTip(this.btnFavorite, "Set current folder in favorite list");
+			this.btnFavorite.UseVisualStyleBackColor = true;
+			this.btnFavorite.Click += new System.EventHandler(this.btnRootFolder_Click);
+			// 
+			// cmbFavorites
+			// 
+			this.cmbFavorites.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cmbFavorites.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbFavorites.FormattingEnabled = true;
+			this.cmbFavorites.Location = new System.Drawing.Point(109, 2);
+			this.cmbFavorites.Name = "cmbFavorites";
+			this.cmbFavorites.Size = new System.Drawing.Size(181, 21);
+			this.cmbFavorites.TabIndex = 3;
 			// 
 			// CtrlModeFile
 			// 
@@ -206,5 +260,9 @@
 		private System.Windows.Forms.Button btnOpenFileExplorer;
 		private System.Windows.Forms.ToolTip toolTipControl;
 		private System.Windows.Forms.SplitContainer splitContainerMain;
+		private System.Windows.Forms.Button btnRootFolder;
+		private System.Windows.Forms.Button btnOneFolderUp;
+		private System.Windows.Forms.ComboBox cmbFavorites;
+		private System.Windows.Forms.Button btnFavorite;
 	}
 }
