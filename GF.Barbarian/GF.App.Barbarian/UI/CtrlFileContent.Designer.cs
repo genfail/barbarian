@@ -28,12 +28,14 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.lblFname = new System.Windows.Forms.Label();
 			this.txtFname = new System.Windows.Forms.TextBox();
 			this.txtCntPatches = new System.Windows.Forms.TextBox();
 			this.lstPatches = new System.Windows.Forms.ListView();
 			this.btnLoadSelectedPatch = new System.Windows.Forms.Button();
 			this.lblSelectedPatch = new System.Windows.Forms.Label();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// lblFname
@@ -77,9 +79,11 @@
 			this.lstPatches.Name = "lstPatches";
 			this.lstPatches.Size = new System.Drawing.Size(318, 299);
 			this.lstPatches.TabIndex = 3;
+			this.toolTip1.SetToolTip(this.lstPatches, "Doubleclick, enter or button Load patch to load the patch into the device");
 			this.lstPatches.UseCompatibleStateImageBehavior = false;
 			this.lstPatches.View = System.Windows.Forms.View.Details;
 			this.lstPatches.SelectedIndexChanged += new System.EventHandler(this.lstPatches_SelectedIndexChanged);
+			this.lstPatches.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lstPatches_KeyUp);
 			// 
 			// btnLoadSelectedPatch
 			// 
@@ -126,5 +130,6 @@
 		private System.Windows.Forms.ListView lstPatches;
 		private System.Windows.Forms.Button btnLoadSelectedPatch;
 		private System.Windows.Forms.Label lblSelectedPatch;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }

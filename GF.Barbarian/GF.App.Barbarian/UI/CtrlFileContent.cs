@@ -30,7 +30,9 @@ namespace GF.Barbarian
 				Reload(); // File is read, patches are known now
 			}
 		}
-		 public int SelectedPatchIndex
+
+
+		public int SelectedPatchIndex
 		{
 			get
 			{
@@ -56,6 +58,8 @@ namespace GF.Barbarian
 		private void CtrlPatchFile_Load(object sender, EventArgs e)
 		{
 			SetLoadButton();
+			this.lstPatches.DoubleClick += LstPatches_DoubleClick;
+			this.lstPatches.MouseDoubleClick += LstPatches_MouseDoubleClick;
 		}
 
 		private void Reload()
@@ -78,15 +82,36 @@ namespace GF.Barbarian
 			SetLoadButton();
 		}
 
+		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SetLoadButton();
+		}
+
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
+		{
+			LoadPatch();
+		}
+
+		private void LstPatches_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			LoadPatch();
+		}
+
+		private void LstPatches_DoubleClick(object sender, EventArgs e)
+		{
+			LoadPatch();
+		}
+
+		private void lstPatches_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+				LoadPatch();
+		}
+
+		private void LoadPatch()
 		{
 			byte[] b = ((ListItemPatch)lstPatches?.SelectedItems[0]).SysxData;
 			Program.Midi.Out.SendLongMessage(b);
-		}
-
-		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
-		{
-				SetLoadButton();
 		}
 
 		private void SetLoadButton()

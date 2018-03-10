@@ -10,7 +10,7 @@ namespace GF.Barbarian.Midi
 	{
 		public event EventHandler<EventArgs> OnConnectionStateChanged; 
 
-		protected MidiConnectionState __connectState = MidiConnectionState.Connected;
+		protected MidiConnectionState __connectState = MidiConnectionState.Undefined;
 		public MidiConnectionState ConnectState { get{return __connectState; }}
 
 		public ConnectionMidiIn In { get; private set;}
@@ -26,9 +26,9 @@ namespace GF.Barbarian.Midi
 			In.Init();
 			Out.Init();
 
+			ReadConnectionInOut();
 			In.OnConnectionStateChanged += Connection_ConnectionChanged;
 			Out.OnConnectionStateChanged += Connection_ConnectionChanged;
-
 		}
 
 		public void Connect()
@@ -59,6 +59,11 @@ namespace GF.Barbarian.Midi
 		}
 
 		private void Connection_ConnectionChanged(object sender, EventArgs e)
+		{
+			ReadConnectionInOut();
+		}
+
+		private void ReadConnectionInOut()
 		{
 			if (In.ConnectState == MidiConnectionState.Connected && Out.ConnectState == MidiConnectionState.Connected)
 				SetState(MidiConnectionState.Connected);

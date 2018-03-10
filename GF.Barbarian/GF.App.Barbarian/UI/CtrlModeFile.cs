@@ -13,11 +13,15 @@ namespace GF.Barbarian
 		public CtrlModeFile()
 		{
 			InitializeComponent();
+			if (this.DesignMode)
+				return;
 			PrepareDragDrop();
 		}
 
 		private void CtrlModeFile_Load(object sender, EventArgs e)
 		{
+			if (this.DesignMode)
+				return;
 			shellViewFileList.SelectionChanged += ShellViewFileList_SelectionChanged;
 			ApplySettings();
 		}
@@ -39,7 +43,7 @@ namespace GF.Barbarian
 
 		public void ApplySettings()
 		{
-			if (!this.Visible) // if not yet loaded
+			if (this.DesignMode || !this.Visible) // if not yet loaded
 				return;
 
 			string complete = Path.Combine(Program.AppSettings.FileModeDirectory);
