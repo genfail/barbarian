@@ -33,9 +33,13 @@
 			this.txtFname = new System.Windows.Forms.TextBox();
 			this.txtCntPatches = new System.Windows.Forms.TextBox();
 			this.lstPatches = new System.Windows.Forms.ListView();
-			this.btnLoadSelectedPatch = new System.Windows.Forms.Button();
-			this.lblSelectedPatch = new System.Windows.Forms.Label();
+			this.btnLoadCurrPatch = new System.Windows.Forms.Button();
+			this.lblCurrPatch = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.btnLoadPrevPatch = new System.Windows.Forms.Button();
+			this.lblPrevPatch = new System.Windows.Forms.Label();
+			this.btnLoadNextPatch = new System.Windows.Forms.Button();
+			this.lblNextPatch = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblFname
@@ -78,6 +82,7 @@
 			this.lstPatches.MultiSelect = false;
 			this.lstPatches.Name = "lstPatches";
 			this.lstPatches.Size = new System.Drawing.Size(318, 299);
+			this.lstPatches.Sorting = System.Windows.Forms.SortOrder.Ascending;
 			this.lstPatches.TabIndex = 3;
 			this.toolTip1.SetToolTip(this.lstPatches, "Doubleclick, enter or button Load patch to load the patch into the device");
 			this.lstPatches.UseCompatibleStateImageBehavior = false;
@@ -85,31 +90,73 @@
 			this.lstPatches.SelectedIndexChanged += new System.EventHandler(this.lstPatches_SelectedIndexChanged);
 			this.lstPatches.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lstPatches_KeyUp);
 			// 
-			// btnLoadSelectedPatch
+			// btnLoadCurrPatch
 			// 
-			this.btnLoadSelectedPatch.Location = new System.Drawing.Point(330, 56);
-			this.btnLoadSelectedPatch.Name = "btnLoadSelectedPatch";
-			this.btnLoadSelectedPatch.Size = new System.Drawing.Size(136, 60);
-			this.btnLoadSelectedPatch.TabIndex = 4;
-			this.btnLoadSelectedPatch.Text = "Load patch";
-			this.btnLoadSelectedPatch.UseVisualStyleBackColor = true;
-			this.btnLoadSelectedPatch.Click += new System.EventHandler(this.btnLoadSelectedPatch_Click);
+			this.btnLoadCurrPatch.Location = new System.Drawing.Point(423, 56);
+			this.btnLoadCurrPatch.Name = "btnLoadCurrPatch";
+			this.btnLoadCurrPatch.Size = new System.Drawing.Size(136, 26);
+			this.btnLoadCurrPatch.TabIndex = 4;
+			this.btnLoadCurrPatch.Text = "Load &Selected";
+			this.btnLoadCurrPatch.UseVisualStyleBackColor = true;
+			this.btnLoadCurrPatch.Click += new System.EventHandler(this.btnLoadSelectedPatch_Click);
 			// 
-			// lblSelectedPatch
+			// lblCurrPatch
 			// 
-			this.lblSelectedPatch.AutoSize = true;
-			this.lblSelectedPatch.Location = new System.Drawing.Point(330, 40);
-			this.lblSelectedPatch.Name = "lblSelectedPatch";
-			this.lblSelectedPatch.Size = new System.Drawing.Size(61, 13);
-			this.lblSelectedPatch.TabIndex = 5;
-			this.lblSelectedPatch.Text = "Load patch";
+			this.lblCurrPatch.AutoSize = true;
+			this.lblCurrPatch.Location = new System.Drawing.Point(456, 40);
+			this.lblCurrPatch.Name = "lblCurrPatch";
+			this.lblCurrPatch.Size = new System.Drawing.Size(61, 13);
+			this.lblCurrPatch.TabIndex = 5;
+			this.lblCurrPatch.Text = "Load patch";
+			// 
+			// btnLoadPrevPatch
+			// 
+			this.btnLoadPrevPatch.Location = new System.Drawing.Point(342, 56);
+			this.btnLoadPrevPatch.Name = "btnLoadPrevPatch";
+			this.btnLoadPrevPatch.Size = new System.Drawing.Size(67, 26);
+			this.btnLoadPrevPatch.TabIndex = 4;
+			this.btnLoadPrevPatch.Text = "Load &Prev";
+			this.btnLoadPrevPatch.UseVisualStyleBackColor = true;
+			this.btnLoadPrevPatch.Click += new System.EventHandler(this.btnLoadPreviousPatch_Click);
+			// 
+			// lblPrevPatch
+			// 
+			this.lblPrevPatch.AutoSize = true;
+			this.lblPrevPatch.Location = new System.Drawing.Point(345, 40);
+			this.lblPrevPatch.Name = "lblPrevPatch";
+			this.lblPrevPatch.Size = new System.Drawing.Size(61, 13);
+			this.lblPrevPatch.TabIndex = 5;
+			this.lblPrevPatch.Text = "Load patch";
+			// 
+			// btnLoadNextPatch
+			// 
+			this.btnLoadNextPatch.Location = new System.Drawing.Point(581, 56);
+			this.btnLoadNextPatch.Name = "btnLoadNextPatch";
+			this.btnLoadNextPatch.Size = new System.Drawing.Size(67, 26);
+			this.btnLoadNextPatch.TabIndex = 4;
+			this.btnLoadNextPatch.Text = "Load &Next";
+			this.btnLoadNextPatch.UseVisualStyleBackColor = true;
+			this.btnLoadNextPatch.Click += new System.EventHandler(this.btnLoadNextPatch_Click);
+			// 
+			// lblNextPatch
+			// 
+			this.lblNextPatch.AutoSize = true;
+			this.lblNextPatch.Location = new System.Drawing.Point(584, 40);
+			this.lblNextPatch.Name = "lblNextPatch";
+			this.lblNextPatch.Size = new System.Drawing.Size(61, 13);
+			this.lblNextPatch.TabIndex = 5;
+			this.lblNextPatch.Text = "Load patch";
 			// 
 			// CtrlFileContent
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.lblSelectedPatch);
-			this.Controls.Add(this.btnLoadSelectedPatch);
+			this.Controls.Add(this.lblNextPatch);
+			this.Controls.Add(this.lblPrevPatch);
+			this.Controls.Add(this.lblCurrPatch);
+			this.Controls.Add(this.btnLoadNextPatch);
+			this.Controls.Add(this.btnLoadPrevPatch);
+			this.Controls.Add(this.btnLoadCurrPatch);
 			this.Controls.Add(this.lstPatches);
 			this.Controls.Add(this.txtCntPatches);
 			this.Controls.Add(this.txtFname);
@@ -128,8 +175,12 @@
 		private System.Windows.Forms.TextBox txtFname;
 		private System.Windows.Forms.TextBox txtCntPatches;
 		private System.Windows.Forms.ListView lstPatches;
-		private System.Windows.Forms.Button btnLoadSelectedPatch;
-		private System.Windows.Forms.Label lblSelectedPatch;
+		private System.Windows.Forms.Button btnLoadCurrPatch;
+		private System.Windows.Forms.Label lblCurrPatch;
 		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.Button btnLoadPrevPatch;
+		private System.Windows.Forms.Label lblPrevPatch;
+		private System.Windows.Forms.Button btnLoadNextPatch;
+		private System.Windows.Forms.Label lblNextPatch;
 	}
 }

@@ -31,7 +31,6 @@ namespace GF.Barbarian
 			}
 		}
 
-
 		public int SelectedPatchIndex
 		{
 			get
@@ -57,7 +56,7 @@ namespace GF.Barbarian
 
 		private void CtrlPatchFile_Load(object sender, EventArgs e)
 		{
-			SetLoadButton();
+			SetSelectedPatches();
 			this.lstPatches.DoubleClick += LstPatches_DoubleClick;
 			this.lstPatches.MouseDoubleClick += LstPatches_MouseDoubleClick;
 		}
@@ -72,24 +71,20 @@ namespace GF.Barbarian
 			activeFile.Load();
 			txtCntPatches.Text = $"{activeFile.PatchList.Count} patches";
 
-			foreach (KeyValuePair<int,Patch> kvp in activeFile.PatchList)
+			foreach (KeyValuePair<int,SysxPatch> kvp in activeFile.PatchList)
 			{
 				ListItemPatch ctrl = new ListItemPatch(kvp.Value);
 				lstPatches.Items.Add(ctrl);
 			}
 			if (lstPatches.Items.Count > 0 && lstPatches.SelectedItems.Count == 0)
 				lstPatches.Items[0].Selected = true;
-			SetLoadButton();
+			SetSelectedPatches();
 		}
 
 		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SetLoadButton();
-		}
-
-		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
-		{
-			LoadPatch();
+			SetSelectedPatches();
+			SetSelectedPatches();
 		}
 
 		private void LstPatches_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -108,6 +103,55 @@ namespace GF.Barbarian
 				LoadPatch();
 		}
 
+		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
+		{
+			LoadPatch();
+		}
+
+		private void btnLoadPreviousPatch_Click(object sender, EventArgs e)
+		{
+			// Is disabled when at begin, so no validation needed
+			lstPatches.Items[lstPatches.SelectedItems[0].Index-1].Selected = true;
+			SetSelectedPatches();
+			LoadPatch();
+		}
+
+		private void btnLoadNextPatch_Click(object sender, EventArgs e)
+		{
+			// Is disabled when at end, so no validation needed
+			lstPatches.Items[lstPatches.SelectedItems[0].Index+1].Selected = true;
+			SetSelectedPatches();
+			LoadPatch();
+		}
+
+		private void SetSelectedPatches()
+		{
+			if (lstPatches?.SelectedItems?.Count == 0)
+			{
+				prev = null;
+				curr = null;
+				next = null;
+				return;
+			}
+
+			int i = lstPatches.SelectedItems[0].Index;
+			curr = (ListItemPatch)lstPatches.Items[i];			
+			prev = i > 0 ? (ListItemPatch)lstPatches.Items[i-1] : null;
+			next = i < lstPatches.Items.Count-1 ? (ListItemPatch)lstPatches.Items[i+1] : null;
+
+			lblPrevPatch.Text = prev == null ? "-" : prev.Name;
+			lblCurrPatch.Text = curr == null ? "-" : curr.Name;
+			lblNextPatch.Text = next == null ? "-" : next.Name;
+
+			btnLoadPrevPatch.Enabled = prev != null;
+			btnLoadCurrPatch.Enabled = curr != null;
+			btnLoadNextPatch.Enabled = next != null;
+		}
+
+		ListItemPatch prev = null;
+		ListItemPatch curr = null;
+		ListItemPatch next = null;
+
 		private void LoadPatch()
 		{
 			if (lstPatches?.SelectedItems?.Count < 1)
@@ -117,39 +161,29 @@ namespace GF.Barbarian
 			}
 
 			ListItemPatch p = ((ListItemPatch)lstPatches?.SelectedItems[0]);
-			if(Program.Midi.Out.SendLongMessage(p.SysxData))
+			if(Program.Midi.Out.SendLongMessage(p.Data))
 			{
-				Program.Mainform.SetMessage(MSgSeverity.Message, $"Loaded: [{p.PatchName}]");
+				Program.Mainform.SetMessage(MSgSeverity.Message, $"Loaded: [{p.Name}]");
 			}
 			else
 			{
-				Program.Mainform.SetMessage(MSgSeverity.Error, $"Error loading: [{p.PatchName}]");
+				Program.Mainform.SetMessage(MSgSeverity.Error, $"Error loading: [{p.Name}]");
 			}
-		}
-
-		private void SetLoadButton()
-		{
-			if (lstPatches?.SelectedItems.Count > 0)
-				lblSelectedPatch.Text = ((ListItemPatch)lstPatches?.SelectedItems[0]).PatchName;
-			else
-				lblSelectedPatch.Text = "";
-
-			btnLoadSelectedPatch.Enabled = !String.IsNullOrEmpty(lblSelectedPatch.Text);
 		}
 	}
 
 	public class ListItemPatch : ListViewItem
 	{
-		public string PatchName{ get{ return patch.Name;} }
 		public int PatchCount { get{ return patch.Count;} }
-		public byte[] SysxData { get{ return patch.SysxData;} }
+		public byte[] Data { get{ return patch.Data;} }
 
-		private Patch patch;
-		public ListItemPatch(Patch p)
+		private SysxPatch patch;
+		public ListItemPatch(SysxPatch p)
 		{
 			patch = p;
 			this.Text = p.Count.ToString();
 			this.SubItems.Add(p.Name);
+			Name = patch.Name;
 		}
 	}
 }
