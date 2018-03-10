@@ -10,6 +10,8 @@ namespace GF.Barbarian
 {
 	class SingleInstanceApp : WindowsFormsApplicationBase
 	{
+		public FrmMain Mainform {get {return ((FrmMain)this.MainForm);	}}
+
 		public SingleInstanceApp() : base()
 		{
 			this.IsSingleInstance = true;

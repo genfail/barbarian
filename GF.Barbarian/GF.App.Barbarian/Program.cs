@@ -7,6 +7,7 @@ namespace GF.Barbarian
 {
 	static class Program
 	{
+		public static FrmMain Mainform { get; set; }
 		public static ConnectionMidi Midi { get; private set; }
 		public static ApplicationSettings AppSettings { get; set;}
 		public static ApplicationData AppData { get; private set;}

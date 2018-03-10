@@ -110,8 +110,21 @@ namespace GF.Barbarian
 
 		private void LoadPatch()
 		{
-			byte[] b = ((ListItemPatch)lstPatches?.SelectedItems[0]).SysxData;
-			Program.Midi.Out.SendLongMessage(b);
+			if (lstPatches?.SelectedItems?.Count < 1)
+			{
+				Program.Mainform.SetMessage(MSgSeverity.Warning, $"Wrong selection");
+				return;
+			}
+
+			ListItemPatch p = ((ListItemPatch)lstPatches?.SelectedItems[0]);
+			if(Program.Midi.Out.SendLongMessage(p.SysxData))
+			{
+				Program.Mainform.SetMessage(MSgSeverity.Message, $"Loaded: [{p.PatchName}]");
+			}
+			else
+			{
+				Program.Mainform.SetMessage(MSgSeverity.Error, $"Error loading: [{p.PatchName}]");
+			}
 		}
 
 		private void SetLoadButton()

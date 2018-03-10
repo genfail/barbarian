@@ -20,6 +20,7 @@ namespace GF.Barbarian
 
 		public FrmMain()
 		{
+			Program.Mainform = this;
 			InitializeComponent();
 			modes = new Dictionary<ProgramMode, ICtrlMode>();
 			modes.Add(ProgramMode.File, new CtrlModeFile());
