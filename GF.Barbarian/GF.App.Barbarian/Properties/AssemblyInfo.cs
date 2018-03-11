@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("GF.Barbarian")]
-[assembly: AssemblyDescription("Yet another Barbarian")]
+[assembly: AssemblyDescription("Yet another Librarian")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GenFail")]
 [assembly: AssemblyProduct("GF.Barbarian")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
@@ -46,32 +47,43 @@ namespace GF.Barbarian
 			if (this.DesignMode || !this.Visible) // if not yet loaded
 				return;
 
-			string complete = Path.Combine(Program.AppSettings.FileModeDirectory);
-
-			ShellItem si = new ShellItem(complete);
-			shellTreeView1.SelectedFolder = si;
+			SelectPath(Path.Combine(Program.AppSettings.FileModeDirectory));
 
 			shellViewFileList.Select(Program.AppSettings.FileModeFileName);
 
 			activePatch.SelectedPatchIndex = Properties.Settings.Default.LastSelectedPatchIndex;
+
+			string[] folders = Properties.Settings.Default.FavouriteFolders.Split(new[]{'|'});
+			cmbFavoriteFolders.Items.AddRange(folders);
 		}
 
 		public void SaveSettings()
 		{
 			Properties.Settings.Default.LastSelectedFolder = shellTreeView1.SelectedFolder.FileSystemPath;
 
+			Properties.Settings.Default.FavouriteFolders = String.Join("|", cmbFavoriteFolders.Items.Cast<Object>().Select(item => item.ToString()).ToArray());
+
 			if (shellViewFileList.SelectedItems != null && shellViewFileList.SelectedItems.Length > 0)
 			{
 				ShellItem si = shellViewFileList.SelectedItems[0];
 				Properties.Settings.Default.LastSelectedFile = si.DisplayName;
 				Properties.Settings.Default.LastSelectedPatchIndex = activePatch.SelectedPatchIndex;
-
 			}
 			else
 				Properties.Settings.Default.LastSelectedFile = "";
 		}
 
-		private void LoadFolder(string _folder, string _selectedFile = null)
+		private void SelectPath(string _pth)
+		{
+			if (Directory.Exists(_pth))
+			{
+				string complete = Path.Combine(_pth);
+				ShellItem si = new ShellItem(complete);
+				shellTreeView1.SelectedFolder = si;
+			}
+		}
+
+		private void LoadFolder(string _folder)
 		{
 			if (String.IsNullOrEmpty(_folder) || !Directory.Exists(_folder) )
 			{
@@ -130,7 +142,7 @@ namespace GF.Barbarian
 				ShellItem si = new ShellItem(Path.GetDirectoryName(files[0]));
 				shellTreeView1.SelectedFolder = si;
 
-				LoadFolder(Path.GetDirectoryName(files[0]), files[0]);
+				LoadFolder(Path.GetDirectoryName(files[0]));
 			}
 		}
 
@@ -227,6 +239,29 @@ namespace GF.Barbarian
 					return true;
 			}
 			return false;
+		}
+
+		private void btnbtnAddToFavoriteFolders_Click(object sender, EventArgs e)
+		{
+			string cur = shellTreeView1.SelectedFolder.FileSystemPath;
+
+			if (!cmbFavoriteFolders.Items.Contains(cur))
+				cmbFavoriteFolders.Items.Add(cur);
+		}
+
+		private void cmbFavoriteFolders_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			SelectPath(cmbFavoriteFolders.Text);
+		}
+
+		private void removePathToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			cmbFavoriteFolders.Items.Remove(cmbFavoriteFolders.SelectedItem);
+		}
+
+		private void goToPathToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SelectPath(cmbFavoriteFolders.Text);
 		}
 	}
 }

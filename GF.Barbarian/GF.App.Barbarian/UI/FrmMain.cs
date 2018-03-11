@@ -73,8 +73,11 @@ namespace GF.Barbarian
 
 		private void Connection_ConnectionChanged(object sender, EventArgs e)
 		{
-			toolStripStatusMidi.Text = Program.Midi.DeviceConnectedText;
-			toolStripStatusMidi.Image = Global.GetConnectedIcon(Program.Midi.ConnectState);
+			if (!IsDisposed)
+			{
+				toolStripStatusMidi.Text = Program.Midi.DeviceConnectedText;
+				toolStripStatusMidi.Image = Global.GetConnectedIcon(Program.Midi.ConnectState);
+			}
 		}
 
 		public void ApplySettings()

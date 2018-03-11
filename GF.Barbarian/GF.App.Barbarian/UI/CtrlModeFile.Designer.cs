@@ -32,8 +32,8 @@
 			this.splitContainerExplorer = new System.Windows.Forms.SplitContainer();
 			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
 			this.shellViewFileList = new GongSolutions.Shell.ShellView();
-			this.cmbFavorites = new System.Windows.Forms.ComboBox();
-			this.btnFavorite = new System.Windows.Forms.Button();
+			this.cmbFavoriteFolders = new System.Windows.Forms.ComboBox();
+			this.btnAddToFavoriteFolders = new System.Windows.Forms.Button();
 			this.btnRootFolder = new System.Windows.Forms.Button();
 			this.btnOneFolderUp = new System.Windows.Forms.Button();
 			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
@@ -42,7 +42,10 @@
 			this.btnOpenFileExplorer = new System.Windows.Forms.Button();
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainerMain = new System.Windows.Forms.SplitContainer();
+			this.contextMenuStripForComboBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.removePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
+			this.goToPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).BeginInit();
 			this.splitContainerExplorer.Panel1.SuspendLayout();
 			this.splitContainerExplorer.Panel2.SuspendLayout();
@@ -51,6 +54,7 @@
 			this.splitContainerMain.Panel1.SuspendLayout();
 			this.splitContainerMain.Panel2.SuspendLayout();
 			this.splitContainerMain.SuspendLayout();
+			this.contextMenuStripForComboBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainerExplorer
@@ -65,8 +69,8 @@
 			// 
 			// splitContainerExplorer.Panel2
 			// 
-			this.splitContainerExplorer.Panel2.Controls.Add(this.cmbFavorites);
-			this.splitContainerExplorer.Panel2.Controls.Add(this.btnFavorite);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.cmbFavoriteFolders);
+			this.splitContainerExplorer.Panel2.Controls.Add(this.btnAddToFavoriteFolders);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.btnRootFolder);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.btnOneFolderUp);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.fileFilterComboBox1);
@@ -102,28 +106,31 @@
 			this.shellViewFileList.Navigated += new System.EventHandler(this.shellViewFileList_Navigated);
 			this.shellViewFileList.LocationChanged += new System.EventHandler(this.shellViewFileList_LocationChanged);
 			// 
-			// cmbFavorites
+			// cmbFavoriteFolders
 			// 
-			this.cmbFavorites.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.cmbFavoriteFolders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.cmbFavorites.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cmbFavorites.FormattingEnabled = true;
-			this.cmbFavorites.Location = new System.Drawing.Point(109, 1);
-			this.cmbFavorites.Name = "cmbFavorites";
-			this.cmbFavorites.Size = new System.Drawing.Size(181, 21);
-			this.cmbFavorites.TabIndex = 3;
+			this.cmbFavoriteFolders.ContextMenuStrip = this.contextMenuStripForComboBox;
+			this.cmbFavoriteFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbFavoriteFolders.FormattingEnabled = true;
+			this.cmbFavoriteFolders.Location = new System.Drawing.Point(109, 1);
+			this.cmbFavoriteFolders.Name = "cmbFavoriteFolders";
+			this.cmbFavoriteFolders.Size = new System.Drawing.Size(181, 21);
+			this.cmbFavoriteFolders.TabIndex = 3;
+			this.cmbFavoriteFolders.SelectedIndexChanged += new System.EventHandler(this.cmbFavoriteFolders_SelectedIndexChanged);
 			// 
-			// btnFavorite
+			// btnAddToFavoriteFolders
 			// 
-			this.btnFavorite.Location = new System.Drawing.Point(73, 1);
-			this.btnFavorite.Margin = new System.Windows.Forms.Padding(0);
-			this.btnFavorite.Name = "btnFavorite";
-			this.btnFavorite.Size = new System.Drawing.Size(33, 21);
-			this.btnFavorite.TabIndex = 2;
-			this.btnFavorite.Text = "*";
-			this.toolTipControl.SetToolTip(this.btnFavorite, "Set current folder in favorite list");
-			this.btnFavorite.UseVisualStyleBackColor = true;
-			this.btnFavorite.Click += new System.EventHandler(this.btnRootFolder_Click);
+			this.btnAddToFavoriteFolders.ContextMenuStrip = this.contextMenuStripForComboBox;
+			this.btnAddToFavoriteFolders.Location = new System.Drawing.Point(73, 1);
+			this.btnAddToFavoriteFolders.Margin = new System.Windows.Forms.Padding(0);
+			this.btnAddToFavoriteFolders.Name = "btnAddToFavoriteFolders";
+			this.btnAddToFavoriteFolders.Size = new System.Drawing.Size(33, 21);
+			this.btnAddToFavoriteFolders.TabIndex = 2;
+			this.btnAddToFavoriteFolders.Text = "*";
+			this.toolTipControl.SetToolTip(this.btnAddToFavoriteFolders, "Set current folder in favorite list");
+			this.btnAddToFavoriteFolders.UseVisualStyleBackColor = true;
+			this.btnAddToFavoriteFolders.Click += new System.EventHandler(this.btnbtnAddToFavoriteFolders_Click);
 			// 
 			// btnRootFolder
 			// 
@@ -214,6 +221,21 @@
 			this.splitContainerMain.SplitterDistance = 265;
 			this.splitContainerMain.TabIndex = 8;
 			// 
+			// contextMenuStripForComboBox
+			// 
+			this.contextMenuStripForComboBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.goToPathToolStripMenuItem,
+            this.removePathToolStripMenuItem});
+			this.contextMenuStripForComboBox.Name = "contextMenuStrip1";
+			this.contextMenuStripForComboBox.Size = new System.Drawing.Size(181, 70);
+			// 
+			// removePathToolStripMenuItem
+			// 
+			this.removePathToolStripMenuItem.Name = "removePathToolStripMenuItem";
+			this.removePathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.removePathToolStripMenuItem.Text = "Remove path";
+			this.removePathToolStripMenuItem.Click += new System.EventHandler(this.removePathToolStripMenuItem_Click);
+			// 
 			// activePatch
 			// 
 			this.activePatch.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -223,6 +245,13 @@
 			this.activePatch.SelectedPatchIndex = -1;
 			this.activePatch.Size = new System.Drawing.Size(804, 251);
 			this.activePatch.TabIndex = 6;
+			// 
+			// goToPathToolStripMenuItem
+			// 
+			this.goToPathToolStripMenuItem.Name = "goToPathToolStripMenuItem";
+			this.goToPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.goToPathToolStripMenuItem.Text = "Go to path";
+			this.goToPathToolStripMenuItem.Click += new System.EventHandler(this.goToPathToolStripMenuItem_Click);
 			// 
 			// CtrlModeFile
 			// 
@@ -244,6 +273,7 @@
 			this.splitContainerMain.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
 			this.splitContainerMain.ResumeLayout(false);
+			this.contextMenuStripForComboBox.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -262,7 +292,10 @@
 		private System.Windows.Forms.SplitContainer splitContainerMain;
 		private System.Windows.Forms.Button btnRootFolder;
 		private System.Windows.Forms.Button btnOneFolderUp;
-		private System.Windows.Forms.ComboBox cmbFavorites;
-		private System.Windows.Forms.Button btnFavorite;
+		private System.Windows.Forms.ComboBox cmbFavoriteFolders;
+		private System.Windows.Forms.Button btnAddToFavoriteFolders;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStripForComboBox;
+		private System.Windows.Forms.ToolStripMenuItem removePathToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem goToPathToolStripMenuItem;
 	}
 }
