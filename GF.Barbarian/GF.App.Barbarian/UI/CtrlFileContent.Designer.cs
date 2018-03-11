@@ -88,13 +88,14 @@
 			this.toolTip1.SetToolTip(this.lstPatches, "Doubleclick, enter or button Load patch to load the patch into the device");
 			this.lstPatches.UseCompatibleStateImageBehavior = false;
 			this.lstPatches.View = System.Windows.Forms.View.Tile;
+			this.lstPatches.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.lstPatches_DrawItem);
 			this.lstPatches.SelectedIndexChanged += new System.EventHandler(this.lstPatches_SelectedIndexChanged);
 			this.lstPatches.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lstPatches_KeyUp);
 			// 
 			// btnLoadCurrPatch
 			// 
 			this.btnLoadCurrPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadCurrPatch.Location = new System.Drawing.Point(476, 119);
+			this.btnLoadCurrPatch.Location = new System.Drawing.Point(476, 109);
 			this.btnLoadCurrPatch.Name = "btnLoadCurrPatch";
 			this.btnLoadCurrPatch.Size = new System.Drawing.Size(94, 40);
 			this.btnLoadCurrPatch.TabIndex = 4;
@@ -106,7 +107,7 @@
 			// 
 			this.lblCurrPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrPatch.AutoSize = true;
-			this.lblCurrPatch.Location = new System.Drawing.Point(479, 103);
+			this.lblCurrPatch.Location = new System.Drawing.Point(479, 93);
 			this.lblCurrPatch.Name = "lblCurrPatch";
 			this.lblCurrPatch.Size = new System.Drawing.Size(61, 13);
 			this.lblCurrPatch.TabIndex = 5;
@@ -115,7 +116,7 @@
 			// btnLoadPrevPatch
 			// 
 			this.btnLoadPrevPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadPrevPatch.Location = new System.Drawing.Point(476, 58);
+			this.btnLoadPrevPatch.Location = new System.Drawing.Point(476, 48);
 			this.btnLoadPrevPatch.Name = "btnLoadPrevPatch";
 			this.btnLoadPrevPatch.Size = new System.Drawing.Size(94, 40);
 			this.btnLoadPrevPatch.TabIndex = 4;
@@ -127,7 +128,7 @@
 			// 
 			this.lblPrevPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPrevPatch.AutoSize = true;
-			this.lblPrevPatch.Location = new System.Drawing.Point(479, 42);
+			this.lblPrevPatch.Location = new System.Drawing.Point(479, 32);
 			this.lblPrevPatch.Name = "lblPrevPatch";
 			this.lblPrevPatch.Size = new System.Drawing.Size(61, 13);
 			this.lblPrevPatch.TabIndex = 5;
@@ -136,7 +137,7 @@
 			// btnLoadNextPatch
 			// 
 			this.btnLoadNextPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadNextPatch.Location = new System.Drawing.Point(476, 180);
+			this.btnLoadNextPatch.Location = new System.Drawing.Point(476, 170);
 			this.btnLoadNextPatch.Name = "btnLoadNextPatch";
 			this.btnLoadNextPatch.Size = new System.Drawing.Size(94, 40);
 			this.btnLoadNextPatch.TabIndex = 4;
@@ -148,7 +149,7 @@
 			// 
 			this.lblNextPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblNextPatch.AutoSize = true;
-			this.lblNextPatch.Location = new System.Drawing.Point(479, 164);
+			this.lblNextPatch.Location = new System.Drawing.Point(479, 154);
 			this.lblNextPatch.Name = "lblNextPatch";
 			this.lblNextPatch.Size = new System.Drawing.Size(61, 13);
 			this.lblNextPatch.TabIndex = 5;

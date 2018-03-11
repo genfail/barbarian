@@ -57,6 +57,14 @@ namespace GF.Barbarian
 			SetMessage(MSgSeverity.Message, e.MsgText);
 		}
 
+		public void SetPatchName(string _name)
+		{
+			if (String.IsNullOrEmpty(_name))
+				toolStripLoadedPatchName.Text = "No patch loaded";
+			else
+				toolStripLoadedPatchName.Text = "Loaded:" + _name;
+		}
+
 		public void SetMessage(MSgSeverity _sev, string _msg)
 		{
 			toolStripStatusMessage.Text = _msg;
@@ -95,7 +103,7 @@ namespace GF.Barbarian
 			panelMain.Controls.Add((Control)activeControl);
 		}
 
-	#region Menu File
+		#region Menu File
 		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
 			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);

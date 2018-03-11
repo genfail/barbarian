@@ -211,20 +211,22 @@ namespace GF.Barbarian
 			SetTree(fldr);
 		}
 
-		private void CtrlModeFile_KeyUp(object sender, KeyEventArgs e)
+
+		protected override bool ProcessCmdKey(ref Message message, Keys keys)
 		{
-			switch(e.KeyCode)
+			switch (keys)
 			{
 				case Keys.P://prev
 					activePatch.SelectPatch(LoadPatch.Previous, true);
-					break;
+					return true;
 				case Keys.C: //current
 					activePatch.SelectPatch(LoadPatch.Current, true);
-					break;
+					return true;
 				case Keys.N: //next
 					activePatch.SelectPatch(LoadPatch.Next, true);
-					break;
+					return true;
 			}
+			return false;
 		}
 	}
 }

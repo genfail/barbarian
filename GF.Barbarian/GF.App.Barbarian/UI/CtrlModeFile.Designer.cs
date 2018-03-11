@@ -236,7 +236,6 @@
 			this.Name = "CtrlModeFile";
 			this.Size = new System.Drawing.Size(810, 547);
 			this.Load += new System.EventHandler(this.CtrlModeFile_Load);
-			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CtrlModeFile_KeyUp);
 			this.splitContainerExplorer.Panel1.ResumeLayout(false);
 			this.splitContainerExplorer.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).EndInit();
