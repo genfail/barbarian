@@ -94,5 +94,17 @@ namespace GF.Barbarian.Properties {
                 this["FavouriteFolders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WrapFiles {
+            get {
+                return ((bool)(this["WrapFiles"]));
+            }
+            set {
+                this["WrapFiles"] = value;
+            }
+        }
     }
 }

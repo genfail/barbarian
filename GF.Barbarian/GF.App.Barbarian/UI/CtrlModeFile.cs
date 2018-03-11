@@ -168,6 +168,36 @@ namespace GF.Barbarian
 
 		#endregion
 
+		public bool SelectFile(SelectDirection _dir)
+		{
+
+			if (shellViewFileList.Items.Length == 0 || shellViewFileList.SelectedItems.Length == 0)
+			{
+				return false;
+			}
+			else
+			{
+				ShellItem si = shellViewFileList.SelectedItems[0];
+
+				int i = Array.IndexOf(shellViewFileList.Items, si);
+				int i2 = i;
+				if (_dir == SelectDirection.Previous && i > 0)
+					i2 = i - 1;
+				else
+				if (_dir == SelectDirection.Next && i < shellViewFileList.Items.Length - 1)
+					i2 = i + 1;
+
+				if (i != i2) // Avoid loop setting (each set causes event)
+				{
+					ShellItem si2 = shellViewFileList.Items[i2];
+					
+					shellViewFileList.Select(si2.DisplayName);
+					return true;
+				}
+				return false;
+			}
+		}
+
 		private void shellTreeView1_SelectionChanged(object sender, EventArgs e)
 		{
 			txtFolder.Text = shellTreeView1.SelectedFolder.FileSystemPath;
@@ -213,32 +243,13 @@ namespace GF.Barbarian
 
 		private void btnOneFolderUp_Click(object sender, EventArgs e)
 		{
-			string fldr = Path.GetFullPath(Path.Combine(txtFolder.Text, @"..\"));// one up
-			SetTree(fldr);
+			shellViewFileList.NavigateParent();
 		}
 
 		private void btnRootFolder_Click(object sender, EventArgs e)
 		{
 			string fldr = Path.GetPathRoot(txtFolder.Text);
 			SetTree(fldr);
-		}
-
-
-		protected override bool ProcessCmdKey(ref Message message, Keys keys)
-		{
-			switch (keys)
-			{
-				case Keys.P://prev
-					activePatch.SelectPatch(LoadPatch.Previous, true);
-					return true;
-				case Keys.C: //current
-					activePatch.SelectPatch(LoadPatch.Current, true);
-					return true;
-				case Keys.N: //next
-					activePatch.SelectPatch(LoadPatch.Next, true);
-					return true;
-			}
-			return false;
 		}
 
 		private void btnbtnAddToFavoriteFolders_Click(object sender, EventArgs e)
@@ -263,5 +274,24 @@ namespace GF.Barbarian
 		{
 			SelectPath(cmbFavoriteFolders.Text);
 		}
+
+
+		protected override bool ProcessCmdKey(ref Message message, Keys keys)
+		{
+			switch (keys)
+			{
+				case Keys.P://prev
+					activePatch.SelectPatch(SelectDirection.Previous, true);
+					return true;
+				case Keys.C: //current
+					activePatch.SelectPatch(SelectDirection.Current, true);
+					return true;
+				case Keys.N: //next
+					activePatch.SelectPatch(SelectDirection.Next, true);
+					return true;
+			}
+			return false;
+		}
+
 	}
 }

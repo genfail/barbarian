@@ -28,9 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.chkAutoConnect = new System.Windows.Forms.CheckBox();
 			this.btnCancel = new System.Windows.Forms.Button();
+			this.chkWrapFiles = new System.Windows.Forms.CheckBox();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// btnOk
@@ -53,6 +56,8 @@
 			this.chkAutoConnect.Size = new System.Drawing.Size(87, 17);
 			this.chkAutoConnect.TabIndex = 2;
 			this.chkAutoConnect.Text = "Autoconnect";
+			this.toolTip1.SetToolTip(this.chkAutoConnect, "When opening the application it will try to automatically connect to the GR-55 if" +
+        " available");
 			this.chkAutoConnect.UseVisualStyleBackColor = true;
 			// 
 			// btnCancel
@@ -67,6 +72,18 @@
 			this.btnCancel.UseVisualStyleBackColor = true;
 			this.btnCancel.Click += new System.EventHandler(this.frmCloseButton_Click);
 			// 
+			// chkWrapFiles
+			// 
+			this.chkWrapFiles.AutoSize = true;
+			this.chkWrapFiles.Location = new System.Drawing.Point(12, 35);
+			this.chkWrapFiles.Name = "chkWrapFiles";
+			this.chkWrapFiles.Size = new System.Drawing.Size(73, 17);
+			this.chkWrapFiles.TabIndex = 2;
+			this.chkWrapFiles.Text = "Wrap files";
+			this.toolTip1.SetToolTip(this.chkWrapFiles, "When reaching the last patch in a file the program will try to load the next patc" +
+        "h file and continue iterating");
+			this.chkWrapFiles.UseVisualStyleBackColor = true;
+			// 
 			// FrmSettings
 			// 
 			this.AcceptButton = this.btnOk;
@@ -75,6 +92,7 @@
 			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(628, 261);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkWrapFiles);
 			this.Controls.Add(this.chkAutoConnect);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOk);
@@ -93,5 +111,7 @@
 		private System.Windows.Forms.Button btnOk;
 		private System.Windows.Forms.CheckBox chkAutoConnect;
 		private System.Windows.Forms.Button btnCancel;
+		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.CheckBox chkWrapFiles;
 	}
 }

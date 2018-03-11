@@ -26,6 +26,7 @@ namespace GF.Barbarian
 		private void FrmSettings_Load(object sender, EventArgs e)
 		{
 			chkAutoConnect.Checked = Properties.Settings.Default.AutoConnect;
+			chkWrapFiles.Checked = Properties.Settings.Default.WrapFiles;
 		}
 
 		private void FrmSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -33,6 +34,7 @@ namespace GF.Barbarian
 			if (DialogResult == DialogResult.OK)
 			{
 				Properties.Settings.Default.AutoConnect = chkAutoConnect.Checked;
+				Properties.Settings.Default.WrapFiles = chkWrapFiles.Checked;
 			}
 		}
 	}

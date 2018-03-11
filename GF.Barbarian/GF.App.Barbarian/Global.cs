@@ -23,7 +23,7 @@ namespace GF.Barbarian
 		Warning = 2,
 		Error = 3
 	}
-	public enum LoadPatch
+	public enum SelectDirection
 	{
 		Previous = 1,
 		Current = 2,

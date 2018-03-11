@@ -78,7 +78,7 @@ namespace GF.Barbarian
 		private void CtrlPatchFile_Load(object sender, EventArgs e)
 		{
 
-			SelectPatch(LoadPatch.Current, false);
+			SelectPatch(SelectDirection.Current, false);
 			this.lstPatches.DoubleClick += LstPatches_DoubleClick;
 			this.lstPatches.MouseDoubleClick += LstPatches_MouseDoubleClick;
 		}
@@ -101,46 +101,46 @@ namespace GF.Barbarian
 			// If nothing was selected then select the first one in list
 			if (lstPatches.Items.Count > 0 && lstPatches.SelectedItems.Count == 0)
 				lstPatches.Items[0].Selected = true;
-			SelectPatch(LoadPatch.Current, false);
+			SelectPatch(SelectDirection.Current, false);
 		}
 
 		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SelectPatch(LoadPatch.Current, false);
+			SelectPatch(SelectDirection.Current, false);
 		}
 
 		private void LstPatches_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			SelectPatch(LoadPatch.Current, true);
+			SelectPatch(SelectDirection.Current, true);
 		}
 
 		private void LstPatches_DoubleClick(object sender, EventArgs e)
 		{
-			SelectPatch(LoadPatch.Current, true);
+			SelectPatch(SelectDirection.Current, true);
 		}
 
 		private void lstPatches_KeyUp(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
-				SelectPatch(LoadPatch.Current, true);
+				SelectPatch(SelectDirection.Current, true);
 		}
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
 		{
-			SelectPatch(LoadPatch.Current, true);
+			SelectPatch(SelectDirection.Current, true);
 		}
 
 		private void btnLoadPreviousPatch_Click(object sender, EventArgs e)
 		{
-			SelectPatch(LoadPatch.Previous, true);
+			SelectPatch(SelectDirection.Previous, true);
 		}
 
 		private void btnLoadNextPatch_Click(object sender, EventArgs e)
 		{
-			SelectPatch(LoadPatch.Next, true);
+			SelectPatch(SelectDirection.Next, true);
 		}
 
-		public void SelectPatch(LoadPatch _dir, bool _load)
+		public void SelectPatch(SelectDirection _dir, bool _load)
 		{
 			ListItemPatch prev = null;
 			ListItemPatch curr = null;
@@ -156,10 +156,10 @@ namespace GF.Barbarian
 			{
 				int i = lstPatches.SelectedItems[0].Index;
 
-				if (_dir == LoadPatch.Previous && i > 0)
+				if (_dir == SelectDirection.Previous && i > 0)
 					i--;
 				else
-				if (_dir == LoadPatch.Next && i < lstPatches.Items.Count-1)
+				if (_dir == SelectDirection.Next && i < lstPatches.Items.Count-1)
 					i++;
 
 				if (i != lstPatches.SelectedItems[0].Index) // Avoid loop setting (each set causes event)
@@ -240,6 +240,14 @@ namespace GF.Barbarian
 				e.Graphics.DrawString(itm.PatchCount.ToString(), f, drawBrush, p, format);
 				p.X += 20;
 				e.Graphics.DrawString(itm.Name, f, drawBrush, p, format);
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			if (this.Parent.Parent.Parent is CtrlModeFile papa)
+			{
+				papa.SelectFile(SelectDirection.Next);
 			}
 		}
 	}

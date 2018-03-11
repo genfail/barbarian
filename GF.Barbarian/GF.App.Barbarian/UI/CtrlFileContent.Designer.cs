@@ -40,6 +40,7 @@
 			this.lblPrevPatch = new System.Windows.Forms.Label();
 			this.btnLoadNextPatch = new System.Windows.Forms.Button();
 			this.lblNextPatch = new System.Windows.Forms.Label();
+			this.button1 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// lblFname
@@ -82,7 +83,7 @@
 			this.lstPatches.Location = new System.Drawing.Point(6, 29);
 			this.lstPatches.MultiSelect = false;
 			this.lstPatches.Name = "lstPatches";
-			this.lstPatches.Size = new System.Drawing.Size(464, 193);
+			this.lstPatches.Size = new System.Drawing.Size(319, 193);
 			this.lstPatches.TabIndex = 3;
 			this.lstPatches.TileSize = new System.Drawing.Size(150, 20);
 			this.toolTip1.SetToolTip(this.lstPatches, "Doubleclick, enter or button Load patch to load the patch into the device");
@@ -155,10 +156,21 @@
 			this.lblNextPatch.TabIndex = 5;
 			this.lblNextPatch.Text = "Load patch";
 			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(386, 83);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 6;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
 			// CtrlFileContent
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.lblNextPatch);
 			this.Controls.Add(this.lblPrevPatch);
 			this.Controls.Add(this.lblCurrPatch);
@@ -190,5 +202,6 @@
 		private System.Windows.Forms.Label lblPrevPatch;
 		private System.Windows.Forms.Button btnLoadNextPatch;
 		private System.Windows.Forms.Label lblNextPatch;
+		private System.Windows.Forms.Button button1;
 	}
 }
