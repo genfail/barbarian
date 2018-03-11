@@ -210,5 +210,21 @@ namespace GF.Barbarian
 			string fldr = Path.GetPathRoot(txtFolder.Text);
 			SetTree(fldr);
 		}
+
+		private void CtrlModeFile_KeyUp(object sender, KeyEventArgs e)
+		{
+			switch(e.KeyCode)
+			{
+				case Keys.P://prev
+					activePatch.SelectPatch(LoadPatch.Previous, true);
+					break;
+				case Keys.C: //current
+					activePatch.SelectPatch(LoadPatch.Current, true);
+					break;
+				case Keys.N: //next
+					activePatch.SelectPatch(LoadPatch.Next, true);
+					break;
+			}
+		}
 	}
 }

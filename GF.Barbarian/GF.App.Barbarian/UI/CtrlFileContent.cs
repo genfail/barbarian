@@ -56,7 +56,7 @@ namespace GF.Barbarian
 
 		private void CtrlPatchFile_Load(object sender, EventArgs e)
 		{
-			SetSelectedPatches();
+			SelectPatch(LoadPatch.Current, false);
 			this.lstPatches.DoubleClick += LstPatches_DoubleClick;
 			this.lstPatches.MouseDoubleClick += LstPatches_MouseDoubleClick;
 		}
@@ -78,66 +78,80 @@ namespace GF.Barbarian
 			}
 			if (lstPatches.Items.Count > 0 && lstPatches.SelectedItems.Count == 0)
 				lstPatches.Items[0].Selected = true;
-			SetSelectedPatches();
+			SelectPatch(LoadPatch.Current, false);
 		}
 
 		private void lstPatches_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SetSelectedPatches();
-			SetSelectedPatches();
+			SelectPatch(LoadPatch.Current, false);
 		}
 
 		private void LstPatches_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			LoadPatch();
+			LoadCurrentPatch();
 		}
 
 		private void LstPatches_DoubleClick(object sender, EventArgs e)
 		{
-			LoadPatch();
+			LoadCurrentPatch();
 		}
 
 		private void lstPatches_KeyUp(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
-				LoadPatch();
+				LoadCurrentPatch();
+		}
+
+		private void CtrlFileContent_KeyUp(object sender, KeyEventArgs e)
+		{
 		}
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
 		{
-			LoadPatch();
+			SelectPatch(LoadPatch.Current, true);
 		}
 
 		private void btnLoadPreviousPatch_Click(object sender, EventArgs e)
 		{
-			// Is disabled when at begin, so no validation needed
-			lstPatches.Items[lstPatches.SelectedItems[0].Index-1].Selected = true;
-			SetSelectedPatches();
-			LoadPatch();
+			SelectPatch(LoadPatch.Previous, true);
 		}
 
 		private void btnLoadNextPatch_Click(object sender, EventArgs e)
 		{
-			// Is disabled when at end, so no validation needed
-			lstPatches.Items[lstPatches.SelectedItems[0].Index+1].Selected = true;
-			SetSelectedPatches();
-			LoadPatch();
+			SelectPatch(LoadPatch.Next, true);
 		}
 
-		private void SetSelectedPatches()
+		public void SelectPatch(LoadPatch _dir, bool _load)
 		{
-			if (lstPatches?.SelectedItems?.Count == 0)
+			ListItemPatch prev = null;
+			ListItemPatch curr = null;
+			ListItemPatch next = null;
+
+			if (lstPatches.Items.Count == 0 || lstPatches?.SelectedItems?.Count == 0)
 			{
 				prev = null;
 				curr = null;
 				next = null;
-				return;
 			}
+			else
+			{
+				int i = lstPatches.SelectedItems[0].Index;
 
-			int i = lstPatches.SelectedItems[0].Index;
-			curr = (ListItemPatch)lstPatches.Items[i];			
-			prev = i > 0 ? (ListItemPatch)lstPatches.Items[i-1] : null;
-			next = i < lstPatches.Items.Count-1 ? (ListItemPatch)lstPatches.Items[i+1] : null;
+				if (_dir == LoadPatch.Previous && i > 0)
+					i--;
+				else
+				if (_dir == LoadPatch.Next && i < lstPatches.Items.Count-1)
+					i++;
+
+				if (i != lstPatches.SelectedItems[0].Index) // Avoid loop setting (each set causes event)
+					lstPatches.Items[i].Selected = true;
+
+				curr = (ListItemPatch)lstPatches.Items[i];			
+				prev = i > 0 ? (ListItemPatch)lstPatches.Items[i-1] : null;
+				next = i < lstPatches.Items.Count-1 ? (ListItemPatch)lstPatches.Items[i+1] : null;
+
+				curr.EnsureVisible();
+			}
 
 			lblPrevPatch.Text = prev == null ? "-" : prev.Name;
 			lblCurrPatch.Text = curr == null ? "-" : curr.Name;
@@ -146,13 +160,12 @@ namespace GF.Barbarian
 			btnLoadPrevPatch.Enabled = prev != null;
 			btnLoadCurrPatch.Enabled = curr != null;
 			btnLoadNextPatch.Enabled = next != null;
+
+			if (_load)
+				LoadCurrentPatch();
 		}
 
-		ListItemPatch prev = null;
-		ListItemPatch curr = null;
-		ListItemPatch next = null;
-
-		private void LoadPatch()
+		private void LoadCurrentPatch()
 		{
 			if (lstPatches?.SelectedItems?.Count < 1)
 			{

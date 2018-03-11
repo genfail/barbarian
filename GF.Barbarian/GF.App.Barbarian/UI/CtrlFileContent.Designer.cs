@@ -164,6 +164,7 @@
 			this.Name = "CtrlFileContent";
 			this.Size = new System.Drawing.Size(742, 331);
 			this.Load += new System.EventHandler(this.CtrlPatchFile_Load);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CtrlFileContent_KeyUp);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
