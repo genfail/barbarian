@@ -189,11 +189,12 @@ namespace GF.Barbarian.Midi
 				Disconnect();
 
 			threadRunning = false;
-			while(!threadStopped)
+			int cnt = 50;
+			while(!threadStopped && cnt-- > 0)
 			{
 				Thread.Sleep(50);
 			}
-			Debug.WriteLine("stopped");
+			Debug.WriteLine($"stopped {cnt}");
 		}
 
 		private void ProcessCheckConnected()

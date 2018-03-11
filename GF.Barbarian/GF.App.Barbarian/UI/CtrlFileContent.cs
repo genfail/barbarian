@@ -76,6 +76,7 @@ namespace GF.Barbarian
 				ListItemPatch ctrl = new ListItemPatch(kvp.Value);
 				lstPatches.Items.Add(ctrl);
 			}
+			// If nothing was selected then select the first one in list
 			if (lstPatches.Items.Count > 0 && lstPatches.SelectedItems.Count == 0)
 				lstPatches.Items[0].Selected = true;
 			SelectPatch(LoadPatch.Current, false);
@@ -100,10 +101,6 @@ namespace GF.Barbarian
 		{
 			if (e.KeyCode == Keys.Enter)
 				LoadCurrentPatch();
-		}
-
-		private void CtrlFileContent_KeyUp(object sender, KeyEventArgs e)
-		{
 		}
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
@@ -194,8 +191,8 @@ namespace GF.Barbarian
 		public ListItemPatch(SysxPatch p)
 		{
 			patch = p;
-			this.Text = p.Count.ToString();
-			this.SubItems.Add(p.Name);
+			this.Text = $"{p.Count,2} {p.Name}";
+			//this.SubItems.Add(p.Name);
 			Name = patch.Name;
 		}
 	}
