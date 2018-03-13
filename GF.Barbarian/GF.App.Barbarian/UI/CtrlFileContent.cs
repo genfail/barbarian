@@ -49,6 +49,7 @@ namespace GF.Barbarian
 		}
 
 		#region OwnerDraw colors
+		// http://paletton.com/#uid=31E0X0kllll3Nxkc-qTu6fNPDae
 		private Color colTxtLoaded = Color.FromArgb(0x70,0x07,0x27);
 		private Color Txt_usel = Color.FromArgb(0xFF,0xFC,0xE1);
 		private Color Txt_sel = Color.FromArgb(0x01,0x1E,0x34);
@@ -96,7 +97,9 @@ namespace GF.Barbarian
 			foreach (KeyValuePair<int,SysxPatch> kvp in activeFile.PatchList)
 			{
 				ListItemPatch ctrl = new ListItemPatch(kvp.Value);
-				lstPatches.Items.Add(ctrl);
+
+				if (!Properties.Settings.Default.SuppressInitPatch || (Properties.Settings.Default.SuppressInitPatch && !ctrl.Name.ToLower().Equals("init patch") ))
+					lstPatches.Items.Add(ctrl);
 			}
 			// If nothing was selected then select the first one in list
 			if (lstPatches.Items.Count > 0 && lstPatches.SelectedItems.Count == 0)

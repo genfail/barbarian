@@ -47,8 +47,8 @@
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusMidi = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
-			this.panelMain = new System.Windows.Forms.Panel();
 			this.toolStripLoadedPatchName = new System.Windows.Forms.ToolStripStatusLabel();
+			this.panelMain = new System.Windows.Forms.Panel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -127,9 +127,9 @@
             this.toolStripStatusMidi,
             this.toolStripStatusMessage,
             this.toolStripLoadedPatchName});
-			this.statusStripBarbarian.Location = new System.Drawing.Point(0, 666);
+			this.statusStripBarbarian.Location = new System.Drawing.Point(0, 663);
 			this.statusStripBarbarian.Name = "statusStripBarbarian";
-			this.statusStripBarbarian.Size = new System.Drawing.Size(1107, 22);
+			this.statusStripBarbarian.Size = new System.Drawing.Size(1107, 25);
 			this.statusStripBarbarian.TabIndex = 2;
 			this.statusStripBarbarian.Text = "statusStrip1";
 			// 
@@ -137,35 +137,38 @@
 			// 
 			this.toolStripStatusLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 20);
 			this.toolStripStatusLabel1.Text = "toolStripStatusMode";
 			// 
 			// toolStripStatusMidi
 			// 
+			this.toolStripStatusMidi.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
 			this.toolStripStatusMidi.Image = global::GF.Barbarian.Properties.Resources.ConnectionUnavailable;
 			this.toolStripStatusMidi.Name = "toolStripStatusMidi";
-			this.toolStripStatusMidi.Size = new System.Drawing.Size(47, 17);
+			this.toolStripStatusMidi.Size = new System.Drawing.Size(51, 20);
 			this.toolStripStatusMidi.Text = "Midi";
 			// 
 			// toolStripStatusMessage
 			// 
+			this.toolStripStatusMessage.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
 			this.toolStripStatusMessage.Name = "toolStripStatusMessage";
-			this.toolStripStatusMessage.Size = new System.Drawing.Size(28, 17);
+			this.toolStripStatusMessage.Size = new System.Drawing.Size(32, 20);
 			this.toolStripStatusMessage.Text = "Info";
+			// 
+			// toolStripLoadedPatchName
+			// 
+			this.toolStripLoadedPatchName.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+			this.toolStripLoadedPatchName.Name = "toolStripLoadedPatchName";
+			this.toolStripLoadedPatchName.Size = new System.Drawing.Size(95, 20);
+			this.toolStripLoadedPatchName.Text = "Unknown patch";
 			// 
 			// panelMain
 			// 
 			this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panelMain.Location = new System.Drawing.Point(0, 24);
 			this.panelMain.Name = "panelMain";
-			this.panelMain.Size = new System.Drawing.Size(1107, 642);
+			this.panelMain.Size = new System.Drawing.Size(1107, 639);
 			this.panelMain.TabIndex = 3;
-			// 
-			// toolStripLoadedPatchName
-			// 
-			this.toolStripLoadedPatchName.Name = "toolStripLoadedPatchName";
-			this.toolStripLoadedPatchName.Size = new System.Drawing.Size(118, 17);
-			this.toolStripLoadedPatchName.Text = "toolStripStatusLabel2";
 			// 
 			// FrmMain
 			// 

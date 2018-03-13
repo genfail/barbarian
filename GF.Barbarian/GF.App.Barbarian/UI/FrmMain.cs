@@ -40,6 +40,7 @@ namespace GF.Barbarian
 
 			Connection_ConnectionChanged(null, null); // Fire to set first time
 			SetMessage(MSgSeverity.Message, "Application started");
+			SetPatchName();
 
 			if (Properties.Settings.Default.AutoConnect)
 				Program.Midi.Connect();
@@ -57,7 +58,7 @@ namespace GF.Barbarian
 			SetMessage(MSgSeverity.Message, e.MsgText);
 		}
 
-		public void SetPatchName(string _name)
+		public void SetPatchName(string _name = null)
 		{
 			if (String.IsNullOrEmpty(_name))
 				toolStripLoadedPatchName.Text = "No patch loaded";

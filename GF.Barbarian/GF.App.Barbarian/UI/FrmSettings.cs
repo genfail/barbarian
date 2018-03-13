@@ -27,6 +27,7 @@ namespace GF.Barbarian
 		{
 			chkAutoConnect.Checked = Properties.Settings.Default.AutoConnect;
 			chkWrapFiles.Checked = Properties.Settings.Default.WrapFiles;
+			ChkSuppressInitPatch.Checked = Properties.Settings.Default.SuppressInitPatch;
 		}
 
 		private void FrmSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -35,6 +36,7 @@ namespace GF.Barbarian
 			{
 				Properties.Settings.Default.AutoConnect = chkAutoConnect.Checked;
 				Properties.Settings.Default.WrapFiles = chkWrapFiles.Checked;
+				Properties.Settings.Default.SuppressInitPatch = ChkSuppressInitPatch.Checked;
 			}
 		}
 	}

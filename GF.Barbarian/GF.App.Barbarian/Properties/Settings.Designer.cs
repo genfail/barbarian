@@ -106,5 +106,17 @@ namespace GF.Barbarian.Properties {
                 this["WrapFiles"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SuppressInitPatch {
+            get {
+                return ((bool)(this["SuppressInitPatch"]));
+            }
+            set {
+                this["SuppressInitPatch"] = value;
+            }
+        }
     }
 }

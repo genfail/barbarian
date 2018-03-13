@@ -34,6 +34,7 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.chkWrapFiles = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.ChkSuppressInitPatch = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// btnOk
@@ -84,6 +85,16 @@
         "h file and continue iterating");
 			this.chkWrapFiles.UseVisualStyleBackColor = true;
 			// 
+			// ChkSuppressInitPatch
+			// 
+			this.ChkSuppressInitPatch.AutoSize = true;
+			this.ChkSuppressInitPatch.Location = new System.Drawing.Point(12, 58);
+			this.ChkSuppressInitPatch.Name = "ChkSuppressInitPatch";
+			this.ChkSuppressInitPatch.Size = new System.Drawing.Size(350, 17);
+			this.ChkSuppressInitPatch.TabIndex = 2;
+			this.ChkSuppressInitPatch.Text = "Suppress all  patches wit the name \"Init Patch\" (not shown in the list)";
+			this.ChkSuppressInitPatch.UseVisualStyleBackColor = true;
+			// 
 			// FrmSettings
 			// 
 			this.AcceptButton = this.btnOk;
@@ -92,6 +103,7 @@
 			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(628, 261);
 			this.ControlBox = false;
+			this.Controls.Add(this.ChkSuppressInitPatch);
 			this.Controls.Add(this.chkWrapFiles);
 			this.Controls.Add(this.chkAutoConnect);
 			this.Controls.Add(this.btnCancel);
@@ -113,5 +125,6 @@
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.CheckBox chkWrapFiles;
+		private System.Windows.Forms.CheckBox ChkSuppressInitPatch;
 	}
 }
