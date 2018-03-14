@@ -143,6 +143,38 @@ namespace GF.Barbarian
 			SelectPatch(SelectDirection.Next, true);
 		}
 
+
+		private int Wrap(SelectDirection _dir, int val, int min, int max, bool dowrap)
+		{
+			if (_dir == SelectDirection.Previous)
+			{
+				if (val > min)
+					return --val;
+				else if (dowrap)
+					return max;
+				else
+					return 0;
+			}
+			else if (_dir == SelectDirection.Next)
+			{
+				if (val < max)
+					return ++val;
+				else if (dowrap)
+					return min;
+				else
+					return max;
+			}
+			else
+			{
+				if (val <= max)
+					return val;
+				else if (dowrap)
+					return min;
+				else
+					return max;
+			}
+		}
+
 		public void SelectPatch(SelectDirection _dir, bool _load)
 		{
 			ListItemPatch prev = null;
@@ -157,31 +189,31 @@ namespace GF.Barbarian
 			}
 			else
 			{
-				int i = lstPatches.SelectedItems[0].Index;
+				int iCurr = lstPatches.SelectedItems[0].Index;
+				iCurr = Wrap(_dir, iCurr, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
 
-				if (_dir == SelectDirection.Previous && i > 0)
-					i--;
-				else
-				if (_dir == SelectDirection.Next && i < lstPatches.Items.Count-1)
-					i++;
+				if (iCurr != lstPatches.SelectedItems[0].Index) // Only set if different, avoid loop setting (each set causes event)
+					lstPatches.Items[iCurr].Selected = true;
 
-				if (i != lstPatches.SelectedItems[0].Index) // Avoid loop setting (each set causes event)
-					lstPatches.Items[i].Selected = true;
+				int iPrev = Wrap(_dir, iCurr-1, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
+				int iNext = Wrap(_dir, iCurr+1, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
 
-				curr = (ListItemPatch)lstPatches.Items[i];			
-				prev = i > 0 ? (ListItemPatch)lstPatches.Items[i-1] : null;
-				next = i < lstPatches.Items.Count-1 ? (ListItemPatch)lstPatches.Items[i+1] : null;
-
-				curr.EnsureVisible();
+				prev = iPrev<0?null:(ListItemPatch)lstPatches.Items[iPrev];
+				curr = iCurr<0?null:(ListItemPatch)lstPatches.Items[iCurr];			
+				next = iNext<0?null:(ListItemPatch)lstPatches.Items[iNext];
+				curr?.EnsureVisible();
 			}
 
 			lblPrevPatch.Text = prev == null ? "-" : prev.Name;
 			lblCurrPatch.Text = curr == null ? "-" : curr.Name;
 			lblNextPatch.Text = next == null ? "-" : next.Name;
 
-			btnLoadPrevPatch.Enabled = prev != null;
-			btnLoadCurrPatch.Enabled = curr != null;
-			btnLoadNextPatch.Enabled = next != null;
+			if (Properties.Settings.Default.WrapFiles)
+			{
+				btnLoadPrevPatch.Enabled = prev != null;
+				btnLoadCurrPatch.Enabled = curr != null;
+				btnLoadNextPatch.Enabled = next != null;
+			}
 
 			if (_load)
 				LoadCurrentPatch(curr);
@@ -248,10 +280,7 @@ namespace GF.Barbarian
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			if (this.Parent.Parent.Parent is CtrlModeFile papa)
-			{
-				papa.SelectFile(SelectDirection.Next);
-			}
+			Program.Mainform.ActiveModeControl.SelectItem(SelectDirection.Previous);
 		}
 	}
 

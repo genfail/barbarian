@@ -17,7 +17,7 @@ namespace GF.Barbarian
 	{
 		private ProgramMode mode = ProgramMode.File;
 		private Dictionary<ProgramMode,ICtrlMode> modes = null;
-		private ICtrlMode activeControl { get{ return modes[mode];} }
+		public ICtrlMode ActiveModeControl { get{ return modes[mode];} }
 
 		public FrmMain()
 		{
@@ -84,7 +84,7 @@ namespace GF.Barbarian
 
 		public void ApplySettings()
 		{
-			activeControl.ApplySettings();
+			ActiveModeControl.ApplySettings();
 		}
 
 		public void SetMode(ProgramMode _mode)
@@ -99,20 +99,20 @@ namespace GF.Barbarian
 			}
 
 			// add the new one
-			((Control)activeControl).Location = panelMain.Location;// new System.Drawing.Point(177, 51);
-			((Control)activeControl).Size = panelMain.Size; // new System.Drawing.Size(624, 582);
-			((Control)activeControl).Name = "ctrlMode" + activeControl.GetType().ToString();
-			((Control)activeControl).TabIndex = 1;
-			((Control)activeControl).BackColor = Color.DarkGray;
-			((Control)activeControl).Dock = DockStyle.Fill;
-			panelMain.Controls.Add((Control)activeControl);
+			((Control)ActiveModeControl).Location = panelMain.Location;// new System.Drawing.Point(177, 51);
+			((Control)ActiveModeControl).Size = panelMain.Size; // new System.Drawing.Size(624, 582);
+			((Control)ActiveModeControl).Name = "ctrlMode" + ActiveModeControl.GetType().ToString();
+			((Control)ActiveModeControl).TabIndex = 1;
+			((Control)ActiveModeControl).BackColor = Color.DarkGray;
+			((Control)ActiveModeControl).Dock = DockStyle.Fill;
+			panelMain.Controls.Add((Control)ActiveModeControl);
 		}
 
 		#region Menu File
 		private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
 		{
-			fileModeToolStripMenuItem.Checked = (activeControl is CtrlModeFile);
-			libraryModeToolStripMenuItem.Checked = (activeControl is CtrlModeLibrary);
+			fileModeToolStripMenuItem.Checked = (ActiveModeControl is CtrlModeFile);
+			libraryModeToolStripMenuItem.Checked = (ActiveModeControl is CtrlModeLibrary);
 		}
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{

@@ -168,7 +168,7 @@ namespace GF.Barbarian
 
 		#endregion
 
-		public bool SelectFile(SelectDirection _dir)
+		public bool SelectItem(SelectDirection _dir)
 		{
 
 			if (shellViewFileList.Items.Length == 0 || shellViewFileList.SelectedItems.Length == 0)
@@ -190,7 +190,6 @@ namespace GF.Barbarian
 				if (i != i2) // Avoid loop setting (each set causes event)
 				{
 					ShellItem si2 = shellViewFileList.Items[i2];
-					
 					shellViewFileList.Select(si2.DisplayName);
 					return true;
 				}

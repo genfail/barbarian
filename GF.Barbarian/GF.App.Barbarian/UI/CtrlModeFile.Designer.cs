@@ -160,7 +160,7 @@
 			// 
 			this.fileFilterComboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.fileFilterComboBox1.Filter = "*.g5l";
-			this.fileFilterComboBox1.FilterItems = "All Files (*.*)|*.*|Patch Files (*.g5l)|*.g5l";
+			this.fileFilterComboBox1.FilterItems = "All Files (*.*)|*.*|Roland Files (*.g5l)|*.g5l|Midi Files (*.syx)|*.syx";
 			this.fileFilterComboBox1.FormattingEnabled = true;
 			this.fileFilterComboBox1.Location = new System.Drawing.Point(292, 2);
 			this.fileFilterComboBox1.Name = "fileFilterComboBox1";

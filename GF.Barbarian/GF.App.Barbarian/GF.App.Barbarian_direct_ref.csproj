@@ -76,6 +76,7 @@
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="Midi\Commands.cs" />
     <Compile Include="Midi\FileOpen.cs" />
+    <Compile Include="Midi\SysxPatch.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\CtrlModeLibrary.cs">
       <SubType>UserControl</SubType>

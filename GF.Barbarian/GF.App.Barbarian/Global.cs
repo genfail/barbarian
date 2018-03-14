@@ -35,6 +35,8 @@ namespace GF.Barbarian
 		ProgramMode Mode{ get;}
 		void ApplySettings();
 		void SaveSettings();
+
+		bool SelectItem(SelectDirection _dir);
 	}
 
 	public static class Global

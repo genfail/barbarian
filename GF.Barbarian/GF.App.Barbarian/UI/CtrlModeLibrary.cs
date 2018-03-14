@@ -38,5 +38,11 @@ namespace GF.Barbarian
 		{
 
 		}
+
+		public bool SelectItem(SelectDirection _dir)
+		{
+			return true;
+		}
+
 	}
 }

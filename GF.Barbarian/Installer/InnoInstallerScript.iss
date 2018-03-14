@@ -2,10 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Barbarian"
-#define MyAppVersion "1.0"
+#define MyAppExeName "Barbarian.exe"
+;#define MyAppVersion "1.0"
 #define MyAppPublisher "General Failure"
 #define MyAppURL "none"
-#define MyAppExeName "Barbarian.exe"
+#define MyIcon "..\GF.App.Barbarian\Barbarian.ico"
+
+#define MyAppVersion GetFileVersion('..\GF.App.Barbarian\bin\Release\Barbarian.exe')
+; For the setup file name we want 1_2_3_4 instead of 1.2.3.4
+#define MyAppVersion2 StringChange(MyAppVersion, ".", "_")
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -14,6 +19,9 @@
 AppId={{B8D4BFEB-802A-40B6-ADF8-BA92523D8CFE}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
+VersionInfoVersion={#MyAppVersion}
+
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -25,8 +33,9 @@ LicenseFile=.\Licence.txt
 InfoBeforeFile=.\InstallBefore.txt
 ; InfoAfterFile=.\InstallAfter.txt
 OutputDir=.\bin\output
-OutputBaseFilename=setupBarbarian
-SetupIconFile=..\GF.App.Barbarian\Barbarian.ico
+OutputBaseFilename=setupBarbarian_{#MyAppVersion2}
+SetupIconFile={#MyIcon}
+UninstallDisplayIcon={uninstallexe}
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
@@ -34,7 +43,27 @@ ChangesAssociations=yes
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[CustomMessages]
+AssocFileExtension1=Open*.g5l files with Barbarian
+AssocFileExtension2=Open*.syx files with Barbarian
+AssocingFileExtension=File Association:
+
+[Code]
+procedure InitializeWizard;
+begin
+  WizardForm.LicenseAcceptedRadio.Checked := True;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  RegDeleteKeyIncludingSubkeys(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.g5l\UserChoice');
+  RegDeleteKeyIncludingSubkeys(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.syx\UserChoice');
+end;
+
 [Tasks]
+Name: "associate"; Description: "{cm:AssocFileExtension1}"; GroupDescription: "{cm:AssocingFileExtension}"; 
+Name: "associate"; Description: "{cm:AssocFileExtension2}"; GroupDescription: "{cm:AssocingFileExtension}"; 
+
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
@@ -44,10 +73,11 @@ Source: "..\GF.App.Barbarian\bin\Release\FluentCommandLineParser.dll"; DestDir: 
 Source: "..\GF.App.Barbarian\bin\Release\GF.Lib.Communication.Midi.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\GF.App.Barbarian\bin\Release\GF.Lib.Global.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\GF.App.Barbarian\bin\Release\GongShell.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Needed for the icon in the windows settings list
+Source: "..\GF.App.Barbarian\Barbarian.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Help files
 Source: "..\Help\Html\*"; Excludes: "*.chm";  DestDir: "{app}\Html"; Flags: ignoreversion recursesubdirs
-
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -55,11 +85,17 @@ Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
+; there might be a personal choice (For the good old Librarian), which is removed by the [Code] before
+; RegDeleteKeyIncludingSubkeys(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.g5l\UserChoice');
+[Registry]
+;Root:  HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.g5l\UserChoice"; ValueName: "Value"; ValueType: none; Flags: deletevalue;
+
+Root: HKCR; Subkey: ".syx";                            ValueData: "{#MyAppName}";         Flags: uninsdeletevalue; ValueType: string; ValueName: ""
+Root: HKCR; Subkey: ".g5l";                            ValueData: "{#MyAppName}";         Flags: uninsdeletevalue; ValueType: string; ValueName: ""
+
+Root: HKCR; Subkey: "{#MyAppName}";                    ValueData: "Program {#MyAppName}"; Flags: uninsdeletekey;   ValueType: string; ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon";        ValueType: string; ValueName: ""; ValueData: "{app}\Barbarian.ico,0"
+Root: HKCR; Subkey: "{#MyAppName}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1""" 
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
-[Registry]
-Root: HKCR; Subkey: ".g5l";                             ValueData: "{#MyAppName}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}";                     ValueData: "Program {#MyAppName}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon";         ValueData: "{app}\{#MyAppExeName},0";               ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#MyAppExeName}"" ""%1""";  ValueType: string;  ValueName: ""
