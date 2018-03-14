@@ -1,0 +1,10 @@
+Barbarian
+
+This program helps you reading, evaluating and loading patches for the GR-55 Guitar synthesizer.
+It lets you:
+* browse the patch files (*.G5L) like a windows explorer 
+* Shows the patches that are contained in the patch file
+* Load a patch from the file
+* Save favorite folders
+
+It was only tested on GR-55 firmware 1.5

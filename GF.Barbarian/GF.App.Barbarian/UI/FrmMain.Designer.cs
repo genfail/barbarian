@@ -49,6 +49,9 @@
 			this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripLoadedPatchName = new System.Windows.Forms.ToolStripStatusLabel();
 			this.panelMain = new System.Windows.Forms.Panel();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.viewHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -57,7 +60,8 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(1107, 24);
@@ -109,14 +113,14 @@
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.settingsToolStripMenuItem.Text = "&Settings";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
 			// connectionToolStripMenuItem
 			// 
 			this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
-			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.connectionToolStripMenuItem.Text = "Device connection";
 			this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
 			// 
@@ -170,6 +174,29 @@
 			this.panelMain.Size = new System.Drawing.Size(1107, 639);
 			this.panelMain.TabIndex = 3;
 			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.viewHelpToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "&Help";
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.aboutToolStripMenuItem.Text = "&About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
+			// viewHelpToolStripMenuItem
+			// 
+			this.viewHelpToolStripMenuItem.Name = "viewHelpToolStripMenuItem";
+			this.viewHelpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.viewHelpToolStripMenuItem.Text = "View &Help";
+			this.viewHelpToolStripMenuItem.Click += new System.EventHandler(this.viewHelpToolStripMenuItem_Click);
+			// 
 			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -209,6 +236,9 @@
 		private System.Windows.Forms.ToolStripMenuItem connectionToolStripMenuItem;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMessage;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripLoadedPatchName;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem viewHelpToolStripMenuItem;
 	}
 }
 

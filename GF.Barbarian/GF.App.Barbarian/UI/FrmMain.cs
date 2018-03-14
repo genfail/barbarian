@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GF.Barbarian.Midi;
+using System.IO;
 
 namespace GF.Barbarian
 {
@@ -167,5 +168,28 @@ namespace GF.Barbarian
 			Properties.Settings.Default.Save();
 		}
 
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			FrmAbout frm = new FrmAbout();
+			frm.ShowDialog(this);
+		}
+
+		private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string[] locations = new []
+			{
+				Path.Combine(Application.StartupPath, ".\\Html\\Introduction.html"),// normal user
+				Path.Combine(Application.StartupPath, "..\\..\\..\\Help\\Html\\Introduction.html")// Developer
+			};
+
+			foreach (string l in locations)
+			{
+				if (File.Exists(l))
+				{
+					System.Diagnostics.Process.Start(l);
+					return;
+				}
+			}
+		}
 	}
 }

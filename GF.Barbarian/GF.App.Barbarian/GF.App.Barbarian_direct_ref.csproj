@@ -95,6 +95,12 @@
     <Compile Include="UI\CtrlFileContent.Designer.cs">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmAbout.Designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CtrlFileContent.resx">
       <DependentUpon>CtrlFileContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
