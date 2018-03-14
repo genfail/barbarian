@@ -34,13 +34,13 @@
 			this.txtCntPatches = new System.Windows.Forms.TextBox();
 			this.lstPatches = new System.Windows.Forms.ListView();
 			this.btnLoadCurrPatch = new System.Windows.Forms.Button();
-			this.lblCurrPatch = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.btnLoadPrevPatch = new System.Windows.Forms.Button();
-			this.lblPrevPatch = new System.Windows.Forms.Label();
 			this.btnLoadNextPatch = new System.Windows.Forms.Button();
-			this.lblNextPatch = new System.Windows.Forms.Label();
-			this.button1 = new System.Windows.Forms.Button();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.txtCurrPatchName = new System.Windows.Forms.TextBox();
+			this.txtCurrPatchNumber = new System.Windows.Forms.TextBox();
+			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lblFname
@@ -83,7 +83,7 @@
 			this.lstPatches.Location = new System.Drawing.Point(6, 29);
 			this.lstPatches.MultiSelect = false;
 			this.lstPatches.Name = "lstPatches";
-			this.lstPatches.Size = new System.Drawing.Size(319, 193);
+			this.lstPatches.Size = new System.Drawing.Size(387, 193);
 			this.lstPatches.TabIndex = 3;
 			this.lstPatches.TileSize = new System.Drawing.Size(150, 20);
 			this.toolTip1.SetToolTip(this.lstPatches, "Doubleclick, enter or button Load patch to load the patch into the device");
@@ -95,89 +95,78 @@
 			// 
 			// btnLoadCurrPatch
 			// 
-			this.btnLoadCurrPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadCurrPatch.Location = new System.Drawing.Point(476, 109);
+			this.btnLoadCurrPatch.Location = new System.Drawing.Point(57, 73);
 			this.btnLoadCurrPatch.Name = "btnLoadCurrPatch";
-			this.btnLoadCurrPatch.Size = new System.Drawing.Size(94, 40);
+			this.btnLoadCurrPatch.Size = new System.Drawing.Size(57, 40);
 			this.btnLoadCurrPatch.TabIndex = 4;
-			this.btnLoadCurrPatch.Text = "Load &Selected";
+			this.btnLoadCurrPatch.Text = "&Selected";
 			this.btnLoadCurrPatch.UseVisualStyleBackColor = true;
 			this.btnLoadCurrPatch.Click += new System.EventHandler(this.btnLoadSelectedPatch_Click);
 			// 
-			// lblCurrPatch
-			// 
-			this.lblCurrPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblCurrPatch.AutoSize = true;
-			this.lblCurrPatch.Location = new System.Drawing.Point(479, 93);
-			this.lblCurrPatch.Name = "lblCurrPatch";
-			this.lblCurrPatch.Size = new System.Drawing.Size(61, 13);
-			this.lblCurrPatch.TabIndex = 5;
-			this.lblCurrPatch.Text = "Load patch";
-			// 
 			// btnLoadPrevPatch
 			// 
-			this.btnLoadPrevPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadPrevPatch.Location = new System.Drawing.Point(476, 48);
+			this.btnLoadPrevPatch.Location = new System.Drawing.Point(6, 73);
 			this.btnLoadPrevPatch.Name = "btnLoadPrevPatch";
-			this.btnLoadPrevPatch.Size = new System.Drawing.Size(94, 40);
+			this.btnLoadPrevPatch.Size = new System.Drawing.Size(48, 40);
 			this.btnLoadPrevPatch.TabIndex = 4;
-			this.btnLoadPrevPatch.Text = "Load &Prev";
+			this.btnLoadPrevPatch.Text = "&Prev";
 			this.btnLoadPrevPatch.UseVisualStyleBackColor = true;
 			this.btnLoadPrevPatch.Click += new System.EventHandler(this.btnLoadPreviousPatch_Click);
 			// 
-			// lblPrevPatch
-			// 
-			this.lblPrevPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblPrevPatch.AutoSize = true;
-			this.lblPrevPatch.Location = new System.Drawing.Point(479, 32);
-			this.lblPrevPatch.Name = "lblPrevPatch";
-			this.lblPrevPatch.Size = new System.Drawing.Size(61, 13);
-			this.lblPrevPatch.TabIndex = 5;
-			this.lblPrevPatch.Text = "Load patch";
-			// 
 			// btnLoadNextPatch
 			// 
-			this.btnLoadNextPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnLoadNextPatch.Location = new System.Drawing.Point(476, 170);
+			this.btnLoadNextPatch.Location = new System.Drawing.Point(117, 73);
 			this.btnLoadNextPatch.Name = "btnLoadNextPatch";
-			this.btnLoadNextPatch.Size = new System.Drawing.Size(94, 40);
+			this.btnLoadNextPatch.Size = new System.Drawing.Size(48, 40);
 			this.btnLoadNextPatch.TabIndex = 4;
-			this.btnLoadNextPatch.Text = "Load &Next";
+			this.btnLoadNextPatch.Text = "&Next";
 			this.btnLoadNextPatch.UseVisualStyleBackColor = true;
 			this.btnLoadNextPatch.Click += new System.EventHandler(this.btnLoadNextPatch_Click);
 			// 
-			// lblNextPatch
+			// groupBox1
 			// 
-			this.lblNextPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblNextPatch.AutoSize = true;
-			this.lblNextPatch.Location = new System.Drawing.Point(479, 154);
-			this.lblNextPatch.Name = "lblNextPatch";
-			this.lblNextPatch.Size = new System.Drawing.Size(61, 13);
-			this.lblNextPatch.TabIndex = 5;
-			this.lblNextPatch.Text = "Load patch";
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox1.Controls.Add(this.txtCurrPatchNumber);
+			this.groupBox1.Controls.Add(this.txtCurrPatchName);
+			this.groupBox1.Controls.Add(this.btnLoadNextPatch);
+			this.groupBox1.Controls.Add(this.btnLoadPrevPatch);
+			this.groupBox1.Controls.Add(this.btnLoadCurrPatch);
+			this.groupBox1.Location = new System.Drawing.Point(399, 29);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(171, 122);
+			this.groupBox1.TabIndex = 6;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Load patch";
 			// 
-			// button1
+			// txtCurrPatchName
 			// 
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button1.Location = new System.Drawing.Point(386, 83);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 6;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.txtCurrPatchName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtCurrPatchName.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtCurrPatchName.Location = new System.Drawing.Point(6, 45);
+			this.txtCurrPatchName.Name = "txtCurrPatchName";
+			this.txtCurrPatchName.ReadOnly = true;
+			this.txtCurrPatchName.Size = new System.Drawing.Size(159, 23);
+			this.txtCurrPatchName.TabIndex = 5;
+			this.txtCurrPatchName.Text = "Patch Name";
+			this.txtCurrPatchName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// txtCurrPatchNumber
+			// 
+			this.txtCurrPatchNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtCurrPatchNumber.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtCurrPatchNumber.Location = new System.Drawing.Point(6, 19);
+			this.txtCurrPatchNumber.Name = "txtCurrPatchNumber";
+			this.txtCurrPatchNumber.ReadOnly = true;
+			this.txtCurrPatchNumber.Size = new System.Drawing.Size(159, 23);
+			this.txtCurrPatchNumber.TabIndex = 5;
+			this.txtCurrPatchNumber.Text = "1234";
+			this.txtCurrPatchNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// CtrlFileContent
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.lblNextPatch);
-			this.Controls.Add(this.lblPrevPatch);
-			this.Controls.Add(this.lblCurrPatch);
-			this.Controls.Add(this.btnLoadNextPatch);
-			this.Controls.Add(this.btnLoadPrevPatch);
-			this.Controls.Add(this.btnLoadCurrPatch);
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.lstPatches);
 			this.Controls.Add(this.txtCntPatches);
 			this.Controls.Add(this.txtFname);
@@ -185,6 +174,8 @@
 			this.Name = "CtrlFileContent";
 			this.Size = new System.Drawing.Size(574, 225);
 			this.Load += new System.EventHandler(this.CtrlPatchFile_Load);
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -197,12 +188,11 @@
 		private System.Windows.Forms.TextBox txtCntPatches;
 		private System.Windows.Forms.ListView lstPatches;
 		private System.Windows.Forms.Button btnLoadCurrPatch;
-		private System.Windows.Forms.Label lblCurrPatch;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.Button btnLoadPrevPatch;
-		private System.Windows.Forms.Label lblPrevPatch;
 		private System.Windows.Forms.Button btnLoadNextPatch;
-		private System.Windows.Forms.Label lblNextPatch;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.TextBox txtCurrPatchName;
+		private System.Windows.Forms.TextBox txtCurrPatchNumber;
 	}
 }

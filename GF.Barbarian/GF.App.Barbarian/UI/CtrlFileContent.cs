@@ -124,8 +124,20 @@ namespace GF.Barbarian
 
 		private void lstPatches_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
-				SelectPatch(SelectDirection.Current, true);
+			switch(e.KeyCode)
+			{
+				case Keys.Enter:
+					SelectPatch(SelectDirection.Current, true);
+					break;
+				case Keys.Up:
+				//case Keys.Left:
+					SelectPatch(SelectDirection.Previous, false);
+					break;
+				case Keys.Down:
+				//case Keys.Right:
+					SelectPatch(SelectDirection.Next, false);
+					break;
+			}
 		}
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
@@ -177,15 +189,11 @@ namespace GF.Barbarian
 
 		public void SelectPatch(SelectDirection _dir, bool _load)
 		{
-			ListItemPatch prev = null;
 			ListItemPatch curr = null;
-			ListItemPatch next = null;
 
 			if (lstPatches.Items.Count == 0 || lstPatches?.SelectedItems?.Count == 0)
 			{
-				prev = null;
 				curr = null;
-				next = null;
 			}
 			else
 			{
@@ -195,25 +203,13 @@ namespace GF.Barbarian
 				if (iCurr != lstPatches.SelectedItems[0].Index) // Only set if different, avoid loop setting (each set causes event)
 					lstPatches.Items[iCurr].Selected = true;
 
-				int iPrev = Wrap(_dir, iCurr-1, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
-				int iNext = Wrap(_dir, iCurr+1, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
-
-				prev = iPrev<0?null:(ListItemPatch)lstPatches.Items[iPrev];
 				curr = iCurr<0?null:(ListItemPatch)lstPatches.Items[iCurr];			
-				next = iNext<0?null:(ListItemPatch)lstPatches.Items[iNext];
 				curr?.EnsureVisible();
 			}
+			txtCurrPatchName.Text = curr == null ? "-" : curr.Name;
+			txtCurrPatchNumber.Text = curr == null ? "-" : curr.PatchCount.ToString();
 
-			lblPrevPatch.Text = prev == null ? "-" : prev.Name;
-			lblCurrPatch.Text = curr == null ? "-" : curr.Name;
-			lblNextPatch.Text = next == null ? "-" : next.Name;
-
-			if (Properties.Settings.Default.WrapFiles)
-			{
-				btnLoadPrevPatch.Enabled = prev != null;
-				btnLoadCurrPatch.Enabled = curr != null;
-				btnLoadNextPatch.Enabled = next != null;
-			}
+			btnLoadCurrPatch.Enabled = curr != null;
 
 			if (_load)
 				LoadCurrentPatch(curr);
