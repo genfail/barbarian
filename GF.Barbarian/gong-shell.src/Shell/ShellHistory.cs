@@ -83,7 +83,8 @@ namespace GongSolutions.Shell
         {
             if (m_Current == 0)
             {
-                throw new InvalidOperationException("Cannot navigate back");
+                //throw new InvalidOperationException("Cannot navigate back");
+				return null; // when no deeper then root, just stop
             }
             return m_History[--m_Current];
         }
@@ -106,7 +107,8 @@ namespace GongSolutions.Shell
         {
             if (m_Current == m_History.Count - 1)
             {
-                throw new InvalidOperationException("Cannot navigate forward");
+                //throw new InvalidOperationException("Cannot navigate forward");
+				return null;
             }
             return m_History[++m_Current];
         }

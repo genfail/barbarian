@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using GongSolutions.Shell;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace GF.Barbarian
 {
@@ -24,7 +26,20 @@ namespace GF.Barbarian
 			if (this.DesignMode)
 				return;
 			shellViewFileList.SelectionChanged += ShellViewFileList_SelectionChanged;
+			shellTreeView1.SelectionChanged += ShellTreeView1_SelectionChanged;
 			ApplySettings();
+		}
+
+		private void CheckFavourites()
+		{
+			ShellItem si = shellTreeView1.SelectedFolder;
+			int i = cmbFavoriteFolders.FindString(si.FileSystemPath);
+			cmbFavoriteFolders.SelectedIndex = i;
+		}
+
+		private void ShellTreeView1_SelectionChanged(object sender, EventArgs e)
+		{
+			CheckFavourites();
 		}
 
 		// Selection for some reason change fires 3 SelectionChanged events: old, empty and new. We only want load once
@@ -53,15 +68,16 @@ namespace GF.Barbarian
 
 			activePatch.SelectedPatchIndex = Properties.Settings.Default.LastSelectedPatchIndex;
 
-			string[] folders = Properties.Settings.Default.FavouriteFolders.Split(new[]{'|'});
+			string[] folders = Properties.Settings.Default.FavouriteFolders.Split(new[]{'|'},StringSplitOptions.RemoveEmptyEntries).Distinct().ToArray();
 			cmbFavoriteFolders.Items.AddRange(folders);
+			CheckFavourites();
 		}
 
 		public void SaveSettings()
 		{
 			Properties.Settings.Default.LastSelectedFolder = shellTreeView1.SelectedFolder.FileSystemPath;
 
-			Properties.Settings.Default.FavouriteFolders = String.Join("|", cmbFavoriteFolders.Items.Cast<Object>().Select(item => item.ToString()).ToArray());
+			Properties.Settings.Default.FavouriteFolders = String.Join("|", cmbFavoriteFolders.Items.Cast<Object>().Select(item => item.ToString()).Where(x => !String.IsNullOrEmpty(x)).Distinct().ToArray());
 
 			if (shellViewFileList.SelectedItems != null && shellViewFileList.SelectedItems.Length > 0)
 			{
@@ -170,31 +186,43 @@ namespace GF.Barbarian
 
 		public bool SelectItem(SelectDirection _dir)
 		{
+			ShellItem si = shellViewFileList.SelectedItems[0];
 
-			if (shellViewFileList.Items.Length == 0 || shellViewFileList.SelectedItems.Length == 0)
-			{
+			if (si == null)
 				return false;
-			}
-			else
+
+			int i = Array.IndexOf(shellViewFileList.Items, si);
+			int iPrev = i;
+			if (_dir == SelectDirection.Previous && i > 0)
 			{
-				ShellItem si = shellViewFileList.SelectedItems[0];
-
-				int i = Array.IndexOf(shellViewFileList.Items, si);
-				int i2 = i;
-				if (_dir == SelectDirection.Previous && i > 0)
-					i2 = i - 1;
-				else
-				if (_dir == SelectDirection.Next && i < shellViewFileList.Items.Length - 1)
-					i2 = i + 1;
-
-				if (i != i2) // Avoid loop setting (each set causes event)
-				{
-					ShellItem si2 = shellViewFileList.Items[i2];
-					shellViewFileList.Select(si2.DisplayName);
-					return true;
-				}
-				return false;
+				while(!Ok(--i));
 			}
+			else if (_dir == SelectDirection.Next && i < shellViewFileList.Items.Length - 1)
+			{
+				while(!Ok(++i));
+			}
+
+			if (i != iPrev) // Avoid loop setting (each set causes event)
+			{
+				ShellItem si2 = shellViewFileList.Items[i];
+				shellViewFileList.Select(si2.DisplayName);
+				return true;
+			}
+			return false;
+		}
+
+		private bool Ok(int i)
+		{
+			ShellItem si = shellViewFileList.Items[i];
+			if (si == null)
+				return  true;
+			return FitsMask(si.DisplayName , fileFilterComboBox1.Filter);
+		}
+
+		private bool FitsMask(string sFileName, string sFileMask)
+		{
+			Regex mask = new Regex(sFileMask.Replace(".", "[.]").Replace("*", ".*").Replace("?", "."));
+			return mask.IsMatch(sFileName);
 		}
 
 		private void shellTreeView1_SelectionChanged(object sender, EventArgs e)
@@ -240,25 +268,6 @@ namespace GF.Barbarian
 			Process process = Process.Start(StartInformation);
 		}
 
-		private void btnOneFolderUp_Click(object sender, EventArgs e)
-		{
-			shellViewFileList.NavigateParent();
-		}
-
-		private void btnRootFolder_Click(object sender, EventArgs e)
-		{
-			string fldr = Path.GetPathRoot(txtFolder.Text);
-			SetTree(fldr);
-		}
-
-		private void btnbtnAddToFavoriteFolders_Click(object sender, EventArgs e)
-		{
-			string cur = shellTreeView1.SelectedFolder.FileSystemPath;
-
-			if (!cmbFavoriteFolders.Items.Contains(cur))
-				cmbFavoriteFolders.Items.Add(cur);
-		}
-
 		private void cmbFavoriteFolders_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			SelectPath(cmbFavoriteFolders.Text);
@@ -292,5 +301,68 @@ namespace GF.Barbarian
 			return false;
 		}
 
+		private void toolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+		{
+			if (e.Button == backButton)
+				shellViewFileList.NavigateBack();
+			else if (e.Button == forwardButton)
+				shellViewFileList.NavigateForward();
+			else if (e.Button == upButton)
+				shellViewFileList.NavigateParent();
+			else if (e.Button == navigateRootButton)
+			{
+				string fldr = Path.GetPathRoot(txtFolder.Text);
+				SetTree(fldr);
+			}
+			else if (e.Button == addToFavorites)
+			{
+				string cur = shellTreeView1.SelectedFolder.FileSystemPath;
+
+				if (!cmbFavoriteFolders.Items.Contains(cur))
+					cmbFavoriteFolders.Items.Add(cur);
+				CheckFavourites();
+			}
+		}
+
+		void backButton_Popup(object sender, EventArgs e)
+        {
+            List<MenuItem> items = new List<MenuItem>();
+
+            backButtonMenu.MenuItems.Clear();
+            foreach (ShellItem f in shellViewFileList.History.HistoryBack)
+            {
+                MenuItem item = new MenuItem(f.DisplayName);
+                item.Tag = f;
+                item.Click += new EventHandler(backButtonMenuItem_Click);
+                items.Insert(0, item);
+            }
+            backButtonMenu.MenuItems.AddRange(items.ToArray());
+        }
+
+        void forwardButton_Popup(object sender, EventArgs e)
+        {
+            forwardButtonMenu.MenuItems.Clear();
+            foreach (ShellItem f in shellViewFileList.History.HistoryForward)
+            {
+                MenuItem item = new MenuItem(f.DisplayName);
+                item.Tag = f;
+                item.Click += new EventHandler(forwardButtonMenuItem_Click);
+                forwardButtonMenu.MenuItems.Add(item);
+            }
+        }
+
+        void backButtonMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            ShellItem folder = (ShellItem)item.Tag;
+            shellViewFileList.NavigateBack(folder);
+        }
+
+        void forwardButtonMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            ShellItem folder = (ShellItem)item.Tag;
+            shellViewFileList.NavigateForward(folder);
+        }
 	}
 }

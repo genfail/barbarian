@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GF.Barbarian.Midi;
 using System.IO;
+using GongSolutions.Shell;
 
 namespace GF.Barbarian
 {
@@ -77,8 +78,15 @@ namespace GF.Barbarian
 		{
 			if (!IsDisposed)
 			{
-				toolStripStatusMidi.Text = Program.Midi.DeviceConnectedText;
-				toolStripStatusMidi.Image = Global.GetConnectedIcon(Program.Midi.ConnectState);
+				try
+				{
+					toolStripStatusMidi.Text = Program.Midi.DeviceConnectedText;
+					toolStripStatusMidi.Image = Global.GetConnectedIcon(Program.Midi.ConnectState);
+				}
+				catch (Exception)
+				{
+					Debug.WriteLine("Can not set status");
+				}
 			}
 		}
 

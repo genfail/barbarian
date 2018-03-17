@@ -29,32 +29,39 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CtrlModeFile));
 			this.splitContainerExplorer = new System.Windows.Forms.SplitContainer();
 			this.shellTreeView1 = new GongSolutions.Shell.ShellTreeView();
 			this.shellViewFileList = new GongSolutions.Shell.ShellView();
+			this.toolBar = new System.Windows.Forms.ToolBar();
+			this.backButton = new System.Windows.Forms.ToolBarButton();
+			this.backButtonMenu = new System.Windows.Forms.ContextMenu();
+			this.forwardButton = new System.Windows.Forms.ToolBarButton();
+			this.forwardButtonMenu = new System.Windows.Forms.ContextMenu();
+			this.upButton = new System.Windows.Forms.ToolBarButton();
+			this.navigateRootButton = new System.Windows.Forms.ToolBarButton();
+			this.addToFavorites = new System.Windows.Forms.ToolBarButton();
+			this.imageList = new System.Windows.Forms.ImageList(this.components);
 			this.cmbFavoriteFolders = new System.Windows.Forms.ComboBox();
-			this.btnAddToFavoriteFolders = new System.Windows.Forms.Button();
-			this.btnRootFolder = new System.Windows.Forms.Button();
-			this.btnOneFolderUp = new System.Windows.Forms.Button();
+			this.contextMenuStripForComboBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.goToPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.removePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fileFilterComboBox1 = new GongSolutions.Shell.FileFilterComboBox();
 			this.txtFolder = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnOpenFileExplorer = new System.Windows.Forms.Button();
 			this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainerMain = new System.Windows.Forms.SplitContainer();
-			this.contextMenuStripForComboBox = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.removePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.activePatch = new GF.Barbarian.CtrlFileContent();
-			this.goToPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).BeginInit();
 			this.splitContainerExplorer.Panel1.SuspendLayout();
 			this.splitContainerExplorer.Panel2.SuspendLayout();
 			this.splitContainerExplorer.SuspendLayout();
+			this.contextMenuStripForComboBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
 			this.splitContainerMain.Panel1.SuspendLayout();
 			this.splitContainerMain.Panel2.SuspendLayout();
 			this.splitContainerMain.SuspendLayout();
-			this.contextMenuStripForComboBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainerExplorer
@@ -69,10 +76,8 @@
 			// 
 			// splitContainerExplorer.Panel2
 			// 
+			this.splitContainerExplorer.Panel2.Controls.Add(this.toolBar);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.cmbFavoriteFolders);
-			this.splitContainerExplorer.Panel2.Controls.Add(this.btnAddToFavoriteFolders);
-			this.splitContainerExplorer.Panel2.Controls.Add(this.btnRootFolder);
-			this.splitContainerExplorer.Panel2.Controls.Add(this.btnOneFolderUp);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.fileFilterComboBox1);
 			this.splitContainerExplorer.Panel2.Controls.Add(this.shellViewFileList);
 			this.splitContainerExplorer.Size = new System.Drawing.Size(804, 265);
@@ -94,17 +99,87 @@
 			this.shellViewFileList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.shellViewFileList.Location = new System.Drawing.Point(3, 25);
+			this.shellViewFileList.Location = new System.Drawing.Point(3, 50);
 			this.shellViewFileList.MultiSelect = false;
 			this.shellViewFileList.Name = "shellViewFileList";
 			this.shellViewFileList.SelectedItems = new GongSolutions.Shell.ShellItem[0];
-			this.shellViewFileList.Size = new System.Drawing.Size(512, 237);
+			this.shellViewFileList.Size = new System.Drawing.Size(512, 214);
 			this.shellViewFileList.StatusBar = null;
 			this.shellViewFileList.TabIndex = 0;
 			this.shellViewFileList.Text = "shellView1";
 			this.shellViewFileList.View = GongSolutions.Shell.ShellViewStyle.Details;
 			this.shellViewFileList.Navigated += new System.EventHandler(this.shellViewFileList_Navigated);
 			this.shellViewFileList.LocationChanged += new System.EventHandler(this.shellViewFileList_LocationChanged);
+			// 
+			// toolBar
+			// 
+			this.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+			this.toolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.backButton,
+            this.forwardButton,
+            this.upButton,
+            this.navigateRootButton,
+            this.addToFavorites});
+			this.toolBar.DropDownArrows = true;
+			this.toolBar.ImageList = this.imageList;
+			this.toolBar.Location = new System.Drawing.Point(0, 0);
+			this.toolBar.Name = "toolBar";
+			this.toolBar.ShowToolTips = true;
+			this.toolBar.Size = new System.Drawing.Size(518, 28);
+			this.toolBar.TabIndex = 4;
+			this.toolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar_ButtonClick);
+			// 
+			// backButton
+			// 
+			this.backButton.DropDownMenu = this.backButtonMenu;
+			this.backButton.ImageIndex = 0;
+			this.backButton.Name = "backButton";
+			this.backButton.Style = System.Windows.Forms.ToolBarButtonStyle.DropDownButton;
+			this.backButton.ToolTipText = "Go back in folder history list";
+			// 
+			// backButtonMenu
+			// 
+			this.backButtonMenu.Popup += new System.EventHandler(this.backButton_Popup);
+			// 
+			// forwardButton
+			// 
+			this.forwardButton.DropDownMenu = this.forwardButtonMenu;
+			this.forwardButton.ImageIndex = 1;
+			this.forwardButton.Name = "forwardButton";
+			this.forwardButton.Style = System.Windows.Forms.ToolBarButtonStyle.DropDownButton;
+			this.forwardButton.ToolTipText = "Go forward in folder history list";
+			// 
+			// forwardButtonMenu
+			// 
+			this.forwardButtonMenu.Popup += new System.EventHandler(this.forwardButton_Popup);
+			// 
+			// upButton
+			// 
+			this.upButton.ImageIndex = 2;
+			this.upButton.Name = "upButton";
+			this.upButton.ToolTipText = "Go one folder up";
+			// 
+			// navigateRootButton
+			// 
+			this.navigateRootButton.ImageIndex = 3;
+			this.navigateRootButton.Name = "navigateRootButton";
+			this.navigateRootButton.ToolTipText = "Go to the root of this folder";
+			// 
+			// addToFavorites
+			// 
+			this.addToFavorites.ImageIndex = 4;
+			this.addToFavorites.Name = "addToFavorites";
+			this.addToFavorites.ToolTipText = "Add this folder to the list of favorites";
+			// 
+			// imageList
+			// 
+			this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+			this.imageList.TransparentColor = System.Drawing.Color.Magenta;
+			this.imageList.Images.SetKeyName(0, "Back.bmp");
+			this.imageList.Images.SetKeyName(1, "Forward.bmp");
+			this.imageList.Images.SetKeyName(2, "Up.bmp");
+			this.imageList.Images.SetKeyName(3, "root.bmp");
+			this.imageList.Images.SetKeyName(4, "favorite.bmp");
 			// 
 			// cmbFavoriteFolders
 			// 
@@ -113,48 +188,33 @@
 			this.cmbFavoriteFolders.ContextMenuStrip = this.contextMenuStripForComboBox;
 			this.cmbFavoriteFolders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFavoriteFolders.FormattingEnabled = true;
-			this.cmbFavoriteFolders.Location = new System.Drawing.Point(109, 1);
+			this.cmbFavoriteFolders.Location = new System.Drawing.Point(3, 28);
 			this.cmbFavoriteFolders.Name = "cmbFavoriteFolders";
-			this.cmbFavoriteFolders.Size = new System.Drawing.Size(181, 21);
+			this.cmbFavoriteFolders.Size = new System.Drawing.Size(352, 21);
 			this.cmbFavoriteFolders.TabIndex = 3;
 			this.cmbFavoriteFolders.SelectedIndexChanged += new System.EventHandler(this.cmbFavoriteFolders_SelectedIndexChanged);
 			// 
-			// btnAddToFavoriteFolders
+			// contextMenuStripForComboBox
 			// 
-			this.btnAddToFavoriteFolders.ContextMenuStrip = this.contextMenuStripForComboBox;
-			this.btnAddToFavoriteFolders.Location = new System.Drawing.Point(73, 1);
-			this.btnAddToFavoriteFolders.Margin = new System.Windows.Forms.Padding(0);
-			this.btnAddToFavoriteFolders.Name = "btnAddToFavoriteFolders";
-			this.btnAddToFavoriteFolders.Size = new System.Drawing.Size(33, 21);
-			this.btnAddToFavoriteFolders.TabIndex = 2;
-			this.btnAddToFavoriteFolders.Text = "*";
-			this.toolTipControl.SetToolTip(this.btnAddToFavoriteFolders, "Set current folder in favorite list");
-			this.btnAddToFavoriteFolders.UseVisualStyleBackColor = true;
-			this.btnAddToFavoriteFolders.Click += new System.EventHandler(this.btnbtnAddToFavoriteFolders_Click);
+			this.contextMenuStripForComboBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.goToPathToolStripMenuItem,
+            this.removePathToolStripMenuItem});
+			this.contextMenuStripForComboBox.Name = "contextMenuStrip1";
+			this.contextMenuStripForComboBox.Size = new System.Drawing.Size(145, 48);
 			// 
-			// btnRootFolder
+			// goToPathToolStripMenuItem
 			// 
-			this.btnRootFolder.Location = new System.Drawing.Point(40, 1);
-			this.btnRootFolder.Margin = new System.Windows.Forms.Padding(0);
-			this.btnRootFolder.Name = "btnRootFolder";
-			this.btnRootFolder.Size = new System.Drawing.Size(33, 21);
-			this.btnRootFolder.TabIndex = 2;
-			this.btnRootFolder.Text = "\\";
-			this.toolTipControl.SetToolTip(this.btnRootFolder, "Go to the root of this drive");
-			this.btnRootFolder.UseVisualStyleBackColor = true;
-			this.btnRootFolder.Click += new System.EventHandler(this.btnRootFolder_Click);
+			this.goToPathToolStripMenuItem.Name = "goToPathToolStripMenuItem";
+			this.goToPathToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.goToPathToolStripMenuItem.Text = "Go to path";
+			this.goToPathToolStripMenuItem.Click += new System.EventHandler(this.goToPathToolStripMenuItem_Click);
 			// 
-			// btnOneFolderUp
+			// removePathToolStripMenuItem
 			// 
-			this.btnOneFolderUp.Location = new System.Drawing.Point(3, 1);
-			this.btnOneFolderUp.Margin = new System.Windows.Forms.Padding(0);
-			this.btnOneFolderUp.Name = "btnOneFolderUp";
-			this.btnOneFolderUp.Size = new System.Drawing.Size(33, 21);
-			this.btnOneFolderUp.TabIndex = 2;
-			this.btnOneFolderUp.Text = "..";
-			this.toolTipControl.SetToolTip(this.btnOneFolderUp, "Go one folder up");
-			this.btnOneFolderUp.UseVisualStyleBackColor = true;
-			this.btnOneFolderUp.Click += new System.EventHandler(this.btnOneFolderUp_Click);
+			this.removePathToolStripMenuItem.Name = "removePathToolStripMenuItem";
+			this.removePathToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.removePathToolStripMenuItem.Text = "Remove path";
+			this.removePathToolStripMenuItem.Click += new System.EventHandler(this.removePathToolStripMenuItem_Click);
 			// 
 			// fileFilterComboBox1
 			// 
@@ -162,10 +222,10 @@
 			this.fileFilterComboBox1.Filter = "*.g5l";
 			this.fileFilterComboBox1.FilterItems = "All Files (*.*)|*.*|Roland Files (*.g5l)|*.g5l|Midi Files (*.syx)|*.syx";
 			this.fileFilterComboBox1.FormattingEnabled = true;
-			this.fileFilterComboBox1.Location = new System.Drawing.Point(292, 2);
+			this.fileFilterComboBox1.Location = new System.Drawing.Point(358, 28);
 			this.fileFilterComboBox1.Name = "fileFilterComboBox1";
 			this.fileFilterComboBox1.ShellView = this.shellViewFileList;
-			this.fileFilterComboBox1.Size = new System.Drawing.Size(226, 21);
+			this.fileFilterComboBox1.Size = new System.Drawing.Size(156, 21);
 			this.fileFilterComboBox1.TabIndex = 1;
 			// 
 			// txtFolder
@@ -221,21 +281,6 @@
 			this.splitContainerMain.SplitterDistance = 265;
 			this.splitContainerMain.TabIndex = 8;
 			// 
-			// contextMenuStripForComboBox
-			// 
-			this.contextMenuStripForComboBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.goToPathToolStripMenuItem,
-            this.removePathToolStripMenuItem});
-			this.contextMenuStripForComboBox.Name = "contextMenuStrip1";
-			this.contextMenuStripForComboBox.Size = new System.Drawing.Size(181, 70);
-			// 
-			// removePathToolStripMenuItem
-			// 
-			this.removePathToolStripMenuItem.Name = "removePathToolStripMenuItem";
-			this.removePathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.removePathToolStripMenuItem.Text = "Remove path";
-			this.removePathToolStripMenuItem.Click += new System.EventHandler(this.removePathToolStripMenuItem_Click);
-			// 
 			// activePatch
 			// 
 			this.activePatch.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -245,13 +290,6 @@
 			this.activePatch.SelectedPatchIndex = -1;
 			this.activePatch.Size = new System.Drawing.Size(804, 251);
 			this.activePatch.TabIndex = 6;
-			// 
-			// goToPathToolStripMenuItem
-			// 
-			this.goToPathToolStripMenuItem.Name = "goToPathToolStripMenuItem";
-			this.goToPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.goToPathToolStripMenuItem.Text = "Go to path";
-			this.goToPathToolStripMenuItem.Click += new System.EventHandler(this.goToPathToolStripMenuItem_Click);
 			// 
 			// CtrlModeFile
 			// 
@@ -267,13 +305,14 @@
 			this.Load += new System.EventHandler(this.CtrlModeFile_Load);
 			this.splitContainerExplorer.Panel1.ResumeLayout(false);
 			this.splitContainerExplorer.Panel2.ResumeLayout(false);
+			this.splitContainerExplorer.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerExplorer)).EndInit();
 			this.splitContainerExplorer.ResumeLayout(false);
+			this.contextMenuStripForComboBox.ResumeLayout(false);
 			this.splitContainerMain.Panel1.ResumeLayout(false);
 			this.splitContainerMain.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
 			this.splitContainerMain.ResumeLayout(false);
-			this.contextMenuStripForComboBox.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -290,12 +329,18 @@
 		private System.Windows.Forms.Button btnOpenFileExplorer;
 		private System.Windows.Forms.ToolTip toolTipControl;
 		private System.Windows.Forms.SplitContainer splitContainerMain;
-		private System.Windows.Forms.Button btnRootFolder;
-		private System.Windows.Forms.Button btnOneFolderUp;
 		private System.Windows.Forms.ComboBox cmbFavoriteFolders;
-		private System.Windows.Forms.Button btnAddToFavoriteFolders;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStripForComboBox;
 		private System.Windows.Forms.ToolStripMenuItem removePathToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem goToPathToolStripMenuItem;
+		private System.Windows.Forms.ToolBar toolBar;
+		private System.Windows.Forms.ToolBarButton backButton;
+		private System.Windows.Forms.ContextMenu backButtonMenu;
+		private System.Windows.Forms.ToolBarButton forwardButton;
+		private System.Windows.Forms.ContextMenu forwardButtonMenu;
+		private System.Windows.Forms.ToolBarButton upButton;
+		private System.Windows.Forms.ImageList imageList;
+		private System.Windows.Forms.ToolBarButton navigateRootButton;
+		private System.Windows.Forms.ToolBarButton addToFavorites;
 	}
 }

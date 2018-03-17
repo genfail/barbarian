@@ -43,15 +43,15 @@
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.viewHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStripBarbarian = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusMidi = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripLoadedPatchName = new System.Windows.Forms.ToolStripStatusLabel();
 			this.panelMain = new System.Windows.Forms.Panel();
-			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.viewHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.statusStripBarbarian.SuspendLayout();
 			this.SuspendLayout();
@@ -82,21 +82,21 @@
 			// fileModeToolStripMenuItem
 			// 
 			this.fileModeToolStripMenuItem.Name = "fileModeToolStripMenuItem";
-			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.fileModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.fileModeToolStripMenuItem.Text = "&File Mode";
 			this.fileModeToolStripMenuItem.Click += new System.EventHandler(this.fileModeToolStripMenuItem_Click);
 			// 
 			// libraryModeToolStripMenuItem
 			// 
 			this.libraryModeToolStripMenuItem.Name = "libraryModeToolStripMenuItem";
-			this.libraryModeToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.libraryModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.libraryModeToolStripMenuItem.Text = "&Library Mode";
 			this.libraryModeToolStripMenuItem.Click += new System.EventHandler(this.libraryModeToolStripMenuItem_Click);
 			// 
 			// eXitToolStripMenuItem
 			// 
 			this.eXitToolStripMenuItem.Name = "eXitToolStripMenuItem";
-			this.eXitToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+			this.eXitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.eXitToolStripMenuItem.Text = "e&Xit";
 			this.eXitToolStripMenuItem.Click += new System.EventHandler(this.eXitToolStripMenuItem_Click);
 			// 
@@ -123,6 +123,29 @@
 			this.connectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.connectionToolStripMenuItem.Text = "Device connection";
 			this.connectionToolStripMenuItem.Click += new System.EventHandler(this.connectionToolStripMenuItem_Click);
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.viewHelpToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "&Help";
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+			this.aboutToolStripMenuItem.Text = "&About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
+			// viewHelpToolStripMenuItem
+			// 
+			this.viewHelpToolStripMenuItem.Name = "viewHelpToolStripMenuItem";
+			this.viewHelpToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+			this.viewHelpToolStripMenuItem.Text = "View &Help";
+			this.viewHelpToolStripMenuItem.Click += new System.EventHandler(this.viewHelpToolStripMenuItem_Click);
 			// 
 			// statusStripBarbarian
 			// 
@@ -173,29 +196,6 @@
 			this.panelMain.Name = "panelMain";
 			this.panelMain.Size = new System.Drawing.Size(1107, 639);
 			this.panelMain.TabIndex = 3;
-			// 
-			// helpToolStripMenuItem
-			// 
-			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.viewHelpToolStripMenuItem});
-			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-			this.helpToolStripMenuItem.Text = "&Help";
-			// 
-			// aboutToolStripMenuItem
-			// 
-			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.aboutToolStripMenuItem.Text = "&About";
-			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-			// 
-			// viewHelpToolStripMenuItem
-			// 
-			this.viewHelpToolStripMenuItem.Name = "viewHelpToolStripMenuItem";
-			this.viewHelpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.viewHelpToolStripMenuItem.Text = "View &Help";
-			this.viewHelpToolStripMenuItem.Click += new System.EventHandler(this.viewHelpToolStripMenuItem_Click);
 			// 
 			// FrmMain
 			// 

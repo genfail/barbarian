@@ -36,13 +36,11 @@ namespace GF.Barbarian
 		}
 		public void AddPatchFile(string _fname)
 		{
-
 		}
 
 		public bool SelectItem(SelectDirection _dir)
 		{
 			return true;
 		}
-
 	}
 }

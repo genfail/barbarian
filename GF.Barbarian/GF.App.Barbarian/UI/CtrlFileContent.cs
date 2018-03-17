@@ -33,6 +33,15 @@ namespace GF.Barbarian
 			}
 		}
 
+
+		private ListItemPatch SelectedPatch()
+		{
+			if (lstPatches.SelectedItems.Count != 0)
+				return (ListItemPatch)lstPatches.SelectedItems[0];
+			return null;
+		}
+
+
 		public int SelectedPatchIndex
 		{
 			get
@@ -122,22 +131,28 @@ namespace GF.Barbarian
 			SelectPatch(SelectDirection.Current, true);
 		}
 
+		int iprev=-1;
 		private void lstPatches_KeyUp(object sender, KeyEventArgs e)
 		{
+			int i = SelectedPatchIndex;
+			bool b = Properties.Settings.Default.WrapFiles;
 			switch(e.KeyCode)
 			{
 				case Keys.Enter:
 					SelectPatch(SelectDirection.Current, true);
 					break;
 				case Keys.Up:
-				//case Keys.Left:
-					SelectPatch(SelectDirection.Previous, false);
+				case Keys.Left:
+					if (Properties.Settings.Default.WrapFiles && (i == 0 || i == -1) && i == iprev)
+						Program.Mainform.ActiveModeControl.SelectItem(SelectDirection.Previous);
 					break;
 				case Keys.Down:
-				//case Keys.Right:
-					SelectPatch(SelectDirection.Next, false);
+				case Keys.Right:
+					if (Properties.Settings.Default.WrapFiles && (i == lstPatches.Items.Count-1 || i == -1) && i == iprev)
+						Program.Mainform.ActiveModeControl.SelectItem(SelectDirection.Next);
 					break;
 			}
+			iprev = i;
 		}
 
 		private void btnLoadSelectedPatch_Click(object sender, EventArgs e)
@@ -155,26 +170,33 @@ namespace GF.Barbarian
 			SelectPatch(SelectDirection.Next, true);
 		}
 
-
-		private int Wrap(SelectDirection _dir, int val, int min, int max, bool dowrap)
+		private int Wrap(SelectDirection _dir, int val, int min, int max)
 		{
+			bool dowrap = Properties.Settings.Default.WrapFiles;
 			if (_dir == SelectDirection.Previous)
 			{
 				if (val > min)
 					return --val;
 				else if (dowrap)
-					return max;
+				{
+					Program.Mainform.ActiveModeControl.SelectItem(_dir);
+					return lstPatches.Items.Count - 1;
+					//return max;
+				}
 				else
-					return 0;
+					return max;
 			}
 			else if (_dir == SelectDirection.Next)
 			{
 				if (val < max)
 					return ++val;
 				else if (dowrap)
-					return min;
+				{
+					Program.Mainform.ActiveModeControl.SelectItem(_dir);
+					return 0;
+				}
 				else
-					return max;
+					return 0;
 			}
 			else
 			{
@@ -197,11 +219,11 @@ namespace GF.Barbarian
 			}
 			else
 			{
-				int iCurr = lstPatches.SelectedItems[0].Index;
-				iCurr = Wrap(_dir, iCurr, 0, lstPatches.Items.Count-1, Properties.Settings.Default.WrapFiles);
+				int iCurr = SelectedPatchIndex;
+				iCurr = Wrap(_dir, iCurr, 0, lstPatches.Items.Count-1);
 
-				if (iCurr != lstPatches.SelectedItems[0].Index) // Only set if different, avoid loop setting (each set causes event)
-					lstPatches.Items[iCurr].Selected = true;
+				if (iCurr != SelectedPatchIndex) // Only set if different, avoid loop setting (each set causes event)
+					SelectedPatchIndex = iCurr;
 
 				curr = iCurr<0?null:(ListItemPatch)lstPatches.Items[iCurr];			
 				curr?.EnsureVisible();
@@ -217,7 +239,11 @@ namespace GF.Barbarian
 
 		private void LoadCurrentPatch(ListItemPatch _toLoad)
 		{
-			if(Program.Midi.Out.SendLongMessage(_toLoad.Data))
+			if (_toLoad == null)
+			{
+				Program.Mainform.SetMessage(MSgSeverity.Error, $"Error loading: [EMPTY]");
+			}
+			else if(Program.Midi.Out.SendLongMessage(_toLoad.Data))
 			{
 				loaded = _toLoad;
 				Program.Mainform.SetMessage(MSgSeverity.Message, $"Loaded: [{_toLoad.Name}]");
@@ -228,7 +254,7 @@ namespace GF.Barbarian
 				Program.Mainform.SetMessage(MSgSeverity.Error, $"Error loading: [{_toLoad.Name}]");
 			}
 
-			Program.Mainform.SetPatchName(_toLoad.Text);
+			Program.Mainform.SetPatchName(_toLoad!= null?_toLoad.Text:"NULL");
 			lstPatches.Invalidate(); // redraw
 		}
 
@@ -272,11 +298,6 @@ namespace GF.Barbarian
 				p.X += 20;
 				e.Graphics.DrawString(itm.Name, f, drawBrush, p, format);
 			}
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			Program.Mainform.ActiveModeControl.SelectItem(SelectDirection.Previous);
 		}
 	}
 

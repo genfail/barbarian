@@ -182,6 +182,9 @@ namespace GongSolutions.Shell
                 ShellItem previous = m_CurrentFolder;
                 m_CurrentFolder = folder;
 
+				if(m_CurrentFolder == null)
+					return;
+
                 try
                 {
                     RecreateShellView();
@@ -273,6 +276,8 @@ namespace GongSolutions.Shell
         public void NavigateBack()
         {
             m_CurrentFolder = m_History.MoveBack();
+			if (m_CurrentFolder == null) // reached highest level
+				return;
             RecreateShellView();
             OnNavigated();
         }
@@ -336,6 +341,9 @@ namespace GongSolutions.Shell
         public void NavigateForward()
         {
             m_CurrentFolder = m_History.MoveForward();
+			if (m_CurrentFolder == null) // reached deepest level
+				return;
+
             RecreateShellView();
             OnNavigated();
         }
@@ -375,7 +383,8 @@ namespace GongSolutions.Shell
         /// </summary>
         public void NavigateParent()
         {
-            Navigate(m_CurrentFolder.Parent);
+			if (m_CurrentFolder != null)
+	            Navigate(m_CurrentFolder.Parent);
         }
 
         /// <summary>
